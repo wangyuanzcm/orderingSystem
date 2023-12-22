@@ -26,6 +26,11 @@ pnpm run prettier  // 一键格式化代码
 ## 最近更新
 
 - 接入了vite打包，比自己配webpack要好多了
+- 不再需要`yarn dll`
+- (2020/03/13 正在进行) 升到antd4, 使用@rematch, 修改权限、菜单、角色后需更新用户信息 ，Typescript，menu的构建递归，添加权限/菜单的模态框需要加一个是否将该权限/菜单赋予给某些角色
+- 把所有包版本都升级到了最新 React16.7,webpack4.29,babel7...
+- 去掉了一些鸡肋的东西，真正项目中基本都不会用到
+- 去掉了 css-module，感觉太不方便了
 
 ## 前后端分离，权限是怎么控制的
 
@@ -51,11 +56,3 @@ https://isluo.com/work/admin/ <br/>
 ## 参考
 
 react-luo: https://github.com/javaLuo/react-luo <br/>
-nestjs配套的后台项目：https://github.com/buqiyuan/nest-admin
-yapi接口调试平台：https://github.com/YMFE/yapi
-
-技术方案：  
-验证码：[react-vcode](https://github.com/javaLuo/react-vcode#readme)
-
-为了方便调试，使用yapi作为前后端调试服务器，本地部署yapi之后，打开：   
-yapi server 
