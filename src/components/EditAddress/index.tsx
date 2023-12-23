@@ -1,8 +1,10 @@
 /** 通用动态面包屑 **/
-import { Button, Form, Input, Modal, message } from "antd";
+import React, { useState } from "react";
+import { Button, Divider, Form, Input, Modal, message } from "antd";
+import smart from "address-smart-parse";
 
 import "./index.less";
-import React from "react";
+const { TextArea } = Input;
 
 interface Values {
   title: string;
@@ -24,11 +26,12 @@ const EditAddress: React.FC<EditAddressProps> = ({
   isEdit,
 }) => {
   const [form] = Form.useForm();
+  const title = isEdit ? "编辑收货地址" : "新增收货地址";
   return (
     <Modal
       open={open}
-      title="Create a new collection"
-      okText={isEdit ? "编辑收货地址" : "新增收货地址"}
+      title={title}
+      okText="确认"
       cancelText="取消"
       onCancel={onCancel}
       onOk={() => {
@@ -44,6 +47,21 @@ const EditAddress: React.FC<EditAddressProps> = ({
           });
       }}
     >
+      <div>
+        地址粘贴板：
+        <TextArea
+          onChange={(e) => {
+            console.log(e.target.value);
+            console.log(
+              smart("浙江省杭州市西湖区盘山路28号幸福茶庄 陈红 13593464918")
+            );
+          }}
+          placeholder="试试粘贴收件人姓名、手机号、收货地址，可快速识别您的收货信息"
+          autoSize={{ minRows: 3, maxRows: 5 }}
+        />
+      </div>
+      <Divider />
+
       <Form
         form={form}
         layout="vertical"

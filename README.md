@@ -53,6 +53,7 @@ https://isluo.com/work/admin/ <br/>
 react-luo: https://github.com/javaLuo/react-luo <br/>
 nestjs配套的后台项目：https://github.com/buqiyuan/nest-admin
 yapi接口调试平台：https://github.com/YMFE/yapi
+智能识别地址并且复制粘贴：https://github.com/wzc570738205/smartParsePro
 
 技术方案：  
 验证码：[react-vcode](https://github.com/javaLuo/react-vcode#readme)
