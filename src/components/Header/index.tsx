@@ -117,6 +117,15 @@ export default function HeaderCom(props: Props): JSX.Element {
               onClick: onMenuClick,
               items: [
                 {
+                  key: "modify_password",
+                  label: (
+                    <>
+                      <ChromeOutlined />
+                      修改密码
+                    </>
+                  ),
+                },
+                {
                   type: "divider",
                 },
                 {

@@ -135,7 +135,7 @@ const menus = [
     id: 7,
     title: "操作日志",
     icon: "icon-appstore",
-    url: "/system/menuadmin",
+    url: "/system/operatelog",
     parent: 2,
     desc: "系统管理/操作日志",
     sorts: 4,
