@@ -10,7 +10,7 @@ import axios from "axios";
  * */
 import Mock from "mockjs";
 // @ts-ignore
-import mock from "../../mock/app-data.js";
+import mock from "../../mock";
 Mock.mock(/\/api.*/, (options: any) => {
   const res = mock(options);
   return res;

@@ -13,14 +13,7 @@ export default function FooterCom(props: Props) {
   return (
     <Footer className={`footer ${props.className}`}>
       © 2018-{new Date().getFullYear() + " "}
-      <a
-        href="https://blog.isluo.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        blog.isluo.com
-      </a>
-      , Inc.
+      <a>瞳年视界</a>, Inc.
     </Footer>
   );
 }
