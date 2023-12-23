@@ -1,47 +1,85 @@
 /** 通用动态面包屑 **/
-import React, { useMemo } from "react";
-import { useLocation } from "react-router-dom";
-import { Breadcrumb } from "antd";
-import { EnvironmentOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Modal, message } from "antd";
+
 import "./index.less";
-import { Menu } from "@/models/index.type";
+import React from "react";
 
-interface Props {
-  menus: Menu[];
+interface Values {
+  title: string;
+  description: string;
+  modifier: string;
 }
 
-export default function EditAddress(props: Props): JSX.Element {
-  const location = useLocation();
+interface EditAddressProps {
+  open: boolean;
+  onCreate: (values: Values) => void;
+  onCancel: () => void;
+  isEdit?: boolean; // true为编辑，false为新建
+}
 
-  /** 根据当前location动态生成对应的面包屑 **/
-  const breads = useMemo(() => {
-    const paths: string = location.pathname;
-    const breads: JSX.Element[] = [];
-
-    let parentId: number | null = null;
-    do {
-      const pathObj: Menu | undefined = props.menus.find(
-        (v) => v.id === parentId || v.url === paths
-      );
-
-      if (pathObj) {
-        breads.push(
-          <Breadcrumb.Item key={pathObj.id}>{pathObj.title}</Breadcrumb.Item>
-        );
-        parentId = pathObj.parent;
-      } else {
-        parentId = null;
-      }
-    } while (parentId);
-
-    breads.reverse();
-    return breads;
-  }, [location.pathname, props.menus]);
-
+const EditAddress: React.FC<EditAddressProps> = ({
+  open,
+  onCreate,
+  onCancel,
+  isEdit,
+}) => {
+  const [form] = Form.useForm();
   return (
-    <div className="bread">
-      <EnvironmentOutlined className="icon" />
-      <Breadcrumb>{breads}</Breadcrumb>
-    </div>
+    <Modal
+      open={open}
+      title="Create a new collection"
+      okText={isEdit ? "编辑收货地址" : "新增收货地址"}
+      cancelText="取消"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            form.resetFields();
+            onCreate(values);
+            message.success("提交成功");
+          })
+          .catch((info) => {
+            console.log("Validate Failed:", info);
+          });
+      }}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        name="form_in_modal"
+        initialValues={{ modifier: "public" }}
+      >
+        <Form.Item
+          name="title"
+          label="收货人"
+          rules={[
+            {
+              required: true,
+              message: "Please input the title of collection!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item name="description" label="所在地区">
+          <Input />
+        </Form.Item>
+        <Form.Item name="description" label="详细地址">
+          <Input />
+        </Form.Item>
+        <Form.Item name="description" label="手机号码">
+          <Input />
+        </Form.Item>
+        <Form.Item name="description" label="邮箱地址">
+          <Input />
+        </Form.Item>
+        <Form.Item name="description" label="地址别名">
+          <Input />
+        </Form.Item>
+      </Form>
+    </Modal>
   );
-}
+};
+
+export default EditAddress;

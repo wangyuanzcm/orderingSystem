@@ -1,7 +1,7 @@
 /* 收件地址 */
-import React from "react";
+import React, { useState } from "react";
 import { Button, Descriptions, Modal, message } from "antd";
-import EditAddress from "../components/EditAddress";
+import EditAddress from "@/components/EditAddress";
 import "./index.less";
 
 const AddressInfo = () => {
@@ -15,21 +15,36 @@ const AddressInfo = () => {
       cancelText: "取消",
     });
   };
-  const handleEdit = () => {
-    Modal.info({
-      title: '修改收货地址',
-      content: <EditAddress/>,
-      onOk() {},
-    });
+
+  const [open, setOpen] = useState(false);
+
+  const onCreate = (values: any) => {
+    console.log("Received values of form: ", values);
+    setOpen(false);
   };
   return (
     <div className="address-border">
+      <EditAddress
+        open={open}
+        onCreate={onCreate}
+        onCancel={() => {
+          setOpen(false);
+        }}
+        isEdit
+      />
       <Descriptions
         title="唐萌系"
         column={1}
         extra={
           <Button.Group>
-            <Button onClick={handleEdit}>修改</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              修改
+            </Button>
             <br />
             <Button danger onClick={handleDelete}>
               删除
@@ -55,10 +70,30 @@ const AddressInfo = () => {
 };
 
 export default function ReceiveInfo(): JSX.Element {
+  const [open, setOpen] = useState(false);
+
+  const onCreate = (values: any) => {
+    console.log("Received values of form: ", values);
+    setOpen(false);
+  };
   return (
     <div className="ReceiveInfo all_nowarp">
+      <EditAddress
+        open={open}
+        onCreate={onCreate}
+        onCancel={() => {
+          setOpen(false);
+        }}
+      />
       <div className="header">
-        <Button>新增收货地址</Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          新增收货地址
+        </Button>
         您已创建<span>11</span>个收货地址
       </div>
       <div className="address-info">
