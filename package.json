@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.0",
+    "@ant-design/pro-components": "^2.6.43",
     "@loadable/component": "^5.15.3",
     "@rematch/core": "^2.2.0",
     "address-smart-parse": "^1.0.0",

@@ -1,6 +1,6 @@
 /** 通用动态面包屑 **/
-import React, { useState } from "react";
-import { Button, Divider, Form, Input, Modal, message } from "antd";
+import React from "react";
+import { Divider, Form, Input, Modal, message } from "antd";
 import smart from "address-smart-parse";
 
 import "./index.less";
@@ -52,9 +52,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
         <TextArea
           onChange={(e) => {
             console.log(e.target.value);
-            console.log(
-              smart("浙江省杭州市西湖区盘山路28号幸福茶庄 陈红 13593464918")
-            );
+            console.log(smart(e.target.value));
           }}
           placeholder="试试粘贴收件人姓名、手机号、收货地址，可快速识别您的收货信息"
           autoSize={{ minRows: 3, maxRows: 5 }}

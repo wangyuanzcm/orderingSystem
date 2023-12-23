@@ -76,7 +76,7 @@ export const menus = [
     parent: null,
     desc: "购物车",
     sorts: 0,
-    conditions: 1,
+    conditions: 1
   },
 
   {
@@ -186,6 +186,26 @@ export const menus = [
     url: "/productsetting",
     parent: null,
     desc: "商品设置",
+    sorts: 0,
+    conditions: 1,
+  },
+  {
+    id: 13,
+    title: "优惠设置",
+    icon: "icon-home",
+    url: "/discountSetting",
+    parent: null,
+    desc: "商品设置",
+    sorts: 0,
+    conditions: 1,
+  },
+  {
+    id: 14,
+    title: "商品详情设置",
+    icon: "icon-home",
+    url: "/productItemSetting",
+    parent: null,
+    desc: "商品详情设置",
     sorts: 0,
     conditions: 1,
   },
@@ -380,7 +400,8 @@ export const roles = [
       { menuId: 10, powers: [] },
       { menuId: 11, powers: [] },
       { menuId: 12, powers: [] },
-
+      { menuId: 13, powers: [] },
+      { menuId: 14, powers: [] },
     ],
   },
   {
@@ -402,6 +423,9 @@ export const roles = [
       { menuId: 10, powers: [] },
       { menuId: 11, powers: [] },
       { menuId: 12, powers: [] },
+      { menuId: 13, powers: [] },
+      { menuId: 14, powers: [] },
+
     ],
   },
   {
@@ -423,6 +447,9 @@ export const roles = [
       { menuId: 10, powers: [] },
       { menuId: 11, powers: [] },
       { menuId: 12, powers: [] },
+      { menuId: 13, powers: [] },
+      { menuId: 14, powers: [] },
+
     ],
   },
 ];

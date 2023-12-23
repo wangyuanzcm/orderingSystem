@@ -4,7 +4,7 @@
 // 第三方库
 // ==================
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Layout, Menu as MenuAntd } from "antd";
+import { Layout, Menu as MenuAntd, Badge } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { cloneDeep } from "lodash";
 
@@ -93,7 +93,7 @@ export default function MenuCom(props: Props): JSX.Element {
           label: (
             <>
               {!item.parent && item.icon ? <Icon type={item.icon} /> : null}
-              <span>{item.title}</span>
+                <span>{item.title}</span>
             </>
           ),
           key: item.url,

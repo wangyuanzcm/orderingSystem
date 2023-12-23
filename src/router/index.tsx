@@ -45,6 +45,9 @@ const [
   ReceiverInfo,
   Statistics,
   ProductSetting,
+  ProductItemSetting,
+  DiscountSetting,
+  ProductDetail,
   MenuAdmin,
   PowerAdmin,
   RoleAdmin,
@@ -60,6 +63,9 @@ const [
   () => import("../pages/ReceiverInfo"),
   () => import("../pages/Statistics"),
   () => import("../pages/ProductSetting"),
+  () => import("../pages/ProductItemSetting"),
+  () => import("../pages/DiscountSetting"),
+  () => import("../pages/ProductDetail"),
   () => import("../pages/System/MenuAdmin"),
   () => import("../pages/System/PowerAdmin"),
   () => import("../pages/System/RoleAdmin"),
@@ -118,6 +124,10 @@ function RouterCom(): JSX.Element {
         <Route path="receiverinfo" element={<ReceiverInfo />} />
         <Route path="statistics" element={<Statistics />} />
         <Route path="productsetting" element={<ProductSetting />} />
+        <Route path="discountSetting" element={<DiscountSetting />} />
+        <Route path="productItemSetting" element={<ProductItemSetting />} />
+        <Route path="productDetail" element={<ProductDetail />} />
+
         <Route
           path="system/menuadmin"
           element={
