@@ -1,8 +1,9 @@
 /** 通用动态面包屑 **/
 import React from "react";
-import { Divider, Form, Input, Modal, message } from "antd";
+import { Divider, Form, Cascader, Input, Modal, message } from "antd";
 import smart from "address-smart-parse";
 import { PhoneNumberValidation } from "@/util/utils";
+import PcasCode from "@/util/pcas-code";
 import "./index.less";
 const { TextArea } = Input;
 
@@ -27,6 +28,20 @@ const EditAddress: React.FC<EditAddressProps> = ({
 }) => {
   const [form] = Form.useForm();
   const title = isEdit ? "编辑收货地址" : "新增收货地址";
+  const handlParse = (e: { target: { value: any } }) => {
+    console.log(smart(
+      e.target.value
+    ))
+    const { name, phone,provinceCode, cityCode, countyCode, address } = smart(
+      e.target.value
+    );
+    form.setFieldsValue({
+      name,
+      phone,
+      city:[provinceCode,cityCode,countyCode],
+      address,
+    });
+  };
   return (
     <Modal
       open={open}
@@ -50,10 +65,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
       <div>
         地址粘贴板：
         <TextArea
-          onChange={(e) => {
-            console.log(e.target.value);
-            console.log(smart(e.target.value));
-          }}
+          onChange={handlParse}
           placeholder="试试粘贴收件人姓名、手机号、收货地址，可快速识别您的收货信息"
           autoSize={{ minRows: 3, maxRows: 5 }}
         />
@@ -67,7 +79,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
         initialValues={{ modifier: "public" }}
       >
         <Form.Item
-          name="title"
+          name="name"
           label="收货人"
           rules={[
             {
@@ -88,7 +100,11 @@ const EditAddress: React.FC<EditAddressProps> = ({
             },
           ]}
         >
-          <Input />
+          <Cascader
+            fieldNames={{ label: "name", value: "code", children: "children" }}
+            options={PcasCode}
+            placeholder="请选择所在地区"
+          />
         </Form.Item>
         <Form.Item
           name="address"
@@ -104,7 +120,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
         </Form.Item>
 
         <Form.Item
-          name="phoneNumber"
+          name="phone"
           label="手机号码"
           rules={[
             {
@@ -116,17 +132,11 @@ const EditAddress: React.FC<EditAddressProps> = ({
         >
           <Input placeholder="请输入手机号码" />
         </Form.Item>
-     
+
         <Form.Item
           name="email"
           label="邮箱地址"
-          rules={[
-            {
-              required: true,
-              message: "请输入邮箱地址",
-            },
-            { type: 'email', message: '请输入有效的邮箱!' }
-          ]}
+          rules={[{ type: "email", message: "请输入有效的邮箱!" }]}
         >
           <Input placeholder="请输入邮箱地址" />
         </Form.Item>

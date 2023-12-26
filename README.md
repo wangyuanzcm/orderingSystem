@@ -50,12 +50,13 @@ https://isluo.com/work/admin/ <br/>
 
 ## 参考
 
-react-luo: https://github.com/javaLuo/react-luo <br/>
-nestjs配套的后台项目：https://github.com/buqiyuan/nest-admin
-yapi接口调试平台：https://github.com/YMFE/yapi
-智能识别地址并且复制粘贴：https://github.com/wzc570738205/smartParsePro
+react-luo: https://github.com/javaLuo/react-luo <br/>  
+nestjs配套的后台项目：https://github.com/buqiyuan/nest-admin   
+yapi接口调试平台：https://github.com/YMFE/yapi   
+智能识别地址并且复制粘贴：https://github.com/wzc570738205/smartParsePro    
+中华人民共和国行政区划：省级（省份）、 地级（城市）、 县级（区县）、 乡级（乡镇街道）、 村级（村委会居委会） ，中国省市区镇村二级三级四级五级联动地址数据: https://github.com/modood/Administrative-divisions-of-China
 
-技术方案：  
+技术方案：    
 验证码：[react-vcode](https://github.com/javaLuo/react-vcode#readme)
 
 为了方便调试，使用yapi作为前后端调试服务器，本地部署yapi之后，打开：   

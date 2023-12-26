@@ -91,7 +91,7 @@ export default function ReceiveInfo(): JSX.Element {
           setOpen(false);
         }}
       />
-      <div className="flex-row pb-10">
+      <div className="flex-row pb-6">
         <Button
           className="mr-4"
           type="primary"
