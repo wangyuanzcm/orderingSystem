@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Router from "./router";
 
+import "./tailwind.css";
 import "normalize.css";
 import "@/assets/styles/default.less";
 import "@/assets/styles/global.less";

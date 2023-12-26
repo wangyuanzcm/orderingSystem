@@ -1,10 +1,14 @@
 /* 收件地址 */
 import React, { useState } from "react";
-import { Button, Descriptions, Modal, message } from "antd";
+import { Button, Descriptions, Modal, message, Typography } from "antd";
 import EditAddress from "@/components/EditAddress";
-import "./index.less";
+
+const { Paragraph } = Typography;
 
 const AddressInfo = () => {
+  const [open, setOpen] = useState(false);
+  const [editableStr, setEditableStr] = useState("唐孟西");
+
   const handleDelete = () => {
     Modal.warning({
       title: "确定删除该地址吗?",
@@ -15,15 +19,12 @@ const AddressInfo = () => {
       cancelText: "取消",
     });
   };
-
-  const [open, setOpen] = useState(false);
-
   const onCreate = (values: any) => {
     console.log("Received values of form: ", values);
     setOpen(false);
   };
   return (
-    <div className="address-border">
+    <div className="border-1 border-solid border-gray-300 p-10">
       <EditAddress
         open={open}
         onCreate={onCreate}
@@ -33,11 +34,16 @@ const AddressInfo = () => {
         isEdit
       />
       <Descriptions
-        title="唐萌系"
+        title={
+          <Paragraph editable={{ onChange: setEditableStr }} className="w-1/2">
+            {editableStr}
+          </Paragraph>
+        }
         column={1}
         extra={
           <Button.Group>
             <Button
+              className="mr-4"
               type="primary"
               onClick={() => {
                 setOpen(true);
@@ -77,7 +83,7 @@ export default function ReceiveInfo(): JSX.Element {
     setOpen(false);
   };
   return (
-    <div className="ReceiveInfo all_nowarp">
+    <div className="all_nowarp ">
       <EditAddress
         open={open}
         onCreate={onCreate}
@@ -85,8 +91,9 @@ export default function ReceiveInfo(): JSX.Element {
           setOpen(false);
         }}
       />
-      <div className="header">
+      <div className="flex-row pb-10">
         <Button
+          className="mr-4"
           type="primary"
           onClick={() => {
             setOpen(true);
@@ -96,7 +103,7 @@ export default function ReceiveInfo(): JSX.Element {
         </Button>
         您已创建<span>11</span>个收货地址
       </div>
-      <div className="address-info">
+      <div className="border">
         <AddressInfo />
       </div>
     </div>

@@ -2,7 +2,7 @@
 import React from "react";
 import { Divider, Form, Input, Modal, message } from "antd";
 import smart from "address-smart-parse";
-
+import { PhoneNumberValidation } from "@/util/utils";
 import "./index.less";
 const { TextArea } = Input;
 
@@ -72,26 +72,66 @@ const EditAddress: React.FC<EditAddressProps> = ({
           rules={[
             {
               required: true,
-              message: "Please input the title of collection!",
+              message: "请输入收货人地址",
             },
           ]}
         >
           <Input />
         </Form.Item>
-        <Form.Item name="description" label="所在地区">
+        <Form.Item
+          name="city"
+          label="所在地区"
+          rules={[
+            {
+              required: true,
+              message: "请选择所在地区",
+            },
+          ]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="description" label="详细地址">
-          <Input />
+        <Form.Item
+          name="address"
+          label="详细地址"
+          rules={[
+            {
+              required: true,
+              message: "请输入详细地址",
+            },
+          ]}
+        >
+          <Input placeholder="请输入详细地址" />
         </Form.Item>
-        <Form.Item name="description" label="手机号码">
-          <Input />
+
+        <Form.Item
+          name="phoneNumber"
+          label="手机号码"
+          rules={[
+            {
+              required: true,
+              message: "请输入手机号码",
+            },
+            { validator: PhoneNumberValidation },
+          ]}
+        >
+          <Input placeholder="请输入手机号码" />
         </Form.Item>
-        <Form.Item name="description" label="邮箱地址">
-          <Input />
+     
+        <Form.Item
+          name="email"
+          label="邮箱地址"
+          rules={[
+            {
+              required: true,
+              message: "请输入邮箱地址",
+            },
+            { type: 'email', message: '请输入有效的邮箱!' }
+          ]}
+        >
+          <Input placeholder="请输入邮箱地址" />
         </Form.Item>
         <Form.Item name="description" label="地址别名">
-          <Input />
+          <Input placeholder="默认为城市名称加收货人姓名" />
         </Form.Item>
       </Form>
     </Modal>

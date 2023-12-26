@@ -1,8 +1,10 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
 import eslintPlugin from "vite-plugin-eslint";
-import {createStyleImportPlugin, AntdResolve} from 'vite-plugin-style-import';
+import { createStyleImportPlugin, AntdResolve } from "vite-plugin-style-import";
 import { resolve } from "path";
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 
 function pathResolve(dir) {
   return resolve(process.cwd(), ".", dir);
@@ -19,8 +21,8 @@ export default defineConfig({
       include: ["src/**/*.js", "src/**/*.tsx", "src/**/*.ts"],
     }),
     createStyleImportPlugin({
-      resolves: [AntdResolve()]
-    })
+      resolves: [AntdResolve()],
+    }),
   ],
   css: {
     preprocessorOptions: {
@@ -28,7 +30,9 @@ export default defineConfig({
         javascriptEnabled: true,
       },
     },
-    postcss:{}
+    postcss: {
+      plugins: [tailwindcss, autoprefixer],
+    },
   },
   resolve: {
     alias: [
@@ -38,4 +42,4 @@ export default defineConfig({
       },
     ],
   },
-})
+});
