@@ -83,19 +83,6 @@ pnpm build
 
 [CHANGELOG](./CHANGELOG.md)
 
-## 赞赏
-
-如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
-
-| 微信 | 支付宝 |
-| :-: | :-: |
-| <img src="https://cdn.jsdelivr.net/gh/buqiyuan/MyImageHosting/imgs/vue3-antdv-admin/weixin.jpg" height="220" /> | <img src="https://cdn.jsdelivr.net/gh/buqiyuan/MyImageHosting/imgs/vue3-antdv-admin/zhifubao.jpg" height="220" /> |
-
-## 感谢 JetBrains 免费的开源授权
-
-<a href="https://www.jetbrains.com/?from=Mybatis-PageHelper" target="_blank">
-<img src="https://user-images.githubusercontent.com/1787798/69898077-4f4e3d00-138f-11ea-81f9-96fb7c49da89.png" height="200"/></a>
-
 # [React-admin](https://github.com/javaLuo/react-admin/) &middot; ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 
 标准后台管理系统解决方案<br/> 动态菜单配置，权限精确到按钮<br/>
