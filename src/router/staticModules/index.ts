@@ -1,5 +1,5 @@
 import dashboard from './dashboard';
-// import demos from './demos';
+import demos from './demos';
 import account from './account';
 
-export default [...dashboard, ...account];
+export default [...dashboard, ...demos, ...account];

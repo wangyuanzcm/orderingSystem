@@ -25,6 +25,7 @@
     "lint:lint-staged": "lint-staged",
     "prepare": "husky install",
     "release": "git push && git push origin --tags",
+    "api:gen": "openapi-generator-cli generate -i http://127.0.0.1:7001/swagger-api-yaml -g typescript-axios -o src/api",
     "gen:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "reinstall": "rimraf pnpm-lock.yaml && rimraf package.lock.json && rimraf node_modules && npm run bootstrap",
     "test:gzip": "npx http-server dist --cors --gzip -c-1",
@@ -57,6 +58,7 @@
   "devDependencies": {
     "@commitlint/cli": "~17.8.0",
     "@commitlint/config-conventional": "~17.8.0",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@types/lodash-es": "~4.17.9",
     "@types/node": "~20.8.6",
     "@typescript-eslint/eslint-plugin": "~6.8.0",
