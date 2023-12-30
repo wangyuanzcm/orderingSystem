@@ -297,6 +297,97 @@ export interface CreateParamConfigDto {
 /**
  * 
  * @export
+ * @interface CreateReceiverDto
+ */
+export interface CreateReceiverDto {
+    /**
+     * 用户姓名
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'name': string;
+    /**
+     * 省份信息
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'province': string;
+    /**
+     * 省份code
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'province_code': string;
+    /**
+     * 城市信息
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'city': string;
+    /**
+     * 城市code
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'city_code': string;
+    /**
+     * 区县信息
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'county': string;
+    /**
+     * 区县code
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'county_code': string;
+    /**
+     * 街道信息
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'street': string;
+    /**
+     * 街道code
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'street_code': string;
+    /**
+     * 详细地址信息
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'address': string;
+    /**
+     * 邮箱
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'email'?: string;
+    /**
+     * 手机号
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'phone'?: string;
+    /**
+     * 备注
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'remark'?: string;
+    /**
+     * 呢称
+     * @type {string}
+     * @memberof CreateReceiverDto
+     */
+    'nickName'?: string;
+}
+/**
+ * 
+ * @export
  * @interface CreateRoleDto
  */
 export interface CreateRoleDto {
@@ -3195,6 +3286,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary 新增收件人
+         * @param {CreateReceiverDto} createReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiverControllerAdd: async (createReceiverDto: CreateReceiverDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createReceiverDto' is not null or undefined
+            assertParamExists('receiverControllerAdd', 'createReceiverDto', createReceiverDto)
+            const localVarPath = `/receiver/add`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication admin required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createReceiverDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 创建系统部门
          * @param {CreateDeptDto} createDeptDto 
          * @param {*} [options] Override http request option.
@@ -5072,6 +5202,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 新增收件人
+         * @param {CreateReceiverDto} createReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async receiverControllerAdd(createReceiverDto: CreateReceiverDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.receiverControllerAdd(createReceiverDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.receiverControllerAdd']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 创建系统部门
          * @param {CreateDeptDto} createDeptDto 
          * @param {*} [options] Override http request option.
@@ -5807,6 +5950,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary 新增收件人
+         * @param {CreateReceiverDto} createReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiverControllerAdd(createReceiverDto: CreateReceiverDto, options?: any): AxiosPromise<void> {
+            return localVarFp.receiverControllerAdd(createReceiverDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 创建系统部门
          * @param {CreateDeptDto} createDeptDto 
          * @param {*} [options] Override http request option.
@@ -6448,6 +6601,18 @@ export class DefaultApi extends BaseAPI {
      */
     public netDiskOverviewControllerSpace(options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).netDiskOverviewControllerSpace(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 新增收件人
+     * @param {CreateReceiverDto} createReceiverDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public receiverControllerAdd(createReceiverDto: CreateReceiverDto, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).receiverControllerAdd(createReceiverDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

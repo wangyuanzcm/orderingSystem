@@ -1,30 +1,39 @@
 <template>
-  <a-button class="editable-add-btn" style="margin-bottom: 8px" @click="handleAdd">Add</a-button>
-  <a-table bordered :data-source="dataSource" :columns="columns">
-    <template #bodyCell="{ column, text, record }">
-      <template v-if="column.dataIndex === 'name'">
-        <div class="editable-cell">
-          <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-            <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
-            <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+  <div class="box">
+    <div style="margin-bottom: 8px">
+      <a-button type="primary" style="margin-right: 10px" @click="handleAdd">新增收获地址</a-button>
+      <a-typography-text>您已创建11个收货地址</a-typography-text>
+    </div>
+
+    <a-table bordered :data-source="dataSource" :columns="columns">
+      <template #bodyCell="{ column, text, record }">
+        <template v-if="column.dataIndex === 'name'">
+          <div class="editable-cell">
+            <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
+              <a-input
+                v-model:value="editableData[record.key].name"
+                @pressEnter="save(record.key)"
+              />
+              <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+            </div>
+            <div v-else class="editable-cell-text-wrapper">
+              {{ text || ' ' }}
+              <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
+            </div>
           </div>
-          <div v-else class="editable-cell-text-wrapper">
-            {{ text || ' ' }}
-            <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
-          </div>
-        </div>
+        </template>
+        <template v-else-if="column.dataIndex === 'operation'">
+          <a-popconfirm
+            v-if="dataSource.length"
+            title="Sure to delete?"
+            @confirm="onDelete(record.key)"
+          >
+            <a>Delete</a>
+          </a-popconfirm>
+        </template>
       </template>
-      <template v-else-if="column.dataIndex === 'operation'">
-        <a-popconfirm
-          v-if="dataSource.length"
-          title="Sure to delete?"
-          @confirm="onDelete(record.key)"
-        >
-          <a>Delete</a>
-        </a-popconfirm>
-      </template>
-    </template>
-  </a-table>
+    </a-table>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -32,7 +41,9 @@
   import type { Ref, UnwrapRef } from 'vue';
   import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
   import { cloneDeep } from 'lodash-es';
-
+  import { columns } from './constant';
+  import { DefaultApi } from '@/service';
+  const services = new DefaultApi(undefined, '/api');
   interface DataItem {
     key: string;
     name: string;
@@ -40,25 +51,6 @@
     address: string;
   }
 
-  const columns = [
-    {
-      title: 'name',
-      dataIndex: 'name',
-      width: '30%',
-    },
-    {
-      title: 'age',
-      dataIndex: 'age',
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-    },
-    {
-      title: 'operation',
-      dataIndex: 'operation',
-    },
-  ];
   const dataSource: Ref<DataItem[]> = ref([
     {
       key: '0',
@@ -88,6 +80,22 @@
     dataSource.value = dataSource.value.filter((item) => item.key !== key);
   };
   const handleAdd = () => {
+    services.receiverControllerAdd({
+      name: 'name',
+      nickName: 'param.nickName',
+      email: 'param.email',
+      phone: 'param.phone',
+      remark: 'param.remark',
+      address: 'param.address',
+      province: 'param.province',
+      province_code: 'param.province_code',
+      city: 'param.city',
+      city_code: 'param.city_code',
+      county: 'param.county',
+      county_code: 'param.county_code',
+      street: 'param.street',
+      street_code: 'param.street_code',
+    });
     const newData = {
       key: `${count.value}`,
       name: `Edward King ${count.value}`,
@@ -100,9 +108,32 @@
 
 <style lang="less" scoped>
   @import '@/styles/theme.less';
+  .themeBgColor(box);
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 280px);
+    padding: 12px;
+
+    img {
+      flex: 1;
+      min-height: 0;
+    }
+
+    .ant-form {
+      flex: 2;
+    }
+  }
+
+  .editable-add-btn {
+    margin-right: 10px;
+  }
 
   .editable-cell {
     position: relative;
+
     .editable-cell-input-wrapper,
     .editable-cell-text-wrapper {
       padding-right: 24px;
@@ -133,11 +164,8 @@
     .editable-cell-icon-check:hover {
       color: #108ee9;
     }
-
-    .editable-add-btn {
-      margin-bottom: 8px;
-    }
   }
+
   .editable-cell:hover .editable-cell-icon {
     display: inline-block;
   }
