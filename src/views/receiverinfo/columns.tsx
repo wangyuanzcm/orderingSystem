@@ -5,6 +5,12 @@ import { waitTime } from '@/utils/common';
 
 const names = ['王路飞', '王大蛇', '李白', '刺客伍六七'];
 
+export const extendAreaCode = (areaCode) =>
+  areaCode ? [areaCode.slice(0, 2), areaCode.slice(0, 4), areaCode] : [];
+
+export const collapseAreaCode = (areaCode) =>
+  areaCode.length > 0 ? areaCode[areaCode.length - 1] : '';
+
 export const fetchStatusMapData = (keyword = '') => {
   const data = [
     {
@@ -68,21 +74,19 @@ export type ListItemType = (typeof tableData)[number];
 export const columns: TableColumn<ListItemType>[] = [
   {
     title: '昵称',
-    dataIndex: 'nickName',
+    dataIndex: 'nick_name',
     align: 'center',
     sorter: true,
-    width: 300,
     resizable: true,
     formItemProps: {
-      defaultValue: '李白',
-      required: true,
+      defaultValue: '',
+      required: false,
     },
   },
   {
     title: '姓名',
     dataIndex: 'name',
     align: 'center',
-    width: 120,
     resizable: true,
     formItemProps: {
       component: 'Select',
@@ -115,26 +119,26 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '所在地区',
-    dataIndex: 'province_city_county',
+    dataIndex: 'area_code',
     align: 'center',
     sorter: true,
-    width: 300,
     resizable: true,
     formItemProps: {
-      defaultValue: '李白',
-      required: true,
+      defaultValue: '',
+      required: false,
     },
   },
   {
     title: '地址',
-    dataIndex: 'address',
+    dataIndex: 'detail',
+    hideInSearch: true,
+
     align: 'center',
     sorter: true,
-    width: 300,
     resizable: true,
     formItemProps: {
-      defaultValue: '李白',
-      required: true,
+      defaultValue: '',
+      required: false,
     },
   },
   {
@@ -142,11 +146,10 @@ export const columns: TableColumn<ListItemType>[] = [
     dataIndex: 'phone',
     align: 'center',
     sorter: true,
-    width: 300,
     resizable: true,
     formItemProps: {
-      defaultValue: '李白',
-      required: true,
+      defaultValue: '',
+      required: false,
     },
   },
   {
@@ -154,24 +157,31 @@ export const columns: TableColumn<ListItemType>[] = [
     dataIndex: 'email',
     align: 'center',
     sorter: true,
-    width: 300,
     resizable: true,
     formItemProps: {
-      defaultValue: '李白',
-      required: true,
+      defaultValue: '',
+      required: false,
+    },
+  },
+  {
+    title: '备注',
+    dataIndex: 'remark',
+    align: 'center',
+    hideInSearch: true,
+    resizable: true,
+    formItemProps: {
+      defaultValue: '',
+      required: false,
     },
   },
   {
     title: '操作',
     dataIndex: 'operation',
     align: 'center',
-    sorter: true,
+    hideInSearch: true,
     width: 300,
     resizable: true,
-    formItemProps: {
-      defaultValue: '李白',
-      required: true,
-    },
+    fixed: 'right',
   },
 
   // {

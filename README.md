@@ -199,3 +199,5 @@ https://quicktype.io/
 最终生成代码采用 @openapitools/openapi-generator-cli，这个包运行需要本地有java环境，https://github.com/OpenAPITools/openapi-generator-cli https://openapi-generator.tech/docs/installation
 
 尝试使用pont，但是他不支持nest的openapi3格式的文件，所以在查看swagger2与openapi3的区别之后决定使用openapi generator来生成代码
+
+地址智能识别：https://github.com/ldwonday/zh-address-parse

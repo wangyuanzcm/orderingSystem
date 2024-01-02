@@ -313,53 +313,35 @@ export interface CreateReceiverDto {
      */
     'province': string;
     /**
-     * 省份code
-     * @type {string}
-     * @memberof CreateReceiverDto
-     */
-    'province_code': string;
-    /**
      * 城市信息
      * @type {string}
      * @memberof CreateReceiverDto
      */
     'city': string;
     /**
-     * 城市code
-     * @type {string}
-     * @memberof CreateReceiverDto
-     */
-    'city_code': string;
-    /**
      * 区县信息
      * @type {string}
      * @memberof CreateReceiverDto
      */
-    'county': string;
+    'area': string;
     /**
      * 区县code
      * @type {string}
      * @memberof CreateReceiverDto
      */
-    'county_code': string;
+    'area_code': string;
     /**
-     * 街道信息
+     * 邮编
      * @type {string}
      * @memberof CreateReceiverDto
      */
-    'street': string;
-    /**
-     * 街道code
-     * @type {string}
-     * @memberof CreateReceiverDto
-     */
-    'street_code': string;
+    'postal_code': string;
     /**
      * 详细地址信息
      * @type {string}
      * @memberof CreateReceiverDto
      */
-    'address': string;
+    'detail': string;
     /**
      * 邮箱
      * @type {string}
@@ -383,7 +365,7 @@ export interface CreateReceiverDto {
      * @type {string}
      * @memberof CreateReceiverDto
      */
-    'nickName'?: string;
+    'nick_name'?: string;
 }
 /**
  * 
@@ -1104,6 +1086,140 @@ export interface OverviewSpaceInfo {
      * @memberof OverviewSpaceInfo
      */
     'sizeTrend': SpaceInfo;
+}
+/**
+ * 
+ * @export
+ * @interface PageSearchReceiverDto
+ */
+export interface PageSearchReceiverDto {
+    /**
+     * 当前页包含数量
+     * @type {number}
+     * @memberof PageSearchReceiverDto
+     */
+    'limit'?: number;
+    /**
+     * 当前页包含数量
+     * @type {number}
+     * @memberof PageSearchReceiverDto
+     */
+    'page'?: number;
+    /**
+     * 呢称
+     * @type {string}
+     * @memberof PageSearchReceiverDto
+     */
+    'nick_name'?: string;
+    /**
+     * 用户姓名
+     * @type {string}
+     * @memberof PageSearchReceiverDto
+     */
+    'name'?: string;
+    /**
+     * 区县code
+     * @type {string}
+     * @memberof PageSearchReceiverDto
+     */
+    'area_code'?: string;
+    /**
+     * 邮箱
+     * @type {string}
+     * @memberof PageSearchReceiverDto
+     */
+    'email'?: string;
+    /**
+     * 手机号
+     * @type {string}
+     * @memberof PageSearchReceiverDto
+     */
+    'phone'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PageSearchReceiverInfo
+ */
+export interface PageSearchReceiverInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'createdAt': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'updatedAt': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageSearchReceiverInfo
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'province': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'city': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'area': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'area_code': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'detail': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'phone': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'remark': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageSearchReceiverInfo
+     */
+    'nick_name': string;
 }
 /**
  * 
@@ -3325,6 +3441,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary 分页获取收件人列表
+         * @param {PageSearchReceiverDto} pageSearchReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiverControllerPage: async (pageSearchReceiverDto: PageSearchReceiverDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageSearchReceiverDto' is not null or undefined
+            assertParamExists('receiverControllerPage', 'pageSearchReceiverDto', pageSearchReceiverDto)
+            const localVarPath = `/admin/receiver/page`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication admin required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(pageSearchReceiverDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 创建系统部门
          * @param {CreateDeptDto} createDeptDto 
          * @param {*} [options] Override http request option.
@@ -5215,6 +5370,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 分页获取收件人列表
+         * @param {PageSearchReceiverDto} pageSearchReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async receiverControllerPage(pageSearchReceiverDto: PageSearchReceiverDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PageSearchReceiverInfo>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.receiverControllerPage(pageSearchReceiverDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.receiverControllerPage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 创建系统部门
          * @param {CreateDeptDto} createDeptDto 
          * @param {*} [options] Override http request option.
@@ -5960,6 +6128,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary 分页获取收件人列表
+         * @param {PageSearchReceiverDto} pageSearchReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiverControllerPage(pageSearchReceiverDto: PageSearchReceiverDto, options?: any): AxiosPromise<Array<PageSearchReceiverInfo>> {
+            return localVarFp.receiverControllerPage(pageSearchReceiverDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 创建系统部门
          * @param {CreateDeptDto} createDeptDto 
          * @param {*} [options] Override http request option.
@@ -6613,6 +6791,18 @@ export class DefaultApi extends BaseAPI {
      */
     public receiverControllerAdd(createReceiverDto: CreateReceiverDto, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).receiverControllerAdd(createReceiverDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 分页获取收件人列表
+     * @param {PageSearchReceiverDto} pageSearchReceiverDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public receiverControllerPage(pageSearchReceiverDto: PageSearchReceiverDto, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).receiverControllerPage(pageSearchReceiverDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

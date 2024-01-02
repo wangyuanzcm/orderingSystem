@@ -13,8 +13,6 @@
         <template #toolbar>
           <a-typography-text>您已创建11个收货地址</a-typography-text>
           <FormModal></FormModal>
-
-          <!-- <a-button type="primary" @click="handleAdd">新增收货地址</a-button> -->
         </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'name'">
@@ -42,7 +40,16 @@
   ): Promise<API.TableListResult> => {
     console.log('params', params);
     console.log('onChangeParams', onChangeParams);
-
+    const result = await services.receiverControllerPage({
+      ...params,
+    });
+    console.log(result, 'result');
+    // @ts-ignore
+    const { list, pagination } = result.data;
+    return {
+      list,
+      pagination,
+    };
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({

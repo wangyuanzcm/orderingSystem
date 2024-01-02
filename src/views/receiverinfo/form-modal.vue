@@ -31,12 +31,12 @@
       </a-form-item>
 
       <a-form-item
-        name="province_city"
+        name="areaCode"
         label="所在地区"
         :rules="[{ required: true, message: '请选择所在地区' }]"
       >
         <a-cascader
-          v-model:value="formState.province_city"
+          v-model:value="formState.areaCode"
           :field-names="{ label: 'name', value: 'code' }"
           :options="PcasCode"
           change-on-select
@@ -44,11 +44,11 @@
         />
       </a-form-item>
       <a-form-item
-        name="address"
+        name="detail"
         label="详细地址"
         :rules="[{ required: true, message: '请输入收件人详细地址' }]"
       >
-        <a-textarea v-model:value="formState.address" placeholder="请输入备注内容" allow-clear />
+        <a-textarea v-model:value="formState.detail" placeholder="请输入备注内容" allow-clear />
       </a-form-item>
 
       <a-form-item
@@ -68,9 +68,9 @@
       >
         <a-input v-model:value="formState.email" />
       </a-form-item>
-      <a-form-item name="nickName" label="昵称">
+      <a-form-item name="nick_name" label="昵称">
         <a-input
-          v-model:value="formState.nickName"
+          v-model:value="formState.nick_name"
           placeholder="如果不填，自动填充，默认为城市+收件人姓名+手机后四位,"
         />
       </a-form-item>
@@ -87,11 +87,11 @@
       <a-form-item name="city" label="城市" hidden>
         <a-input v-model:value="formState.city" placeholder="自动填充" />
       </a-form-item>
-      <a-form-item name="county" label="市县" hidden>
-        <a-input v-model:value="formState.county" placeholder="自动填充" />
+      <a-form-item name="area" label="市县" hidden>
+        <a-input v-model:value="formState.area" placeholder="自动填充" />
       </a-form-item>
-      <a-form-item name="street" label="街道" hidden>
-        <a-input v-model:value="formState.street" placeholder="自动填充" />
+      <a-form-item name="postalCode" label="街道" hidden>
+        <a-input v-model:value="formState.postalCode" placeholder="自动填充" />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -99,11 +99,14 @@
 <script setup>
   import { watch, reactive, ref, toRaw } from 'vue';
   import { message } from 'ant-design-vue';
-  import smart from 'address-smart-parse';
+
+  import AddressParse from 'zh-address-parse';
   import PcasCode from '@/utils/pcas-code';
   import { PhoneNumberValidation, EmailValidation } from '@/utils/validate';
 
   import { services } from '@/utils/request';
+  import { extendAreaCode, collapseAreaCode } from './columns';
+
   const [messageApi, contextHolder] = message.useMessage();
 
   const addressParse = ref('');
@@ -111,40 +114,40 @@
   const visible = ref(false);
   const formState = reactive({
     name: '',
-    province: '',
-    city: '',
-    county: '',
-    province_city: [],
-    address: '',
     phone: '',
     email: '',
-    nickName: '',
+    nick_name: '',
     remark: '',
-    street: '',
+    province: '',
+    city: '',
+    area: '',
+    areaCode: [],
+    postalCode: '',
+    detail: '',
   });
+
+  const parseOptions = {
+    type: 0, // 哪种方式解析，0：正则，1：树查找
+    textFilter: [], // 预清洗的字段
+    nameMaxLength: 4, // 查找最大的中文名字长度
+    extraGovData: {
+      city: [{ name: 'name', code: 'code', provinceCode: 'provinceCode' }],
+      province: [{ name: 'name', code: 'code' }],
+      area: [{ name: 'name', code: 'code', provinceCode: 'provinceCode', cityCode: 'cityCode' }],
+    },
+  };
   watch(addressParse, () => {
-    const {
-      name,
-      phone,
-      province,
-      city,
-      county,
-      provinceCode,
-      cityCode,
-      countyCode,
-      street,
-      streetCode,
-      address,
-    } = smart(addressParse.value);
-    formState.province_city = [provinceCode, cityCode, countyCode, streetCode];
+    const parseResult = AddressParse(addressParse.value, parseOptions);
+    const { name, phone, province, city, area, areaCode, postalCode, detail } = parseResult;
+    formState.name = name;
+    formState.phone = phone;
     formState.province = province;
     formState.city = city;
-    formState.county = county;
-    formState.street = street || '';
-    formState.address = address;
-    formState.phone = phone || '';
-    formState.name = name;
-    formState.nickName = city + county + '-' + name + '-' + (phone || '').slice(-4);
+    formState.area = area;
+    formState.areaCode = extendAreaCode(areaCode);
+    formState.postalCode = postalCode;
+    formState.detail = detail;
+    formState.nick_name = city + area + '-' + name + '-' + (phone || '').slice(-4);
   });
 
   const onOk = async () => {
@@ -155,16 +158,12 @@
       visible.value = false;
       addressParse.value = '';
       formRef.value.resetFields();
-      const { province_city, ...otherValues } = values;
-      const [province_code, city_code, county_code, street_code] = province_city;
-      const result = await services.receiverControllerAdd({
+      const { areaCode, postalCode, ...otherValues } = values;
+      await services.receiverControllerAdd({
         ...otherValues,
-        province_code,
-        city_code,
-        county_code,
-        street_code,
+        area_code: collapseAreaCode(areaCode),
+        postal_code: postalCode,
       });
-      console.log(result, 'result');
       messageApi.info('收件人信息添加成功');
     } catch (info) {
       console.log('Validate Failed:', info);
