@@ -11,13 +11,8 @@
         @resize-column="handleResizeColumn"
       >
         <template #toolbar>
-          <a-typography-text>您已创建11个收货地址</a-typography-text>
+          <a-typography-text>您已创建{{ total }}个收货地址</a-typography-text>
           <FormModal></FormModal>
-        </template>
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.dataIndex === 'name'">
-            {{ record.name }} <a class="text-red-500">[测试bodyCell]</a>
-          </template>
         </template>
       </DynamicTable>
     </Card>
@@ -25,6 +20,8 @@
 </template>
 
 <script lang="ts" setup>
+  import { watch, reactive, ref, toRaw } from 'vue';
+
   import { message, Card } from 'ant-design-vue';
   import FormModal from './form-modal.vue';
   import { columns, tableData } from './columns';
@@ -33,7 +30,7 @@
 
   const [messageApi, contextHolder] = message.useMessage();
   const [DynamicTable, dynamicTableInstance] = useTable();
-
+  const total = ref(0);
   const loadData = async (
     params,
     onChangeParams: OnChangeCallbackParams,
@@ -46,6 +43,7 @@
     console.log(result, 'result');
     // @ts-ignore
     const { list, pagination } = result.data;
+    total.value = pagination.total;
     return {
       list,
       pagination,

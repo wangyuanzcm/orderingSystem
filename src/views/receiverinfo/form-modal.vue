@@ -138,6 +138,7 @@
   };
   watch(addressParse, () => {
     const parseResult = AddressParse(addressParse.value, parseOptions);
+    console.log(parseResult, 'parseResult');
     const { name, phone, province, city, area, areaCode, postalCode, detail } = parseResult;
     formState.name = name;
     formState.phone = phone;
@@ -147,7 +148,7 @@
     formState.areaCode = extendAreaCode(areaCode);
     formState.postalCode = postalCode;
     formState.detail = detail;
-    formState.nick_name = city + area + '-' + name + '-' + (phone || '').slice(-4);
+    formState.nick_name = province + city + area + '-' + name + '-' + (phone || '').slice(-4);
   });
 
   const onOk = async () => {
