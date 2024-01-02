@@ -1,172 +1,80 @@
 <template>
-  <div class="box">
-    <div style="margin-bottom: 8px">
-      <a-button type="primary" style="margin-right: 10px" @click="handleAdd">新增收获地址</a-button>
-      <a-typography-text>您已创建11个收货地址</a-typography-text>
-    </div>
+  <div>
+    <context-holder />
+    <Card title="收件信息">
+      <DynamicTable
+        size="small"
+        bordered
+        :data-request="loadData"
+        :columns="columns"
+        row-key="id"
+        @resize-column="handleResizeColumn"
+      >
+        <template #toolbar>
+          <a-typography-text>您已创建11个收货地址</a-typography-text>
+          <FormModal></FormModal>
 
-    <a-table bordered :data-source="dataSource" :columns="columns">
-      <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'name'">
-          <div class="editable-cell">
-            <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-              <a-input
-                v-model:value="editableData[record.key].name"
-                @pressEnter="save(record.key)"
-              />
-              <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
-            </div>
-            <div v-else class="editable-cell-text-wrapper">
-              {{ text || ' ' }}
-              <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
-            </div>
-          </div>
+          <!-- <a-button type="primary" @click="handleAdd">新增收货地址</a-button> -->
         </template>
-        <template v-else-if="column.dataIndex === 'operation'">
-          <a-popconfirm
-            v-if="dataSource.length"
-            title="Sure to delete?"
-            @confirm="onDelete(record.key)"
-          >
-            <a>Delete</a>
-          </a-popconfirm>
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'name'">
+            {{ record.name }} <a class="text-red-500">[测试bodyCell]</a>
+          </template>
         </template>
-      </template>
-    </a-table>
+      </DynamicTable>
+    </Card>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed, reactive, ref } from 'vue';
-  import type { Ref, UnwrapRef } from 'vue';
-  import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
-  import { cloneDeep } from 'lodash-es';
-  import { columns } from './constant';
-  import { DefaultApi } from '@/service';
-  const services = new DefaultApi(undefined, '/api');
-  interface DataItem {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-  }
+  import { message, Card } from 'ant-design-vue';
+  import FormModal from './form-modal.vue';
+  import { columns, tableData } from './columns';
+  import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
+  import { services } from '@/utils/request';
 
-  const dataSource: Ref<DataItem[]> = ref([
-    {
-      key: '0',
-      name: 'Edward King 0',
-      age: 32,
-      address: 'London, Park Lane no. 0',
-    },
-    {
-      key: '1',
-      name: 'Edward King 1',
-      age: 32,
-      address: 'London, Park Lane no. 1',
-    },
-  ]);
-  const count = computed(() => dataSource.value.length + 1);
-  const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+  const [messageApi, contextHolder] = message.useMessage();
+  const [DynamicTable, dynamicTableInstance] = useTable();
 
-  const edit = (key: string) => {
-    editableData[key] = cloneDeep(dataSource.value.filter((item) => key === item.key)[0]);
-  };
-  const save = (key: string) => {
-    Object.assign(dataSource.value.filter((item) => key === item.key)[0], editableData[key]);
-    delete editableData[key];
-  };
+  const loadData = async (
+    params,
+    onChangeParams: OnChangeCallbackParams,
+  ): Promise<API.TableListResult> => {
+    console.log('params', params);
+    console.log('onChangeParams', onChangeParams);
 
-  const onDelete = (key: string) => {
-    dataSource.value = dataSource.value.filter((item) => item.key !== key);
-  };
-  const handleAdd = () => {
-    services.receiverControllerAdd({
-      name: 'name',
-      nickName: 'param.nickName',
-      email: 'param.email',
-      phone: 'param.phone',
-      remark: 'param.remark',
-      address: 'param.address',
-      province: 'param.province',
-      province_code: 'param.province_code',
-      city: 'param.city',
-      city_code: 'param.city_code',
-      county: 'param.county',
-      county_code: 'param.county_code',
-      street: 'param.street',
-      street_code: 'param.street_code',
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          list: tableData,
+          ...params,
+        });
+        // 手动设置搜索表单的搜索项
+        dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
+          {
+            field: 'price',
+            componentProps: {
+              options: [
+                {
+                  label: '0-199',
+                  value: '0-199',
+                },
+                {
+                  label: '200-999',
+                  value: '200-999',
+                },
+              ],
+            },
+          },
+        ]);
+      }, 500);
     });
-    const newData = {
-      key: `${count.value}`,
-      name: `Edward King ${count.value}`,
-      age: 32,
-      address: `London, Park Lane no. ${count.value}`,
-    };
-    dataSource.value.push(newData);
+  };
+
+  const handleResizeColumn = (w, col) => {
+    // console.log('w', w, col);
+    col.width = w;
   };
 </script>
 
-<style lang="less" scoped>
-  @import '@/styles/theme.less';
-  .themeBgColor(box);
-
-  .box {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: calc(100vh - 280px);
-    padding: 12px;
-
-    img {
-      flex: 1;
-      min-height: 0;
-    }
-
-    .ant-form {
-      flex: 2;
-    }
-  }
-
-  .editable-add-btn {
-    margin-right: 10px;
-  }
-
-  .editable-cell {
-    position: relative;
-
-    .editable-cell-input-wrapper,
-    .editable-cell-text-wrapper {
-      padding-right: 24px;
-    }
-
-    .editable-cell-text-wrapper {
-      padding: 5px 24px 5px 5px;
-    }
-
-    .editable-cell-icon,
-    .editable-cell-icon-check {
-      position: absolute;
-      right: 0;
-      width: 20px;
-      cursor: pointer;
-    }
-
-    .editable-cell-icon {
-      margin-top: 4px;
-      display: none;
-    }
-
-    .editable-cell-icon-check {
-      line-height: 28px;
-    }
-
-    .editable-cell-icon:hover,
-    .editable-cell-icon-check:hover {
-      color: #108ee9;
-    }
-  }
-
-  .editable-cell:hover .editable-cell-icon {
-    display: inline-block;
-  }
-</style>
+<style lang="less" scoped></style>

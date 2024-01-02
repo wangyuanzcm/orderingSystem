@@ -5,6 +5,7 @@ import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
 import { useUserStore } from '@/store/modules/user';
 import { uniqueSlash } from '@/utils/urlUtils';
+import { DefaultApi } from '@/service';
 
 export interface RequestOptions {
   /** 当前接口权限, 不需要鉴权的接口请忽略， 格式：sys:user:add */
@@ -124,3 +125,4 @@ export const request = async <T = any>(
     return Promise.reject(error);
   }
 };
+export const services = new DefaultApi(undefined, '/api', service);
