@@ -46,7 +46,11 @@ export function useFormModal<T = any>() {
       content: () => {
         const _formProps = Object.assign({}, { showActionButtonGroup: false }, formProps);
 
-        return <SchemaForm ref={formRef} {..._formProps}></SchemaForm>;
+        return (
+          <div>
+            <SchemaForm ref={formRef} {..._formProps}></SchemaForm>
+          </div>
+        );
       },
     });
 

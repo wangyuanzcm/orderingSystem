@@ -599,6 +599,19 @@ export interface DeleteParamConfigDto {
 /**
  * 
  * @export
+ * @interface DeleteReceiverDto
+ */
+export interface DeleteReceiverDto {
+    /**
+     * 需要删除的用户ID列表
+     * @type {Array<number>}
+     * @memberof DeleteReceiverDto
+     */
+    'ids': Array<number>;
+}
+/**
+ * 
+ * @export
  * @interface DeleteRoleDto
  */
 export interface DeleteRoleDto {
@@ -1135,91 +1148,6 @@ export interface PageSearchReceiverDto {
      * @memberof PageSearchReceiverDto
      */
     'phone'?: string;
-}
-/**
- * 
- * @export
- * @interface PageSearchReceiverInfo
- */
-export interface PageSearchReceiverInfo {
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'createdAt': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'updatedAt': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageSearchReceiverInfo
-     */
-    'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'province': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'city': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'area': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'area_code': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'detail': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'email': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'phone': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'remark': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageSearchReceiverInfo
-     */
-    'nick_name': string;
 }
 /**
  * 
@@ -2401,6 +2329,85 @@ export interface UpdatePersonInfoDto {
 /**
  * 
  * @export
+ * @interface UpdateReceiverDto
+ */
+export interface UpdateReceiverDto {
+    /**
+     * 用户姓名
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'name': string;
+    /**
+     * 省份信息
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'province': string;
+    /**
+     * 城市信息
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'city': string;
+    /**
+     * 区县信息
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'area': string;
+    /**
+     * 区县code
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'area_code': string;
+    /**
+     * 邮编
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'postal_code': string;
+    /**
+     * 详细地址信息
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'detail': string;
+    /**
+     * 邮箱
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'email'?: string;
+    /**
+     * 手机号
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'phone'?: string;
+    /**
+     * 备注
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'remark'?: string;
+    /**
+     * 呢称
+     * @type {string}
+     * @memberof UpdateReceiverDto
+     */
+    'nick_name'?: string;
+    /**
+     * 收件人ID
+     * @type {number}
+     * @memberof UpdateReceiverDto
+     */
+    'id': number;
+}
+/**
+ * 
+ * @export
  * @interface UpdateRoleDto
  */
 export interface UpdateRoleDto {
@@ -3441,6 +3448,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary 根据ID删除收件人
+         * @param {DeleteReceiverDto} deleteReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiverControllerDelete: async (deleteReceiverDto: DeleteReceiverDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deleteReceiverDto' is not null or undefined
+            assertParamExists('receiverControllerDelete', 'deleteReceiverDto', deleteReceiverDto)
+            const localVarPath = `/admin/receiver/delete`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication admin required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deleteReceiverDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 分页获取收件人列表
          * @param {PageSearchReceiverDto} pageSearchReceiverDto 
          * @param {*} [options] Override http request option.
@@ -3472,6 +3518,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(pageSearchReceiverDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 更新收件人信息
+         * @param {UpdateReceiverDto} updateReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiverControllerUpdate: async (updateReceiverDto: UpdateReceiverDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateReceiverDto' is not null or undefined
+            assertParamExists('receiverControllerUpdate', 'updateReceiverDto', updateReceiverDto)
+            const localVarPath = `/admin/receiver/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication admin required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateReceiverDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5370,15 +5455,41 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 根据ID删除收件人
+         * @param {DeleteReceiverDto} deleteReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async receiverControllerDelete(deleteReceiverDto: DeleteReceiverDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.receiverControllerDelete(deleteReceiverDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.receiverControllerDelete']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 分页获取收件人列表
          * @param {PageSearchReceiverDto} pageSearchReceiverDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async receiverControllerPage(pageSearchReceiverDto: PageSearchReceiverDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PageSearchReceiverInfo>>> {
+        async receiverControllerPage(pageSearchReceiverDto: PageSearchReceiverDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.receiverControllerPage(pageSearchReceiverDto, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['DefaultApi.receiverControllerPage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 更新收件人信息
+         * @param {UpdateReceiverDto} updateReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async receiverControllerUpdate(updateReceiverDto: UpdateReceiverDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.receiverControllerUpdate(updateReceiverDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.receiverControllerUpdate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -6128,13 +6239,33 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary 根据ID删除收件人
+         * @param {DeleteReceiverDto} deleteReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiverControllerDelete(deleteReceiverDto: DeleteReceiverDto, options?: any): AxiosPromise<void> {
+            return localVarFp.receiverControllerDelete(deleteReceiverDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 分页获取收件人列表
          * @param {PageSearchReceiverDto} pageSearchReceiverDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        receiverControllerPage(pageSearchReceiverDto: PageSearchReceiverDto, options?: any): AxiosPromise<Array<PageSearchReceiverInfo>> {
+        receiverControllerPage(pageSearchReceiverDto: PageSearchReceiverDto, options?: any): AxiosPromise<void> {
             return localVarFp.receiverControllerPage(pageSearchReceiverDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 更新收件人信息
+         * @param {UpdateReceiverDto} updateReceiverDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiverControllerUpdate(updateReceiverDto: UpdateReceiverDto, options?: any): AxiosPromise<void> {
+            return localVarFp.receiverControllerUpdate(updateReceiverDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6795,6 +6926,18 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
+     * @summary 根据ID删除收件人
+     * @param {DeleteReceiverDto} deleteReceiverDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public receiverControllerDelete(deleteReceiverDto: DeleteReceiverDto, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).receiverControllerDelete(deleteReceiverDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary 分页获取收件人列表
      * @param {PageSearchReceiverDto} pageSearchReceiverDto 
      * @param {*} [options] Override http request option.
@@ -6803,6 +6946,18 @@ export class DefaultApi extends BaseAPI {
      */
     public receiverControllerPage(pageSearchReceiverDto: PageSearchReceiverDto, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).receiverControllerPage(pageSearchReceiverDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 更新收件人信息
+     * @param {UpdateReceiverDto} updateReceiverDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public receiverControllerUpdate(updateReceiverDto: UpdateReceiverDto, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).receiverControllerUpdate(updateReceiverDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

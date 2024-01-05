@@ -1,6 +1,8 @@
 import type { TableColumn } from '@/components/core/dynamic-table';
+import type { UpdateReceiverDto } from '@/service';
+import PcasCode from '@/utils/pcas-code';
 
-export type TableListItem = API.MenuListResultItem;
+export type TableListItem = UpdateReceiverDto;
 export type TableColumnItem = TableColumn<TableListItem>;
 
 export const extendAreaCode = (areaCode) =>
@@ -8,35 +10,6 @@ export const extendAreaCode = (areaCode) =>
 
 export const collapseAreaCode = (areaCode) =>
   areaCode.length > 0 ? areaCode[areaCode.length - 1] : '';
-
-export const getClothesByGender = (gender: number) => {
-  if (gender === 1) {
-    // 男
-    return [
-      {
-        label: '西装',
-        value: 1,
-      },
-      {
-        label: '领带',
-        value: 0,
-      },
-    ];
-  } else if (gender === 0) {
-    //女
-    return [
-      {
-        label: '裙子',
-        value: 1,
-      },
-      {
-        label: '包包',
-        value: 0,
-      },
-    ];
-  }
-  return [];
-};
 
 export const baseColumns: TableColumnItem[] = [
   {
@@ -56,7 +29,8 @@ export const baseColumns: TableColumnItem[] = [
     align: 'center',
     resizable: true,
     formItemProps: {
-      component: 'Select',
+      defaultValue: '',
+      required: false,
     },
   },
   {
@@ -66,15 +40,29 @@ export const baseColumns: TableColumnItem[] = [
     sorter: true,
     resizable: true,
     formItemProps: {
-      defaultValue: '',
+      defaultValue: [],
       required: false,
+      component: 'Cascader',
+      componentProps: () => ({
+        filterOption: false,
+        fieldNames: { label: 'name', value: 'code' },
+        options: PcasCode,
+        // placeholder: '请选择所在地区',
+        onChange(value: string) {
+          console.log('onChange', value);
+          return collapseAreaCode(value);
+        },
+      }),
+    },
+    customRender: ({ record }) => {
+      const { province, city, area } = record;
+      return `${province}-${city}-${area}`;
     },
   },
   {
     title: '地址',
     dataIndex: 'detail',
     hideInSearch: true,
-
     align: 'center',
     sorter: true,
     resizable: true,
