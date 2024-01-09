@@ -1,12 +1,12 @@
 <template>
   <a-upload
     v-model:file-list="fileList"
-    :customRequest="uploadFile"
+    :custom-request="uploadFile"
     :before-upload="beforeUpload"
-    @preview="handlePreview"
     list-type="picture-card"
     class="upload"
     action="noaction"
+    @preview="handlePreview"
   >
     <div>
       <plus-outlined />
@@ -19,14 +19,13 @@
 </template>
 
 <script lang="ts" setup>
-  import type { PropType } from 'vue';
-  import { ref, computed, createVNode, nextTick } from 'vue';
+  import { ref, watch } from 'vue';
   import * as qiniu from 'qiniu-js/esm';
-  import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
-  import { Modal, Drawer, Spin, Upload, notification } from 'ant-design-vue';
-  import { message } from 'ant-design-vue';
+  import { PlusOutlined } from '@ant-design/icons-vue';
+  import { Upload, message } from 'ant-design-vue';
+  import type { PropType } from 'vue';
 
-  import type { UploadProps, UploadChangeParam, UploadFile } from 'ant-design-vue';
+  import type { UploadProps } from 'ant-design-vue';
 
   // 接收父组件传递的参数
   const props = defineProps({
@@ -36,12 +35,14 @@
     },
     value: {
       type: Object as PropType<UploadProps['fileList']>,
-      default: [],
+      default() {
+        return [];
+      },
     },
   });
 
   defineOptions({
-    name: 'imageUpload',
+    name: 'ImageUpload',
   });
   // 预览变量
   const previewVisible = ref(false);
@@ -49,7 +50,10 @@
   const previewTitle = ref('');
   // 文件对象列表
   const fileList = ref<UploadProps['fileList']>(props.value);
-
+  console.log(props.value, 'props---');
+  watch(props, (newProps) => {
+    fileList.value = newProps.value;
+  });
   // 定义表单改变的方法
   const emit = defineEmits(['update:value']);
   // 设置只上传png图片
@@ -100,32 +104,13 @@
             uid,
             name,
             status,
-            url: `${_VITE_IMAGE_HOST_}/${key}`,
+            url: `${__APP_INFO__.imageHost}/${key}`,
           };
         });
         emit('update:value', fileValue);
       },
     });
   };
-  // const handleUploadError = (err, file: File) => {
-  //   const failFile = fileList.value.find((n) => n.originFileObj === file);
-  //   if (failFile) {
-  //     failFile.status = 'error';
-  //   }
-  //   notification.error({
-  //     message: '上传进度提醒',
-  //     description: `上传${file?.name}文件失败！错误信息：${
-  //       err.code === 614 ? '上传文件已存在' : err.message
-  //     }`,
-  //     duration: 0,
-  //   });
-  // };
-  // const handleUploadSuccess = (file: File) => {
-  //   const successFile = fileList.value.find((n) => n.originFileObj === file);
-  //   if (successFile) {
-  //     successFile.status = 'success';
-  //   }
-  // };
 </script>
 
 <style lang="less"></style>

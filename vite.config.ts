@@ -20,23 +20,21 @@ const CWD = process.cwd();
 // const DEV_ENV_CONFIG = loadEnv('development', CWD);
 // const PROD_ENV_CONFIG = loadEnv('production', CWD);
 
-const __APP_INFO__ = {
-  pkg,
-  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-};
-
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   // 环境变量
   const { VITE_BASE_URL, VITE_IMAGE_HOST, VITE_DROP_CONSOLE } = loadEnv(mode, CWD);
-  console.log(VITE_IMAGE_HOST, 'VITE_IMAGE_HOST');
   const isBuild = command === 'build';
-
+  const __APP_INFO__ = {
+    pkg,
+    imageHost: VITE_IMAGE_HOST,
+    lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+  };
   return {
     base: VITE_BASE_URL,
     define: {
       __APP_INFO__: JSON.stringify(__APP_INFO__),
-      _VITE_IMAGE_HOST_: VITE_IMAGE_HOST,
+      // _VITE_IMAGE_HOST_: VITE_IMAGE_HOST,
     },
     resolve: {
       alias: [

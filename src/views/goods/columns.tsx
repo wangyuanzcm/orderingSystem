@@ -1,7 +1,9 @@
+import { Image, ImagePreviewGroup } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
-import type { UpdateReceiverDto } from '@/service';
+import type { UpdateGoodsDto } from '@/service';
+import type { ImageFileType } from '@/components/business/image-upload';
 
-export type TableListItem = UpdateReceiverDto;
+export type TableListItem = UpdateGoodsDto;
 export type TableColumnItem = TableColumn<TableListItem>;
 
 export const extendAreaCode = (areaCode) =>
@@ -39,6 +41,16 @@ export const baseColumns: TableColumnItem[] = [
     hideInSearch: true,
     align: 'center',
     resizable: true,
+    customRender: ({ record }) => {
+      const imageList = (record.image_list || []) as unknown as ImageFileType[];
+      return (
+        <ImagePreviewGroup>
+          {imageList.map((item) => (
+            <Image width={100} src={item.url} />
+          ))}
+        </ImagePreviewGroup>
+      );
+    },
   },
   {
     title: '商品描述',

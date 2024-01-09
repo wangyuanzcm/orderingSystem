@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FormModal ref="formModalRef" :dynamicTable="dynamicTableInstance"></FormModal>
+    <FormModal ref="formModalRef" :dynamic-table="dynamicTableInstance"></FormModal>
     <!-- <context-holder /> -->
     <Card title="商品列表">
       <DynamicTable
@@ -23,12 +23,11 @@
 <script lang="ts" setup>
   import { ref, type Ref } from 'vue';
 
-  import { message, Card } from 'ant-design-vue';
+  import { Card } from 'ant-design-vue';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import FormModal from './form-modal.vue';
-  import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { services } from '@/utils/request';
-  import { collapseAreaCode } from './columns';
 
   type FormModalProps = typeof FormModal;
 
@@ -41,8 +40,7 @@
     }
   };
   const delRowConfirm = async (record: TableListItem) => {
-    // await deleteMenu({ menuId: record.id });
-    const result = await services.receiverControllerDelete({ ids: [record.id] });
+    await services.goodsControllerDelete({ ids: [record.id] });
     dynamicTableInstance.reload();
   };
   /**

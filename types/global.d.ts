@@ -12,8 +12,8 @@ declare global {
   const __APP_INFO__: {
     pkg: typeof packageJSON;
     lastBuildTime: string;
+    imageHost: string;
   };
-  const _VITE_IMAGE_HOST_: string;
   // declare interface Window {
   //   // Global vue app instance
   //   __APP__: App<Element>;
