@@ -187,6 +187,61 @@ export interface CreateDeptDto {
 /**
  * 
  * @export
+ * @interface CreateGoodsDto
+ */
+export interface CreateGoodsDto {
+    /**
+     * 商品名称
+     * @type {string}
+     * @memberof CreateGoodsDto
+     */
+    'title': string;
+    /**
+     * 商品编号
+     * @type {string}
+     * @memberof CreateGoodsDto
+     */
+    'code_hs': string;
+    /**
+     * 商品图片
+     * @type {Array<string>}
+     * @memberof CreateGoodsDto
+     */
+    'image_list': Array<string>;
+    /**
+     * 商品描述
+     * @type {string}
+     * @memberof CreateGoodsDto
+     */
+    'description': string;
+    /**
+     * 详细信息
+     * @type {string}
+     * @memberof CreateGoodsDto
+     */
+    'detail_info': string;
+    /**
+     * 商品价格
+     * @type {number}
+     * @memberof CreateGoodsDto
+     */
+    'price': number;
+    /**
+     * 商品类型
+     * @type {string}
+     * @memberof CreateGoodsDto
+     */
+    'types': string;
+    /**
+     * 是否为定制商品
+     * @type {string}
+     * @memberof CreateGoodsDto
+     */
+    'universal': string;
+}
+/**
+ * 
+ * @export
  * @interface CreateMenuDto
  */
 export interface CreateMenuDto {
@@ -569,6 +624,19 @@ export interface DeleteDto {
      * @memberof DeleteDto
      */
     'path': string;
+}
+/**
+ * 
+ * @export
+ * @interface DeleteGoodsDto
+ */
+export interface DeleteGoodsDto {
+    /**
+     * 需要删除的用户ID列表
+     * @type {Array<number>}
+     * @memberof DeleteGoodsDto
+     */
+    'ids': Array<number>;
 }
 /**
  * 
@@ -1099,6 +1167,61 @@ export interface OverviewSpaceInfo {
      * @memberof OverviewSpaceInfo
      */
     'sizeTrend': SpaceInfo;
+}
+/**
+ * 
+ * @export
+ * @interface PageSearchGoodsDto
+ */
+export interface PageSearchGoodsDto {
+    /**
+     * 当前页包含数量
+     * @type {number}
+     * @memberof PageSearchGoodsDto
+     */
+    'limit'?: number;
+    /**
+     * 当前页包含数量
+     * @type {number}
+     * @memberof PageSearchGoodsDto
+     */
+    'page'?: number;
+    /**
+     * 商品名称
+     * @type {string}
+     * @memberof PageSearchGoodsDto
+     */
+    'title': string;
+    /**
+     * 商品编号
+     * @type {string}
+     * @memberof PageSearchGoodsDto
+     */
+    'code_hs': string;
+    /**
+     * 商品描述
+     * @type {string}
+     * @memberof PageSearchGoodsDto
+     */
+    'description': string;
+    /**
+     * 详细信息
+     * @type {string}
+     * @memberof PageSearchGoodsDto
+     */
+    'detail_info': string;
+    /**
+     * 商品类型
+     * @type {string}
+     * @memberof PageSearchGoodsDto
+     */
+    'types': string;
+    /**
+     * 是否为定制商品
+     * @type {string}
+     * @memberof PageSearchGoodsDto
+     */
+    'universal': string;
 }
 /**
  * 
@@ -2163,6 +2286,67 @@ export interface UpdateDeptDto {
 /**
  * 
  * @export
+ * @interface UpdateGoodsDto
+ */
+export interface UpdateGoodsDto {
+    /**
+     * 商品名称
+     * @type {string}
+     * @memberof UpdateGoodsDto
+     */
+    'title': string;
+    /**
+     * 商品编号
+     * @type {string}
+     * @memberof UpdateGoodsDto
+     */
+    'code_hs': string;
+    /**
+     * 商品图片
+     * @type {Array<string>}
+     * @memberof UpdateGoodsDto
+     */
+    'image_list': Array<string>;
+    /**
+     * 商品描述
+     * @type {string}
+     * @memberof UpdateGoodsDto
+     */
+    'description': string;
+    /**
+     * 详细信息
+     * @type {string}
+     * @memberof UpdateGoodsDto
+     */
+    'detail_info': string;
+    /**
+     * 商品价格
+     * @type {number}
+     * @memberof UpdateGoodsDto
+     */
+    'price': number;
+    /**
+     * 商品类型
+     * @type {string}
+     * @memberof UpdateGoodsDto
+     */
+    'types': string;
+    /**
+     * 是否为定制商品
+     * @type {string}
+     * @memberof UpdateGoodsDto
+     */
+    'universal': string;
+    /**
+     * 商品ID
+     * @type {number}
+     * @memberof UpdateGoodsDto
+     */
+    'goods_id': number;
+}
+/**
+ * 
+ * @export
  * @interface UpdateMenuDto
  */
 export interface UpdateMenuDto {
@@ -2888,6 +3072,162 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updatePersonInfoDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 新增商品
+         * @param {CreateGoodsDto} createGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        goodsControllerAdd: async (createGoodsDto: CreateGoodsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createGoodsDto' is not null or undefined
+            assertParamExists('goodsControllerAdd', 'createGoodsDto', createGoodsDto)
+            const localVarPath = `/admin/goods/add`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication admin required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createGoodsDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 根据ID删除商品
+         * @param {DeleteGoodsDto} deleteGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        goodsControllerDelete: async (deleteGoodsDto: DeleteGoodsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deleteGoodsDto' is not null or undefined
+            assertParamExists('goodsControllerDelete', 'deleteGoodsDto', deleteGoodsDto)
+            const localVarPath = `/admin/goods/delete`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication admin required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deleteGoodsDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 分页获取商品列表
+         * @param {PageSearchGoodsDto} pageSearchGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        goodsControllerPage: async (pageSearchGoodsDto: PageSearchGoodsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageSearchGoodsDto' is not null or undefined
+            assertParamExists('goodsControllerPage', 'pageSearchGoodsDto', pageSearchGoodsDto)
+            const localVarPath = `/admin/goods/page`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication admin required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(pageSearchGoodsDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 更新商品信息
+         * @param {UpdateGoodsDto} updateGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        goodsControllerUpdate: async (updateGoodsDto: UpdateGoodsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateGoodsDto' is not null or undefined
+            assertParamExists('goodsControllerUpdate', 'updateGoodsDto', updateGoodsDto)
+            const localVarPath = `/admin/goods/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication admin required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateGoodsDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5271,6 +5611,58 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 新增商品
+         * @param {CreateGoodsDto} createGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async goodsControllerAdd(createGoodsDto: CreateGoodsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.goodsControllerAdd(createGoodsDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.goodsControllerAdd']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 根据ID删除商品
+         * @param {DeleteGoodsDto} deleteGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async goodsControllerDelete(deleteGoodsDto: DeleteGoodsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.goodsControllerDelete(deleteGoodsDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.goodsControllerDelete']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 分页获取商品列表
+         * @param {PageSearchGoodsDto} pageSearchGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async goodsControllerPage(pageSearchGoodsDto: PageSearchGoodsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.goodsControllerPage(pageSearchGoodsDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.goodsControllerPage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 更新商品信息
+         * @param {UpdateGoodsDto} updateGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async goodsControllerUpdate(updateGoodsDto: UpdateGoodsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.goodsControllerUpdate(updateGoodsDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.goodsControllerUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 获取登录图片验证码
          * @param {number} [width] 验证码宽度
          * @param {number} [height] 验证码高度
@@ -6097,6 +6489,46 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary 新增商品
+         * @param {CreateGoodsDto} createGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        goodsControllerAdd(createGoodsDto: CreateGoodsDto, options?: any): AxiosPromise<void> {
+            return localVarFp.goodsControllerAdd(createGoodsDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 根据ID删除商品
+         * @param {DeleteGoodsDto} deleteGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        goodsControllerDelete(deleteGoodsDto: DeleteGoodsDto, options?: any): AxiosPromise<void> {
+            return localVarFp.goodsControllerDelete(deleteGoodsDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 分页获取商品列表
+         * @param {PageSearchGoodsDto} pageSearchGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        goodsControllerPage(pageSearchGoodsDto: PageSearchGoodsDto, options?: any): AxiosPromise<void> {
+            return localVarFp.goodsControllerPage(pageSearchGoodsDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 更新商品信息
+         * @param {UpdateGoodsDto} updateGoodsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        goodsControllerUpdate(updateGoodsDto: UpdateGoodsDto, options?: any): AxiosPromise<void> {
+            return localVarFp.goodsControllerUpdate(updateGoodsDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 获取登录图片验证码
          * @param {number} [width] 验证码宽度
          * @param {number} [height] 验证码高度
@@ -6752,6 +7184,54 @@ export class DefaultApi extends BaseAPI {
      */
     public accountControllerUpdate(updatePersonInfoDto: UpdatePersonInfoDto, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).accountControllerUpdate(updatePersonInfoDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 新增商品
+     * @param {CreateGoodsDto} createGoodsDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public goodsControllerAdd(createGoodsDto: CreateGoodsDto, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).goodsControllerAdd(createGoodsDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 根据ID删除商品
+     * @param {DeleteGoodsDto} deleteGoodsDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public goodsControllerDelete(deleteGoodsDto: DeleteGoodsDto, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).goodsControllerDelete(deleteGoodsDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 分页获取商品列表
+     * @param {PageSearchGoodsDto} pageSearchGoodsDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public goodsControllerPage(pageSearchGoodsDto: PageSearchGoodsDto, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).goodsControllerPage(pageSearchGoodsDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 更新商品信息
+     * @param {UpdateGoodsDto} updateGoodsDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public goodsControllerUpdate(updateGoodsDto: UpdateGoodsDto, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).goodsControllerUpdate(updateGoodsDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

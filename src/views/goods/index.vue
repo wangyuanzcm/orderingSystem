@@ -1,105 +1,125 @@
 <template>
-  <div class="box">
-    <img src="~@/assets/analysis.svg" />
-    <Descriptions title="系统信息" bordered>
-      <Descriptions.Item key="IP" label="IP">
-        {{ loginIp }}
-      </Descriptions.Item>
-      <Descriptions.Item v-for="(value, key) in browserInfo" :key="key" :label="key">
-        {{ value }}
-      </Descriptions.Item>
-      <Descriptions.Item label="网络状态">
-        <Badge :status="online ? 'processing' : 'default'" :text="online ? '在线' : '离线'" />
-      </Descriptions.Item>
-      <Descriptions.Item label="WebSocket连接情况">
-        <Badge :status="statusTextColor" :text="statusText" />
-      </Descriptions.Item>
-    </Descriptions>
+  <div>
+    <FormModal ref="formModalRef" :dynamicTable="dynamicTableInstance"></FormModal>
+    <!-- <context-holder /> -->
+    <Card title="商品列表">
+      <DynamicTable
+        size="small"
+        row-key="id"
+        bordered
+        :data-request="loadTableData"
+        :columns="columns"
+      >
+        <template #toolbar>
+          <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openFormModal({})">
+            新增商品
+          </a-button>
+        </template>
+      </DynamicTable>
+    </Card>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, watchEffect } from 'vue';
-  import { Descriptions, Badge } from 'ant-design-vue';
-  import BrowserType from '@/utils/browser-type';
-  import { useBattery } from '@/hooks/useBattery';
-  import { useOnline } from '@/hooks/useOnline';
-  import { useUserStore } from '@/store/modules/user';
-  import { useWsStore } from '@/store/modules/ws';
-  import { SocketStatus } from '@/core/socket/socket-io';
+  import { ref, type Ref } from 'vue';
 
-  defineOptions({
-    name: 'DashboardWelcome',
-  });
+  import { message, Card } from 'ant-design-vue';
+  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
+  import FormModal from './form-modal.vue';
+  import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
+  import { services } from '@/utils/request';
+  import { collapseAreaCode } from './columns';
 
-  // import performanceMonitor from '@/utils/performanceMonitor'
+  type FormModalProps = typeof FormModal;
 
-  const loginIp = useUserStore().userInfo?.loginIp;
-  const wsStore = useWsStore();
-  // 是否联网
-  const { online } = useOnline();
-  // 获取电池信息
-  const { battery, batteryStatus, calcDischargingTime } = useBattery();
-  // 获取浏览器信息
-  const browserInfo = ref(BrowserType('zh-cn'));
+  const [DynamicTable, dynamicTableInstance] = useTable();
 
-  const statusText = computed(() => {
-    if (wsStore.status === SocketStatus.CONNECTED) {
-      return '正常';
-    } else if (wsStore.status === SocketStatus.CONNECTING) {
-      return '连接中...';
-    } else {
-      return '已断开';
+  const formModalRef: Ref<FormModalProps | null> = ref(null); // 定义子组件引用
+  const openFormModal = (record: Partial<TableListItem>) => {
+    if (formModalRef.value) {
+      formModalRef.value?.openModal(record);
     }
-  });
-
-  const statusTextColor = computed(() => {
-    if (wsStore.status === SocketStatus.CONNECTED) {
-      return 'success';
-    } else if (wsStore.status === SocketStatus.CONNECTING) {
-      return 'warning';
-    } else {
-      return 'error';
-    }
-  });
-
-  watchEffect(() => {
-    Object.assign(browserInfo.value, {
-      距离电池充满需要:
-        Number.isFinite(battery.chargingTime) && battery.chargingTime != 0
-          ? calcDischargingTime.value
-          : '未知',
-      剩余可使用时间:
-        Number.isFinite(battery.dischargingTime) && battery.dischargingTime != 0
-          ? calcDischargingTime.value
-          : '未知',
-      电池状态: batteryStatus.value,
-      当前电量: `${battery.level}%`,
+  };
+  const delRowConfirm = async (record: TableListItem) => {
+    // await deleteMenu({ menuId: record.id });
+    const result = await services.receiverControllerDelete({ ids: [record.id] });
+    dynamicTableInstance.reload();
+  };
+  /**
+   * 加载列表数据
+   * @param params
+   */
+  const loadTableData = async (params): Promise<API.TableListResult> => {
+    const { ...others } = params;
+    const result = await services.goodsControllerPage({
+      ...others,
     });
-  });
+    console.log(result, 'result');
+    // @ts-ignore
+    const { list, pagination } = result.data;
 
-  // console.log(performanceMonitor.getPerformanceData(), 'performanceMonitor')
+    return { list, pagination };
+  };
+
+  const columns: TableColumnItem[] = [
+    ...baseColumns,
+    {
+      title: '操作',
+      width: 350,
+      dataIndex: 'ACTION',
+      hideInSearch: true,
+      align: 'center',
+      fixed: 'right',
+      actions: ({ record }) => [
+        {
+          label: '编辑',
+          auth: {
+            perm: 'sys.menu.update',
+            effect: 'disable',
+          },
+          onClick: () => {
+            if (formModalRef.value) {
+              formModalRef.value?.openModal(record);
+            }
+          },
+        },
+        {
+          label: '查看详情',
+          auth: {
+            perm: 'sys.menu.update',
+            effect: 'disable',
+          },
+          onClick: () => {
+            if (formModalRef.value) {
+              formModalRef.value?.openModal(record);
+            }
+          },
+        },
+        {
+          label: '购买',
+          auth: {
+            perm: 'sys.menu.update',
+            effect: 'disable',
+          },
+          onClick: () => {
+            if (formModalRef.value) {
+              formModalRef.value?.openModal(record);
+            }
+          },
+        },
+        {
+          label: '删除',
+          type: 'default',
+          danger: true,
+          auth: 'sys.menu.delete',
+          popConfirm: {
+            title: '你确定要删除吗？',
+            onConfirm: () => delRowConfirm(record),
+          },
+        },
+      ],
+    },
+  ];
 </script>
 
-<style lang="less" scoped>
-  @import '@/styles/theme.less';
-
-  .themeBgColor(box);
-
-  .box {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: calc(100vh - 280px);
-    padding: 12px;
-
-    img {
-      flex: 1;
-      min-height: 0;
-    }
-
-    .ant-form {
-      flex: 2;
-    }
-  }
-</style>
+<style lang="less" scoped></style>

@@ -28,14 +28,15 @@ const __APP_INFO__ = {
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   // 环境变量
-  const { VITE_BASE_URL, VITE_DROP_CONSOLE } = loadEnv(mode, CWD);
-
+  const { VITE_BASE_URL, VITE_IMAGE_HOST, VITE_DROP_CONSOLE } = loadEnv(mode, CWD);
+  console.log(VITE_IMAGE_HOST, 'VITE_IMAGE_HOST');
   const isBuild = command === 'build';
 
   return {
     base: VITE_BASE_URL,
     define: {
       __APP_INFO__: JSON.stringify(__APP_INFO__),
+      _VITE_IMAGE_HOST_: VITE_IMAGE_HOST,
     },
     resolve: {
       alias: [

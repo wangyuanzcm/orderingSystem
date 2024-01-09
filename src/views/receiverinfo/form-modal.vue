@@ -1,14 +1,12 @@
 <template>
   <context-holder />
-  <a-button type="primary" @click="visible = true" style="margin-bottom: 10px">
-    新增收货地址
-  </a-button>
   <a-modal
     v-model:open="visible"
     :title="title + '收件人信息'"
     :ok-text="title"
     cancel-text="取消"
     @ok="onOk"
+    @cancel="onClear"
   >
     <a-space-compact direction="vertical" style="width: 100%">
       <a-typography-text>地址粘贴板：</a-typography-text>
@@ -181,6 +179,11 @@
     formState.detail = detail;
     formState.nick_name = nick_name;
   };
+
+  const onClear = () => {
+    formRef.value.resetFields();
+  };
+
   const onOk = async () => {
     try {
       // 校验数据格式
