@@ -122,18 +122,18 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     server: {
-      host: '0.0.0.0',
+      host: '127.0.0.1',
       port: 8088,
       proxy: {
         '/api': {
           // target: 'https://nest-api.buqiyuan.site/api/',
-          target: 'http://localhost:7001',
+          target: 'http://127.0.0.1:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/ws-api': {
           // target: 'wss://nest-api.buqiyuan.site',
-          target: 'http://localhost:7002',
+          target: 'http://127.0.0.1:7002',
           changeOrigin: true, //是否允许跨域
           ws: true,
         },

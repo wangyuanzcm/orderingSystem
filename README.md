@@ -201,3 +201,9 @@ https://quicktype.io/
 尝试使用pont，但是他不支持nest的openapi3格式的文件，所以在查看swagger2与openapi3的区别之后决定使用openapi generator来生成代码
 
 地址智能识别：https://github.com/ldwonday/zh-address-parse
+
+通过商品类型来区分价格
+
+导出表格：
+
+导出word格式 https://juejin.cn/post/7205181884589031485

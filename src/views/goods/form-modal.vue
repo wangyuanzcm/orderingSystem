@@ -16,33 +16,23 @@
       >
         <a-input v-model:value="formState.title" placeholder="请输入商品名称" />
       </a-form-item>
+      <a-form-item name="description" label="商品说明">
+        <a-textarea
+          v-model:value="formState.description"
+          placeholder="请输入商品说明"
+          allow-clear
+        />
+      </a-form-item>
+
+      <a-form-item name="image_list" label="商品图片">
+        <ImageUpload :token="token" v-model:value="formState.image_list" />
+      </a-form-item>
       <a-form-item
         name="code_hs"
         label="商品编号"
         :rules="[{ required: true, message: '请输入商品编号' }]"
       >
         <a-input v-model:value="formState.code_hs" placeholder="请输入商品编号" />
-      </a-form-item>
-      <a-form-item name="image_list" label="商品图片">
-        <ImageUpload :token="token" v-model:value="formState.image_list" />
-      </a-form-item>
-      <a-form-item name="description" label="商品描述">
-        <a-textarea
-          v-model:value="formState.description"
-          placeholder="请输入商品描述"
-          allow-clear
-        />
-      </a-form-item>
-      <a-form-item
-        name="detail_info"
-        label="详细信息"
-        :rules="[{ required: true, message: '请输入商品详细信息' }]"
-      >
-        <a-textarea
-          v-model:value="formState.detail_info"
-          placeholder="请输入商品详细信息"
-          allow-clear
-        />
       </a-form-item>
 
       <a-form-item
@@ -62,14 +52,13 @@
 
       <a-form-item
         name="types"
-        label="商品类型"
+        label="商品类型（手动添加）"
         :rules="[{ required: true, message: '请选择商品类型' }]"
       >
         <a-radio-group v-model:value="formState.types">
-          <a-radio value="1">A</a-radio>
-          <a-radio value="2">B</a-radio>
-          <a-radio value="3">C</a-radio>
-          <a-radio value="4">D</a-radio>
+          <a-radio value="1">500瓶 正常价</a-radio>
+          <a-radio value="2">1000瓶以上</a-radio>
+          <a-radio value="3">500瓶</a-radio>
         </a-radio-group>
       </a-form-item>
       <a-form-item
@@ -78,11 +67,16 @@
         :rules="[{ required: true, message: '请选择是否为定制商品' }]"
       >
         <a-radio-group v-model:value="formState.universal">
-          <a-radio value="1">A</a-radio>
-          <a-radio value="2">B</a-radio>
-          <a-radio value="3">C</a-radio>
-          <a-radio value="4">D</a-radio>
+          <a-radio value="1">是</a-radio>
+          <a-radio value="2">否</a-radio>
         </a-radio-group>
+      </a-form-item>
+      <a-form-item
+        name="detail_info"
+        label="备注"
+        :rules="[{ required: true, message: '请输入备注' }]"
+      >
+        <a-textarea v-model:value="formState.detail_info" placeholder="请输入备注" allow-clear />
       </a-form-item>
       <a-form-item name="id" label="id" hidden>
         <a-input v-model:value="formState.id" placeholder="自动填充" />
