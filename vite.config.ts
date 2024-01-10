@@ -34,7 +34,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     base: VITE_BASE_URL,
     define: {
       __APP_INFO__: JSON.stringify(__APP_INFO__),
-      // _VITE_IMAGE_HOST_: VITE_IMAGE_HOST,
     },
     resolve: {
       alias: [

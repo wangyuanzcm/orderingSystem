@@ -211,3 +211,19 @@ https://quicktype.io/
 通过Apollo进行表单线上配置 https://www.apolloconfig.com/#/zh/deployment/quick-start-docker
 
 https://juejin.cn/post/6844903640990220302
+
+https://antdv-x3.formilyjs.org/guide/space.html#markup-schema-%E6%A1%88%E4%BE%8B
+
+使用formily的json表单功能，通过json配置生成表单，然后直接配置下发
+
+开发方案变更：今天在有了配置下发的想法之后，越来越感觉这种方法的可行性。目前table的列配置和搜索配置都是直接可以通过json配置下发。增加，修改的表单直接通过formily的方式进行动态配置。配合formily的编辑器可以自动生成配置的UI和字段内容（https://designable-antd.formilyjs.org/）
+
+需要配置的地方，目前有：
+
+1. 商品的列表和新增/修改表单，查看详情
+2. 购买的表单。
+3. 优惠券配置
+4. 订单列表，和编辑表单配置，查看详情
+5. 权限点配置（待定）
+
+formily 仅支持antd版本 <4.22.8

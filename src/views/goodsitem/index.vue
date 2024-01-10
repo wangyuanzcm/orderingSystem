@@ -1,105 +1,183 @@
 <template>
-  <div class="box">
-    <img src="~@/assets/analysis.svg" />
-    <Descriptions title="系统信息" bordered>
-      <Descriptions.Item key="IP" label="IP">
-        {{ loginIp }}
-      </Descriptions.Item>
-      <Descriptions.Item v-for="(value, key) in browserInfo" :key="key" :label="key">
-        {{ value }}
-      </Descriptions.Item>
-      <Descriptions.Item label="网络状态">
-        <Badge :status="online ? 'processing' : 'default'" :text="online ? '在线' : '离线'" />
-      </Descriptions.Item>
-      <Descriptions.Item label="WebSocket连接情况">
-        <Badge :status="statusTextColor" :text="statusText" />
-      </Descriptions.Item>
-    </Descriptions>
-  </div>
+  <Form :form="form" v-bind="formLayout">
+    <SchemaField :schema="schema" />
+    <FormButtonGroup align-form-item>
+      <Reset validate force-clear :on-reset-validate-success="onReset">重置</Reset>
+      <Submit @submit="onSubmit">提交</Submit>
+    </FormButtonGroup>
+  </Form>
 </template>
 
-<script lang="ts" setup>
-  import { computed, ref, watchEffect } from 'vue';
-  import { Descriptions, Badge } from 'ant-design-vue';
-  import BrowserType from '@/utils/browser-type';
-  import { useBattery } from '@/hooks/useBattery';
-  import { useOnline } from '@/hooks/useOnline';
-  import { useUserStore } from '@/store/modules/user';
-  import { useWsStore } from '@/store/modules/ws';
-  import { SocketStatus } from '@/core/socket/socket-io';
+<script lang="tsx" setup>
+  import { createForm } from '@formily/core';
+  import { createSchemaField } from '@formily/vue';
+  import {
+    Form,
+    FormItem,
+    Upload,
+    Input,
+    Radio,
+    InputNumber,
+    Submit,
+    FormButtonGroup,
+  } from '@formily/antdv';
+  // const token = ref('');
 
-  defineOptions({
-    name: 'DashboardWelcome',
+  // const getToken = async () => {
+  //   const data = await services.netDiskManageControllerToken();
+  //   console.log(data, 'data===');
+  //   token.value = data.data.token;
+  // };
+  // onMounted(() => {
+  //   // 在组件挂载后执行的操作
+  //   console.log('Component mounted');
+  //   getToken();
+  //   // 可以执行其他操作，如发送请求、订阅事件等
+  // });
+
+  const schema = {
+    type: 'object',
+    properties: {
+      thl1aattyh2: {
+        type: 'string',
+        title: '商品名称',
+        'x-decorator': 'FormItem',
+        'x-component': 'Input',
+        'x-validator': [],
+        'x-component-props': {},
+        'x-decorator-props': {},
+        required: true,
+        'x-designable-id': 'thl1aattyh2',
+        'x-index': 0,
+      },
+      '8r86z5hra3o': {
+        type: 'string',
+        title: '商品编号',
+        'x-decorator': 'FormItem',
+        'x-component': 'Input',
+        'x-validator': [],
+        'x-component-props': {},
+        'x-decorator-props': {},
+        required: true,
+        'x-designable-id': '8r86z5hra3o',
+        'x-index': 1,
+      },
+      vyu1lu31nbk: {
+        type: 'string',
+        title: '商品说明',
+        'x-decorator': 'FormItem',
+        'x-component': 'Input.TextArea',
+        'x-validator': [],
+        'x-component-props': {},
+        'x-decorator-props': {},
+        required: true,
+        'x-designable-id': 'vyu1lu31nbk',
+        'x-index': 2,
+      },
+      pt8v1yru72g: {
+        type: 'string | number',
+        title: '商品类型',
+        'x-decorator': 'FormItem',
+        'x-component': 'Radio.Group',
+        enum: [
+          {
+            children: [],
+            label: '500瓶以下',
+            value: 1,
+          },
+          {
+            children: [],
+            label: '500到1000瓶',
+            value: 2,
+          },
+          {
+            children: [],
+            label: '1000瓶以上',
+            value: '3',
+          },
+        ],
+        'x-validator': [],
+        'x-component-props': {},
+        'x-decorator-props': {},
+        required: true,
+        'x-designable-id': 'pt8v1yru72g',
+        'x-index': 3,
+      },
+      '9nqh6olnwg5': {
+        type: 'number',
+        title: '商品价格',
+        'x-decorator': 'FormItem',
+        'x-component': 'InputNumber',
+        'x-validator': 'number',
+        'x-component-props': {
+          decimalSeparator: '2',
+        },
+        'x-decorator-props': {},
+        required: true,
+        'x-designable-id': '9nqh6olnwg5',
+        'x-index': 4,
+      },
+      '4v93n2m4hd2': {
+        type: 'string | number',
+        title: '是否为定制商品',
+        'x-decorator': 'FormItem',
+        'x-component': 'Radio.Group',
+        enum: [
+          {
+            children: [],
+            label: '是',
+            value: 1,
+          },
+          {
+            children: [],
+            label: '否',
+            value: 2,
+          },
+        ],
+        'x-validator': [],
+        'x-component-props': {},
+        'x-decorator-props': {},
+        required: true,
+        'x-designable-id': '4v93n2m4hd2',
+        'x-index': 5,
+      },
+      ykpi7u2xtwl: {
+        type: 'string',
+        title: '备注',
+        'x-decorator': 'FormItem',
+        'x-component': 'Input.TextArea',
+        'x-validator': [],
+        'x-component-props': {},
+        'x-decorator-props': {},
+        'x-designable-id': 'ykpi7u2xtwl',
+        'x-index': 6,
+      },
+    },
+    'x-designable-id': '6q156kbks3m',
+  };
+  const formLayout = {
+    labelCol: 6,
+    wrapperCol: 12,
+    feedbackLayout: 'terse',
+    style: {
+      display: 'block',
+    },
+  };
+  const form = createForm();
+  const { SchemaField } = createSchemaField({
+    components: {
+      Upload,
+      Input,
+      InputNumber,
+      Radio,
+      FormItem,
+    },
   });
 
-  // import performanceMonitor from '@/utils/performanceMonitor'
-
-  const loginIp = useUserStore().userInfo?.loginIp;
-  const wsStore = useWsStore();
-  // 是否联网
-  const { online } = useOnline();
-  // 获取电池信息
-  const { battery, batteryStatus, calcDischargingTime } = useBattery();
-  // 获取浏览器信息
-  const browserInfo = ref(BrowserType('zh-cn'));
-
-  const statusText = computed(() => {
-    if (wsStore.status === SocketStatus.CONNECTED) {
-      return '正常';
-    } else if (wsStore.status === SocketStatus.CONNECTING) {
-      return '连接中...';
-    } else {
-      return '已断开';
-    }
-  });
-
-  const statusTextColor = computed(() => {
-    if (wsStore.status === SocketStatus.CONNECTED) {
-      return 'success';
-    } else if (wsStore.status === SocketStatus.CONNECTING) {
-      return 'warning';
-    } else {
-      return 'error';
-    }
-  });
-
-  watchEffect(() => {
-    Object.assign(browserInfo.value, {
-      距离电池充满需要:
-        Number.isFinite(battery.chargingTime) && battery.chargingTime != 0
-          ? calcDischargingTime.value
-          : '未知',
-      剩余可使用时间:
-        Number.isFinite(battery.dischargingTime) && battery.dischargingTime != 0
-          ? calcDischargingTime.value
-          : '未知',
-      电池状态: batteryStatus.value,
-      当前电量: `${battery.level}%`,
-    });
-  });
-
-  // console.log(performanceMonitor.getPerformanceData(), 'performanceMonitor')
+  const onSubmit = (value) => {
+    console.log(value);
+  };
+  const onReset = (value) => {
+    console.log(value);
+  };
 </script>
-
-<style lang="less" scoped>
-  @import '@/styles/theme.less';
-
-  .themeBgColor(box);
-
-  .box {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: calc(100vh - 280px);
-    padding: 12px;
-
-    img {
-      flex: 1;
-      min-height: 0;
-    }
-
-    .ant-form {
-      flex: 2;
-    }
-  }
-</style>
