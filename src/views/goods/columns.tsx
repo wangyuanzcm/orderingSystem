@@ -2,7 +2,7 @@ import { Image, ImagePreviewGroup } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import type { UpdateGoodsDto } from '@/service';
 
-export type TableListItem = UpdateGoodsDto;
+export type TableListItem = UpdateGoodsDto['ext'] & Pick<UpdateGoodsDto, 'id'>;
 export type TableColumnItem = TableColumn<TableListItem>;
 
 export const extendAreaCode = (areaCode) =>

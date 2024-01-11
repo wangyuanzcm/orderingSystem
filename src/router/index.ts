@@ -12,10 +12,10 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Layout',
-    redirect: '/dashboard/welcome',
+    redirect: '/cart',
     component: () => import(/* webpackChunkName: "layout" */ '@/layout/index.vue'),
     meta: {
-      title: '首页',
+      title: '购物车',
     },
     children: [],
   },

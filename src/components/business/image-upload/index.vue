@@ -49,21 +49,18 @@
 
   const getToken = async () => {
     const data = await services.netDiskManageControllerToken();
-    console.log(data, 'data===');
     token.value = data.data.token;
   };
   onMounted(() => {
     // 在组件挂载后执行的操作
-    console.log('Component mounted');
     getToken();
     // 可以执行其他操作，如发送请求、订阅事件等
   });
 
   // 文件对象列表
   const fileList = ref<UploadProps['fileList']>(props.value);
-  console.log(props, 'props---');
   watch(props, (newProps) => {
-    console.log(newProps.value, 'newProps');
+    console.log(newProps, 'newProps');
     fileList.value = newProps.value;
   });
   // 定义表单改变的方法

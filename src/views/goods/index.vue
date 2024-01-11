@@ -1,6 +1,5 @@
 <template>
   <div>
-    <FormModal ref="formModalRef" :dynamic-table="dynamicTableInstance"></FormModal>
     <!-- <context-holder /> -->
     <Card title="商品列表">
       <DynamicTable
@@ -11,7 +10,11 @@
         :columns="columns"
       >
         <template #toolbar>
-          <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openFormModal({})">
+          <a-button
+            type="primary"
+            :disabled="!$auth('sys.menu.add')"
+            @click="handleJumpCreatePage()"
+          >
             新增商品
           </a-button>
         </template>
@@ -21,23 +24,20 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, type Ref } from 'vue';
-
+  import { useRouter } from 'vue-router';
   import { Card } from 'ant-design-vue';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
-  import FormModal from './form-modal.vue';
   import { useTable } from '@/components/core/dynamic-table';
   import { services } from '@/utils/request';
 
-  type FormModalProps = typeof FormModal;
+  const router = useRouter();
 
   const [DynamicTable, dynamicTableInstance] = useTable();
 
-  const formModalRef: Ref<FormModalProps | null> = ref(null); // 定义子组件引用
-  const openFormModal = (record: Partial<TableListItem>) => {
-    if (formModalRef.value) {
-      formModalRef.value?.openModal(record);
-    }
+  const handleJumpCreatePage = () => {
+    router.push({
+      path: '/creategoods',
+    });
   };
   const delRowConfirm = async (record: TableListItem) => {
     console.log(record, 'record');
@@ -55,7 +55,6 @@
       page,
       ext,
     });
-    console.log(result, 'result');
     // @ts-ignore
     const { list, pagination } = result.data;
     const resultList = list.map((i) => ({ ...i.ext, id: i.id }));
@@ -79,9 +78,10 @@
             effect: 'disable',
           },
           onClick: () => {
-            if (formModalRef.value) {
-              formModalRef.value?.openModal(record);
-            }
+            router.push({
+              path: '/creategoods',
+              query: { id: record.id },
+            });
           },
         },
         {
@@ -91,9 +91,10 @@
             effect: 'disable',
           },
           onClick: () => {
-            if (formModalRef.value) {
-              formModalRef.value?.openModal(record);
-            }
+            router.push({
+              path: '/goodsdetail',
+              query: { id: record.id },
+            });
           },
         },
         {
@@ -103,9 +104,10 @@
             effect: 'disable',
           },
           onClick: () => {
-            if (formModalRef.value) {
-              formModalRef.value?.openModal(record);
-            }
+            router.push({
+              path: '/buygoods',
+              query: { id: record.id },
+            });
           },
         },
         {
