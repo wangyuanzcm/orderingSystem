@@ -40,6 +40,7 @@
     }
   };
   const delRowConfirm = async (record: TableListItem) => {
+    console.log(record, 'record');
     await services.goodsControllerDelete({ ids: [record.id] });
     dynamicTableInstance.reload();
   };
@@ -48,15 +49,17 @@
    * @param params
    */
   const loadTableData = async (params): Promise<API.TableListResult> => {
-    const { ...others } = params;
+    const { limit, page, ...ext } = params;
     const result = await services.goodsControllerPage({
-      ...others,
+      limit,
+      page,
+      ext,
     });
     console.log(result, 'result');
     // @ts-ignore
     const { list, pagination } = result.data;
-
-    return { list, pagination };
+    const resultList = list.map((i) => ({ ...i.ext, id: i.id }));
+    return { list: resultList, pagination };
   };
 
   const columns: TableColumnItem[] = [

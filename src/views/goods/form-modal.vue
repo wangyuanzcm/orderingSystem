@@ -25,7 +25,7 @@
       </a-form-item>
 
       <a-form-item name="image_list" label="商品图片">
-        <ImageUpload :token="token" v-model:value="formState.image_list" />
+        <ImageUpload v-model:value="formState.image_list" />
       </a-form-item>
       <a-form-item
         name="code_hs"
@@ -85,21 +85,12 @@
   </a-modal>
 </template>
 <script setup lang="ts">
-  import { watch, reactive, ref } from 'vue';
+  import { reactive, ref, defineProps } from 'vue';
   import { message } from 'ant-design-vue';
-  import { defineProps } from 'vue';
-  import * as qiniu from 'qiniu-js/esm';
+  import type { UploadProps } from 'ant-design-vue';
   import { ImageUpload } from '@/components/business/image-upload';
-  import type { UploadToken } from '@/service';
-
-  import type { UploadProps, UploadFile } from 'ant-design-vue';
-
-  import AddressParse from 'zh-address-parse';
-  import PcasCode from '@/utils/pcas-code';
-  import { PhoneNumberValidation, EmailValidation } from '@/utils/validate';
 
   import { services } from '@/utils/request';
-  import { extendAreaCode, collapseAreaCode } from './columns';
 
   const [messageApi, contextHolder] = message.useMessage();
   const formRef = ref();
@@ -133,49 +124,34 @@
       required: true,
     },
   });
-  const path = ref('./');
-  const token = ref('');
-  const loading = ref(true);
-
-  const openModal = async (record: {
-    id: any;
-    title?: any;
-    code_hs?: any;
-    image_list?: any;
-    description?: any;
-    detail_info?: any;
-    price?: any;
-    types?: any;
-    universal?: any;
-  }) => {
-    // showing dialog
-    visible.value = true;
-
-    loading.value = true;
-    try {
-      const data = await services.netDiskManageControllerToken();
-      console.log(data, 'data===');
-      token.value = data.data.token;
-      // hide loading
-      loading.value = false;
-    } catch (err) {
-      visible.value = false;
-    }
-    visible.value = true;
-    modalTtitle.value = `${record.id ? '编辑' : '新增'}`;
-    if (record.id) {
-      const { id, title, code_hs, image_list, description, detail_info, price, types, universal } =
-        record;
-      formState.id = id;
-      formState.title = title;
-      formState.code_hs = code_hs;
-      formState.image_list = image_list;
-      formState.description = description;
-      formState.detail_info = detail_info;
-      formState.price = price;
-      formState.types = types;
-      formState.universal = universal;
-    }
+  const openModal = async () => {
+    // // showing dialog
+    // visible.value = true;
+    // loading.value = true;
+    // try {
+    //   const data = await services.netDiskManageControllerToken();
+    //   console.log(data, 'data===');
+    //   token.value = data.data.token;
+    //   // hide loading
+    //   loading.value = false;
+    // } catch (err) {
+    //   visible.value = false;
+    // }
+    // visible.value = true;
+    // modalTtitle.value = `${record.id ? '编辑' : '新增'}`;
+    // if (record.id) {
+    //   const { id, title, code_hs, image_list, description, detail_info, price, types, universal } =
+    //     record;
+    //   formState.id = id;
+    //   formState.title = title;
+    //   formState.code_hs = code_hs;
+    //   formState.image_list = image_list;
+    //   formState.description = description;
+    //   formState.detail_info = detail_info;
+    //   formState.price = price;
+    //   formState.types = types;
+    //   formState.universal = universal;
+    // }
   };
   const onClear = () => {
     formRef.value.resetFields();

@@ -1,7 +1,6 @@
 import { Image, ImagePreviewGroup } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import type { UpdateGoodsDto } from '@/service';
-import type { ImageFileType } from '@/components/business/image-upload';
 
 export type TableListItem = UpdateGoodsDto;
 export type TableColumnItem = TableColumn<TableListItem>;
@@ -30,6 +29,7 @@ export const baseColumns: TableColumnItem[] = [
     align: 'center',
     sorter: true,
     resizable: true,
+    hideInSearch: true,
     formItemProps: {
       defaultValue: '',
       required: false,
@@ -42,7 +42,7 @@ export const baseColumns: TableColumnItem[] = [
     align: 'center',
     resizable: true,
     customRender: ({ record }) => {
-      const imageList = (record.image_list || []) as unknown as ImageFileType[];
+      const { image_list: imageList = [] } = record as any;
       return (
         <ImagePreviewGroup>
           {imageList.map((item) => (
@@ -53,7 +53,7 @@ export const baseColumns: TableColumnItem[] = [
     },
   },
   {
-    title: '商品描述',
+    title: '商品说明',
     dataIndex: 'description',
     align: 'center',
     sorter: true,
@@ -65,7 +65,7 @@ export const baseColumns: TableColumnItem[] = [
   },
   {
     title: '详细信息',
-    dataIndex: 'detail_info',
+    dataIndex: 'remark',
     align: 'center',
     sorter: true,
     resizable: true,
@@ -75,26 +75,21 @@ export const baseColumns: TableColumnItem[] = [
     },
   },
   {
-    title: '商品价格',
-    dataIndex: 'price',
+    title: '商品类型和价格',
+    dataIndex: 'type_price',
     align: 'center',
     sorter: true,
     resizable: true,
     hideInSearch: true,
-    formItemProps: {
-      defaultValue: 0,
-      required: false,
-    },
-  },
-  {
-    title: '商品类型',
-    dataIndex: 'types',
-    align: 'center',
-    sorter: true,
-    resizable: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
+    customRender: ({ record }) => {
+      const { type_price: typePrice = [] } = record as any;
+      return (
+        <div>
+          {typePrice.map(({ type, price }) => {
+            return <div>{`${type}:${price}元`}</div>;
+          })}
+        </div>
+      );
     },
   },
   {
@@ -105,6 +100,10 @@ export const baseColumns: TableColumnItem[] = [
     formItemProps: {
       defaultValue: '',
       required: false,
+    },
+    customRender: ({ record }) => {
+      const { universal } = record as any;
+      return universal ? '是' : '否';
     },
   },
 ];

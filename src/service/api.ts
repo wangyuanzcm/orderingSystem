@@ -201,53 +201,11 @@ export interface CreateDeptDto {
  */
 export interface CreateGoodsDto {
   /**
-   * 商品名称
-   * @type {string}
+   * 扩展字段
+   * @type {object}
    * @memberof CreateGoodsDto
    */
-  title: string;
-  /**
-   * 商品编号
-   * @type {string}
-   * @memberof CreateGoodsDto
-   */
-  code_hs: string;
-  /**
-   * 商品图片
-   * @type {Array<string>}
-   * @memberof CreateGoodsDto
-   */
-  image_list: Array<string>;
-  /**
-   * 商品描述
-   * @type {string}
-   * @memberof CreateGoodsDto
-   */
-  description: string;
-  /**
-   * 详细信息
-   * @type {string}
-   * @memberof CreateGoodsDto
-   */
-  detail_info: string;
-  /**
-   * 商品价格
-   * @type {number}
-   * @memberof CreateGoodsDto
-   */
-  price: number;
-  /**
-   * 商品类型
-   * @type {string}
-   * @memberof CreateGoodsDto
-   */
-  types: string;
-  /**
-   * 是否为定制商品
-   * @type {string}
-   * @memberof CreateGoodsDto
-   */
-  universal: string;
+  ext: object;
 }
 /**
  *
@@ -1197,41 +1155,11 @@ export interface PageSearchGoodsDto {
    */
   page?: number;
   /**
-   * 商品名称
-   * @type {string}
+   * 扩展字段
+   * @type {object}
    * @memberof PageSearchGoodsDto
    */
-  title: string;
-  /**
-   * 商品编号
-   * @type {string}
-   * @memberof PageSearchGoodsDto
-   */
-  code_hs: string;
-  /**
-   * 商品描述
-   * @type {string}
-   * @memberof PageSearchGoodsDto
-   */
-  description: string;
-  /**
-   * 详细信息
-   * @type {string}
-   * @memberof PageSearchGoodsDto
-   */
-  detail_info: string;
-  /**
-   * 商品类型
-   * @type {string}
-   * @memberof PageSearchGoodsDto
-   */
-  types: string;
-  /**
-   * 是否为定制商品
-   * @type {string}
-   * @memberof PageSearchGoodsDto
-   */
-  universal: string;
+  ext: object;
 }
 /**
  *
@@ -2300,53 +2228,11 @@ export interface UpdateDeptDto {
  */
 export interface UpdateGoodsDto {
   /**
-   * 商品名称
-   * @type {string}
+   * 扩展字段
+   * @type {object}
    * @memberof UpdateGoodsDto
    */
-  title: string;
-  /**
-   * 商品编号
-   * @type {string}
-   * @memberof UpdateGoodsDto
-   */
-  code_hs: string;
-  /**
-   * 商品图片
-   * @type {Array<string>}
-   * @memberof UpdateGoodsDto
-   */
-  image_list: Array<string>;
-  /**
-   * 商品描述
-   * @type {string}
-   * @memberof UpdateGoodsDto
-   */
-  description: string;
-  /**
-   * 详细信息
-   * @type {string}
-   * @memberof UpdateGoodsDto
-   */
-  detail_info: string;
-  /**
-   * 商品价格
-   * @type {number}
-   * @memberof UpdateGoodsDto
-   */
-  price: number;
-  /**
-   * 商品类型
-   * @type {string}
-   * @memberof UpdateGoodsDto
-   */
-  types: string;
-  /**
-   * 是否为定制商品
-   * @type {string}
-   * @memberof UpdateGoodsDto
-   */
-  universal: string;
+  ext: object;
   /**
    * 商品ID
    * @type {number}

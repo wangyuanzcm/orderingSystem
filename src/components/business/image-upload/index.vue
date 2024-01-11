@@ -19,20 +19,17 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch } from 'vue';
+  import { ref, watch, onMounted } from 'vue';
   import * as qiniu from 'qiniu-js/esm';
   import { PlusOutlined } from '@ant-design/icons-vue';
   import { Upload, message } from 'ant-design-vue';
   import type { PropType } from 'vue';
 
   import type { UploadProps } from 'ant-design-vue';
+  import { services } from '@/utils/request';
 
-  // 接收父组件传递的参数
+  // // 接收父组件传递的参数
   const props = defineProps({
-    token: {
-      type: String,
-      default: '',
-    },
     value: {
       type: Object as PropType<UploadProps['fileList']>,
       default() {
@@ -48,14 +45,29 @@
   const previewVisible = ref(false);
   const previewImage = ref('');
   const previewTitle = ref('');
+  const token = ref('');
+
+  const getToken = async () => {
+    const data = await services.netDiskManageControllerToken();
+    console.log(data, 'data===');
+    token.value = data.data.token;
+  };
+  onMounted(() => {
+    // 在组件挂载后执行的操作
+    console.log('Component mounted');
+    getToken();
+    // 可以执行其他操作，如发送请求、订阅事件等
+  });
+
   // 文件对象列表
   const fileList = ref<UploadProps['fileList']>(props.value);
-  console.log(props.value, 'props---');
+  console.log(props, 'props---');
   watch(props, (newProps) => {
+    console.log(newProps.value, 'newProps');
     fileList.value = newProps.value;
   });
   // 定义表单改变的方法
-  const emit = defineEmits(['update:value']);
+  const emit = defineEmits(['update:value', 'change']);
   // 设置只上传png图片
   const beforeUpload: UploadProps['beforeUpload'] = (file) => {
     const isPNG = file.type === 'image/png';
@@ -84,7 +96,7 @@
   const uploadFile: UploadProps['customRequest'] = (param) => {
     // onProgress, onError, onSuccess
     const { file, onProgress, onError, onSuccess } = param;
-    const observable = qiniu.upload(file as File, `${(file as File).name}`, props.token);
+    const observable = qiniu.upload(file as File, `${(file as File).name}`, token.value);
     observable.subscribe({
       next: (res) => {
         console.log(res, 'res====');
@@ -108,6 +120,8 @@
           };
         });
         emit('update:value', fileValue);
+        //change事件是为了保障在formily组件中可以正常使用
+        emit('change', fileValue);
       },
     });
   };
