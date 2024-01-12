@@ -1,8 +1,7 @@
 <template>
   <div>
-    <FormModal ref="formModalRef" :dynamicTable="dynamicTableInstance"></FormModal>
     <!-- <context-holder /> -->
-    <Card title="购物车">
+    <Card title="订单列表">
       <DynamicTable
         size="small"
         row-key="id"
@@ -11,10 +10,7 @@
         :columns="columns"
       >
         <template #toolbar>
-          <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openFormModal({})">
-            继续下单
-          </a-button>
-          <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openFormModal({})">
+          <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="handleExport">
             导出订单
           </a-button>
         </template>
@@ -24,45 +20,64 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, type Ref } from 'vue';
+  import { useRouter } from 'vue-router';
 
+  import { find } from 'lodash-es';
   import { message, Card } from 'ant-design-vue';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
-  import FormModal from './form-modal.vue';
-  import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { services } from '@/utils/request';
-  import { collapseAreaCode } from './columns';
 
-  type FormModalProps = typeof FormModal;
-
+  const router = useRouter();
   const [DynamicTable, dynamicTableInstance] = useTable();
 
-  const formModalRef: Ref<FormModalProps | null> = ref(null); // 定义子组件引用
-  const openFormModal = (record: Partial<TableListItem>) => {
-    if (formModalRef.value) {
-      formModalRef.value?.openModal(record);
-    }
-  };
   const delRowConfirm = async (record: TableListItem) => {
     // await deleteMenu({ menuId: record.id });
-    const result = await services.receiverControllerDelete({ ids: [record.id] });
+    await services.orderControllerDelete({ ids: [record.id] });
+    message.success('删除成功');
     dynamicTableInstance.reload();
   };
+  // 处理订单导出事件
+  const handleExport = () => {};
   /**
    * 加载列表数据
    * @param params
    */
   const loadTableData = async (params): Promise<API.TableListResult> => {
-    const { area_code = [], ...others } = params;
-    const result = await services.receiverControllerPage({
-      area_code: collapseAreaCode(area_code),
-      ...others,
+    const {
+      receiver_id: receiverId,
+      status,
+      goods_type: goodsType,
+      goods_name: goodsName,
+      limit,
+      page,
+      ...others
+    } = params;
+    const result = await services.orderControllerPage({
+      receiver_id: receiverId,
+      status,
+      goods_type: goodsType,
+      goods_name: goodsName,
+      limit,
+      page,
+      ext: { ...others },
     });
+
     console.log(result, 'result');
     // @ts-ignore
     const { list, pagination } = result.data;
-
-    return { list, pagination };
+    const reveiveIds = list.map((i) => i.receiver_id);
+    const { data: receiverInfoData } = await services.receiverControllerSearch({ ids: reveiveIds });
+    const listData = list.map((i) => {
+      const receiverInfo = find(receiverInfoData as unknown as Array<Record<string, any>>, {
+        id: i.receiver_id,
+      });
+      return {
+        ...i,
+        receiverInfo,
+      };
+    });
+    return { list: listData, pagination };
   };
 
   const columns: TableColumnItem[] = [
@@ -82,9 +97,12 @@
             effect: 'disable',
           },
           onClick: () => {
-            if (formModalRef.value) {
-              formModalRef.value?.openModal(record);
-            }
+            const { id, goods_id: goodsId, receiverInfo } = record;
+            console.log(record, 'id, goods_id');
+            router.push({
+              path: '/buygoods',
+              query: { orderId: id, id: goodsId, receiverNickName: receiverInfo.nick_name },
+            });
           },
         },
         {
@@ -94,9 +112,9 @@
             effect: 'disable',
           },
           onClick: () => {
-            if (formModalRef.value) {
-              formModalRef.value?.openModal(record);
-            }
+            // if (formModalRef.value) {
+            //   formModalRef.value?.openModal(record);
+            // }
           },
         },
         {

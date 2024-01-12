@@ -35,8 +35,8 @@
             <FormButtonGroup align-form-item style="display: flex; width: 100%">
               <a-space size="middle">
                 <Reset danger @click="handleReset">重置</Reset>
-                <Submit @submit="(values) => handleOrder(values, 10)">加入购物车</Submit>
-                <Submit @submit="(values) => handleOrder(values, 20)">生成订单</Submit>
+                <Submit @submit="(values) => handleOrder(values, status)">更新订单</Submit>
+                <Submit @submit="(values) => handleOrder(values, status + 10)">状态流转</Submit>
               </a-space>
             </FormButtonGroup>
           </a-space>
@@ -82,6 +82,7 @@
   const query = ref({}) as Record<string, any>;
   const goodsInfo = ref<any>(null);
   const total = ref(0);
+  const status = ref(0);
   const goodsInfoForm = createForm();
   const goodsBuyForm = createForm({
     effects() {
@@ -197,7 +198,7 @@
     total.value = 0;
   };
   //处理购物车事件
-  const handleOrder = async (values, status: number) => {
+  const handleOrder = async (values, status) => {
     console.log(values, 'valuse====');
     const { id, title } = goodsInfo.value;
     const {
@@ -250,12 +251,14 @@
     console.log(result, 'result===');
     const {
       ext = {},
+      status: _status,
       goods_type: goodsType,
       goods_price: goodsPrice,
       receiver_id: receiverId,
       goods_count: goodsCount,
       coupon,
     } = result.data || {};
+    status.value = _status;
     const values = {
       ...ext,
       goods_type: goodsType,

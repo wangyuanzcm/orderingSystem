@@ -1,90 +1,27 @@
 import type { TableColumn } from '@/components/core/dynamic-table';
-import type { UpdateReceiverDto } from '@/service';
-import PcasCode from '@/utils/pcas-code';
+import type { PageSearchOrderInfo, UpdateReceiverDto } from '@/service';
 
-export type TableListItem = UpdateReceiverDto;
+export type TableListItem = PageSearchOrderInfo & { receiverInfo: UpdateReceiverDto };
 export type TableColumnItem = TableColumn<TableListItem>;
 
-export const extendAreaCode = (areaCode) =>
-  areaCode ? [areaCode.slice(0, 2), areaCode.slice(0, 4), areaCode] : [];
-
-export const collapseAreaCode = (areaCode) =>
-  areaCode.length > 0 ? areaCode[areaCode.length - 1] : '';
-
+enum STATUS_MAP {
+  PENDINGPAYMENT = 10,
+  PENDINGREVIEW = 20,
+  WAITFORORDER = 30,
+  AWAITINGSHIPMENT = 40,
+  SHIPPED = 50,
+}
+export const statusType = {
+  [STATUS_MAP.PENDINGPAYMENT]: '待付款',
+  [STATUS_MAP.PENDINGREVIEW]: '待审核',
+  [STATUS_MAP.WAITFORORDER]: '待下单',
+  [STATUS_MAP.AWAITINGSHIPMENT]: '代发货',
+  [STATUS_MAP.SHIPPED]: '已发货',
+};
 export const baseColumns: TableColumnItem[] = [
   {
     title: '商品名称',
-    dataIndex: 'nick_name',
-    align: 'center',
-    sorter: true,
-    resizable: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
-    },
-  },
-  {
-    title: '商品编号',
-    dataIndex: 'code_hs',
-    align: 'center',
-    sorter: true,
-    resizable: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
-    },
-  },
-  {
-    title: '商品图片',
-    dataIndex: 'name',
-    align: 'center',
-    resizable: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
-    },
-  },
-  {
-    title: '商品描述',
-    dataIndex: 'area_code',
-    align: 'center',
-    sorter: true,
-    resizable: true,
-    formItemProps: {
-      defaultValue: [],
-      required: false,
-      component: 'Cascader',
-      componentProps: () => ({
-        filterOption: false,
-        fieldNames: { label: 'name', value: 'code' },
-        options: PcasCode,
-        // placeholder: '请选择所在地区',
-        onChange(value: string) {
-          console.log('onChange', value);
-          return collapseAreaCode(value);
-        },
-      }),
-    },
-    customRender: ({ record }) => {
-      const { province, city, area } = record;
-      return `${province}-${city}-${area}`;
-    },
-  },
-  {
-    title: '详细信息',
-    dataIndex: 'detail',
-    hideInSearch: true,
-    align: 'center',
-    sorter: true,
-    resizable: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
-    },
-  },
-  {
-    title: '商品价格',
-    dataIndex: 'phone',
+    dataIndex: 'goods_name',
     align: 'center',
     sorter: true,
     resizable: true,
@@ -95,7 +32,7 @@ export const baseColumns: TableColumnItem[] = [
   },
   {
     title: '商品类型',
-    dataIndex: 'email',
+    dataIndex: 'goods_type',
     align: 'center',
     sorter: true,
     resizable: true,
@@ -105,14 +42,36 @@ export const baseColumns: TableColumnItem[] = [
     },
   },
   {
-    title: '是否为定制商品',
-    dataIndex: 'remark',
+    title: '收件人id',
+    dataIndex: 'receiver_id',
     align: 'center',
-    hideInSearch: true,
     resizable: true,
     formItemProps: {
       defaultValue: '',
       required: false,
+    },
+    customRender: ({ record }) => {
+      const { receiverInfo } = record;
+      if (receiverInfo) {
+        console.log(receiverInfo, 'receiverInfo');
+        return `${receiverInfo.nick_name ? receiverInfo.nick_name : ''}`;
+      }
+      return '';
+    },
+  },
+  {
+    title: '订单状态',
+    dataIndex: 'status',
+    align: 'center',
+    resizable: true,
+    formItemProps: {
+      defaultValue: '',
+      required: false,
+    },
+    customRender: ({ record }) => {
+      const { status } = record;
+
+      return statusType[status];
     },
   },
 ];

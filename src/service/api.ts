@@ -1553,6 +1553,30 @@ export interface PageSearchorderDto {
    */
   page?: number;
   /**
+   * 商品名称
+   * @type {string}
+   * @memberof PageSearchorderDto
+   */
+  goods_name: string;
+  /**
+   * 商品类型
+   * @type {string}
+   * @memberof PageSearchorderDto
+   */
+  goods_type: string;
+  /**
+   * 收件人id
+   * @type {number}
+   * @memberof PageSearchorderDto
+   */
+  receiver_id: number;
+  /**
+   * 订单状态
+   * @type {number}
+   * @memberof PageSearchorderDto
+   */
+  status: number;
+  /**
    * 扩展字段
    * @type {object}
    * @memberof PageSearchorderDto
