@@ -289,6 +289,67 @@ export interface CreateMenuDto {
 /**
  *
  * @export
+ * @interface CreateOrderDto
+ */
+export interface CreateOrderDto {
+  /**
+   * 商品id
+   * @type {number}
+   * @memberof CreateOrderDto
+   */
+  goods_id: number;
+  /**
+   * 商品名称
+   * @type {string}
+   * @memberof CreateOrderDto
+   */
+  goods_name: string;
+  /**
+   * 商品类型
+   * @type {string}
+   * @memberof CreateOrderDto
+   */
+  goods_type: string;
+  /**
+   * 商品价格
+   * @type {number}
+   * @memberof CreateOrderDto
+   */
+  goods_price: number;
+  /**
+   * 商品数量
+   * @type {number}
+   * @memberof CreateOrderDto
+   */
+  goods_count: number;
+  /**
+   * 收件人id
+   * @type {number}
+   * @memberof CreateOrderDto
+   */
+  receiver_id: number;
+  /**
+   * 订单状态
+   * @type {number}
+   * @memberof CreateOrderDto
+   */
+  status: number;
+  /**
+   * 优惠券信息
+   * @type {string}
+   * @memberof CreateOrderDto
+   */
+  coupon: string;
+  /**
+   * 扩展字段
+   * @type {object}
+   * @memberof CreateOrderDto
+   */
+  ext: object;
+}
+/**
+ *
+ * @export
  * @interface CreateParamConfigDto
  */
 export interface CreateParamConfigDto {
@@ -670,6 +731,19 @@ export interface DeleteUserDto {
    * @memberof DeleteUserDto
    */
   userIds: Array<number>;
+}
+/**
+ *
+ * @export
+ * @interface DeleteorderDto
+ */
+export interface DeleteorderDto {
+  /**
+   * 需要删除的用户ID列表
+   * @type {Array<number>}
+   * @memberof DeleteorderDto
+   */
+  ids: Array<number>;
 }
 /**
  *
@@ -1195,6 +1269,85 @@ export interface PageSearchGoodsInfo {
 /**
  *
  * @export
+ * @interface PageSearchOrderInfo
+ */
+export interface PageSearchOrderInfo {
+  /**
+   *
+   * @type {string}
+   * @memberof PageSearchOrderInfo
+   */
+  createdAt: string;
+  /**
+   *
+   * @type {string}
+   * @memberof PageSearchOrderInfo
+   */
+  updatedAt: string;
+  /**
+   *
+   * @type {number}
+   * @memberof PageSearchOrderInfo
+   */
+  id: number;
+  /**
+   * 扩展字段
+   * @type {object}
+   * @memberof PageSearchOrderInfo
+   */
+  ext: object;
+  /**
+   * 商品id
+   * @type {number}
+   * @memberof PageSearchOrderInfo
+   */
+  goods_id: number;
+  /**
+   * 商品名称
+   * @type {string}
+   * @memberof PageSearchOrderInfo
+   */
+  goods_name: string;
+  /**
+   * 商品类型
+   * @type {string}
+   * @memberof PageSearchOrderInfo
+   */
+  goods_type: string;
+  /**
+   * 商品价格
+   * @type {number}
+   * @memberof PageSearchOrderInfo
+   */
+  goods_price: number;
+  /**
+   * 商品数量
+   * @type {number}
+   * @memberof PageSearchOrderInfo
+   */
+  goods_count: number;
+  /**
+   * 收件人id
+   * @type {number}
+   * @memberof PageSearchOrderInfo
+   */
+  receiver_id: number;
+  /**
+   * 订单状态
+   * @type {number}
+   * @memberof PageSearchOrderInfo
+   */
+  status: number;
+  /**
+   * 优惠券信息
+   * @type {string}
+   * @memberof PageSearchOrderInfo
+   */
+  coupon: string;
+}
+/**
+ *
+ * @export
  * @interface PageSearchReceiverDto
  */
 export interface PageSearchReceiverDto {
@@ -1380,6 +1533,31 @@ export interface PageSearchUserInfo {
    * @memberof PageSearchUserInfo
    */
   roleNames: Array<string>;
+}
+/**
+ *
+ * @export
+ * @interface PageSearchorderDto
+ */
+export interface PageSearchorderDto {
+  /**
+   * 当前页包含数量
+   * @type {number}
+   * @memberof PageSearchorderDto
+   */
+  limit?: number;
+  /**
+   * 当前页包含数量
+   * @type {number}
+   * @memberof PageSearchorderDto
+   */
+  page?: number;
+  /**
+   * 扩展字段
+   * @type {object}
+   * @memberof PageSearchorderDto
+   */
+  ext: object;
 }
 /**
  *
@@ -2355,6 +2533,73 @@ export interface UpdateMenuDto {
    * @memberof UpdateMenuDto
    */
   menuId: number;
+}
+/**
+ *
+ * @export
+ * @interface UpdateOrderDto
+ */
+export interface UpdateOrderDto {
+  /**
+   * 商品id
+   * @type {number}
+   * @memberof UpdateOrderDto
+   */
+  goods_id: number;
+  /**
+   * 商品名称
+   * @type {string}
+   * @memberof UpdateOrderDto
+   */
+  goods_name: string;
+  /**
+   * 商品类型
+   * @type {string}
+   * @memberof UpdateOrderDto
+   */
+  goods_type: string;
+  /**
+   * 商品价格
+   * @type {number}
+   * @memberof UpdateOrderDto
+   */
+  goods_price: number;
+  /**
+   * 商品数量
+   * @type {number}
+   * @memberof UpdateOrderDto
+   */
+  goods_count: number;
+  /**
+   * 收件人id
+   * @type {number}
+   * @memberof UpdateOrderDto
+   */
+  receiver_id: number;
+  /**
+   * 订单状态
+   * @type {number}
+   * @memberof UpdateOrderDto
+   */
+  status: number;
+  /**
+   * 优惠券信息
+   * @type {string}
+   * @memberof UpdateOrderDto
+   */
+  coupon: string;
+  /**
+   * 扩展字段
+   * @type {object}
+   * @memberof UpdateOrderDto
+   */
+  ext: object;
+  /**
+   * 订单ID
+   * @type {number}
+   * @memberof UpdateOrderDto
+   */
+  id: number;
 }
 /**
  *
@@ -3886,6 +4131,278 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
+     * @summary 新增订单
+     * @param {CreateOrderDto} createOrderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerAdd: async (
+      createOrderDto: CreateOrderDto,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'createOrderDto' is not null or undefined
+      assertParamExists('orderControllerAdd', 'createOrderDto', createOrderDto);
+      const localVarPath = `/admin/order/add`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication admin required
+      await setApiKeyToObject(localVarHeaderParameter, 'Authorization', configuration);
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        createOrderDto,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary 获取当前用户购物车的全部订单列表
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerCart: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/admin/order/cart`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication admin required
+      await setApiKeyToObject(localVarHeaderParameter, 'Authorization', configuration);
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary 根据ID删除订单
+     * @param {DeleteorderDto} deleteorderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerDelete: async (
+      deleteorderDto: DeleteorderDto,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'deleteorderDto' is not null or undefined
+      assertParamExists('orderControllerDelete', 'deleteorderDto', deleteorderDto);
+      const localVarPath = `/admin/order/delete`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication admin required
+      await setApiKeyToObject(localVarHeaderParameter, 'Authorization', configuration);
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        deleteorderDto,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary 查询订单信息
+     * @param {number} id 订单ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerInfo: async (
+      id: number,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('orderControllerInfo', 'id', id);
+      const localVarPath = `/admin/order/info`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication admin required
+      await setApiKeyToObject(localVarHeaderParameter, 'Authorization', configuration);
+
+      if (id !== undefined) {
+        localVarQueryParameter['id'] = id;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary 分页获取订单列表
+     * @param {PageSearchorderDto} pageSearchorderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerPage: async (
+      pageSearchorderDto: PageSearchorderDto,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'pageSearchorderDto' is not null or undefined
+      assertParamExists('orderControllerPage', 'pageSearchorderDto', pageSearchorderDto);
+      const localVarPath = `/admin/order/page`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication admin required
+      await setApiKeyToObject(localVarHeaderParameter, 'Authorization', configuration);
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        pageSearchorderDto,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary 更新订单信息
+     * @param {UpdateOrderDto} updateOrderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerUpdate: async (
+      updateOrderDto: UpdateOrderDto,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'updateOrderDto' is not null or undefined
+      assertParamExists('orderControllerUpdate', 'updateOrderDto', updateOrderDto);
+      const localVarPath = `/admin/order/update`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication admin required
+      await setApiKeyToObject(localVarHeaderParameter, 'Authorization', configuration);
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        updateOrderDto,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
      * @summary 新增收件人
      * @param {CreateReceiverDto} createReceiverDto
      * @param {*} [options] Override http request option.
@@ -4019,6 +4536,54 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
       };
       localVarRequestOptions.data = serializeDataIfNeeded(
         pageSearchReceiverDto,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary 根据ID获取收件人
+     * @param {DeleteReceiverDto} deleteReceiverDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    receiverControllerSearch: async (
+      deleteReceiverDto: DeleteReceiverDto,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'deleteReceiverDto' is not null or undefined
+      assertParamExists('receiverControllerSearch', 'deleteReceiverDto', deleteReceiverDto);
+      const localVarPath = `/admin/receiver/search`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication admin required
+      await setApiKeyToObject(localVarHeaderParameter, 'Authorization', configuration);
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        deleteReceiverDto,
         localVarRequestOptions,
         configuration,
       );
@@ -6618,6 +7183,150 @@ export const DefaultApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary 新增订单
+     * @param {CreateOrderDto} createOrderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async orderControllerAdd(
+      createOrderDto: CreateOrderDto,
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.orderControllerAdd(
+        createOrderDto,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath = operationServerMap['DefaultApi.orderControllerAdd']?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     *
+     * @summary 获取当前用户购物车的全部订单列表
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async orderControllerCart(
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageSearchOrderInfo>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.orderControllerCart(options);
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath = operationServerMap['DefaultApi.orderControllerCart']?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     *
+     * @summary 根据ID删除订单
+     * @param {DeleteorderDto} deleteorderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async orderControllerDelete(
+      deleteorderDto: DeleteorderDto,
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.orderControllerDelete(
+        deleteorderDto,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath =
+        operationServerMap['DefaultApi.orderControllerDelete']?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     *
+     * @summary 查询订单信息
+     * @param {number} id 订单ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async orderControllerInfo(
+      id: number,
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageSearchOrderInfo>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.orderControllerInfo(id, options);
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath = operationServerMap['DefaultApi.orderControllerInfo']?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     *
+     * @summary 分页获取订单列表
+     * @param {PageSearchorderDto} pageSearchorderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async orderControllerPage(
+      pageSearchorderDto: PageSearchorderDto,
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.orderControllerPage(
+        pageSearchorderDto,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath = operationServerMap['DefaultApi.orderControllerPage']?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     *
+     * @summary 更新订单信息
+     * @param {UpdateOrderDto} updateOrderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async orderControllerUpdate(
+      updateOrderDto: UpdateOrderDto,
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.orderControllerUpdate(
+        updateOrderDto,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath =
+        operationServerMap['DefaultApi.orderControllerUpdate']?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     *
      * @summary 新增收件人
      * @param {CreateReceiverDto} createReceiverDto
      * @param {*} [options] Override http request option.
@@ -6686,6 +7395,32 @@ export const DefaultApiFp = function (configuration?: Configuration) {
       const index = configuration?.serverIndex ?? 0;
       const operationBasePath =
         operationServerMap['DefaultApi.receiverControllerPage']?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     *
+     * @summary 根据ID获取收件人
+     * @param {DeleteReceiverDto} deleteReceiverDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async receiverControllerSearch(
+      deleteReceiverDto: DeleteReceiverDto,
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.receiverControllerSearch(
+        deleteReceiverDto,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath =
+        operationServerMap['DefaultApi.receiverControllerSearch']?.[index]?.url;
       return (axios, basePath) =>
         createRequestFunction(
           localVarAxiosArgs,
@@ -8114,6 +8849,75 @@ export const DefaultApiFactory = function (
     },
     /**
      *
+     * @summary 新增订单
+     * @param {CreateOrderDto} createOrderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerAdd(createOrderDto: CreateOrderDto, options?: any): AxiosPromise<void> {
+      return localVarFp
+        .orderControllerAdd(createOrderDto, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @summary 获取当前用户购物车的全部订单列表
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerCart(options?: any): AxiosPromise<PageSearchOrderInfo> {
+      return localVarFp.orderControllerCart(options).then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @summary 根据ID删除订单
+     * @param {DeleteorderDto} deleteorderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerDelete(deleteorderDto: DeleteorderDto, options?: any): AxiosPromise<void> {
+      return localVarFp
+        .orderControllerDelete(deleteorderDto, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @summary 查询订单信息
+     * @param {number} id 订单ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerInfo(id: number, options?: any): AxiosPromise<PageSearchOrderInfo> {
+      return localVarFp
+        .orderControllerInfo(id, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @summary 分页获取订单列表
+     * @param {PageSearchorderDto} pageSearchorderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerPage(pageSearchorderDto: PageSearchorderDto, options?: any): AxiosPromise<void> {
+      return localVarFp
+        .orderControllerPage(pageSearchorderDto, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @summary 更新订单信息
+     * @param {UpdateOrderDto} updateOrderDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    orderControllerUpdate(updateOrderDto: UpdateOrderDto, options?: any): AxiosPromise<void> {
+      return localVarFp
+        .orderControllerUpdate(updateOrderDto, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
      * @summary 新增收件人
      * @param {CreateReceiverDto} createReceiverDto
      * @param {*} [options] Override http request option.
@@ -8152,6 +8956,21 @@ export const DefaultApiFactory = function (
     ): AxiosPromise<void> {
       return localVarFp
         .receiverControllerPage(pageSearchReceiverDto, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @summary 根据ID获取收件人
+     * @param {DeleteReceiverDto} deleteReceiverDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    receiverControllerSearch(
+      deleteReceiverDto: DeleteReceiverDto,
+      options?: any,
+    ): AxiosPromise<void> {
+      return localVarFp
+        .receiverControllerSearch(deleteReceiverDto, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -9058,6 +9877,92 @@ export class DefaultApi extends BaseAPI {
 
   /**
    *
+   * @summary 新增订单
+   * @param {CreateOrderDto} createOrderDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public orderControllerAdd(createOrderDto: CreateOrderDto, options?: RawAxiosRequestConfig) {
+    return DefaultApiFp(this.configuration)
+      .orderControllerAdd(createOrderDto, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary 获取当前用户购物车的全部订单列表
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public orderControllerCart(options?: RawAxiosRequestConfig) {
+    return DefaultApiFp(this.configuration)
+      .orderControllerCart(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary 根据ID删除订单
+   * @param {DeleteorderDto} deleteorderDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public orderControllerDelete(deleteorderDto: DeleteorderDto, options?: RawAxiosRequestConfig) {
+    return DefaultApiFp(this.configuration)
+      .orderControllerDelete(deleteorderDto, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary 查询订单信息
+   * @param {number} id 订单ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public orderControllerInfo(id: number, options?: RawAxiosRequestConfig) {
+    return DefaultApiFp(this.configuration)
+      .orderControllerInfo(id, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary 分页获取订单列表
+   * @param {PageSearchorderDto} pageSearchorderDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public orderControllerPage(
+    pageSearchorderDto: PageSearchorderDto,
+    options?: RawAxiosRequestConfig,
+  ) {
+    return DefaultApiFp(this.configuration)
+      .orderControllerPage(pageSearchorderDto, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary 更新订单信息
+   * @param {UpdateOrderDto} updateOrderDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public orderControllerUpdate(updateOrderDto: UpdateOrderDto, options?: RawAxiosRequestConfig) {
+    return DefaultApiFp(this.configuration)
+      .orderControllerUpdate(updateOrderDto, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
    * @summary 新增收件人
    * @param {CreateReceiverDto} createReceiverDto
    * @param {*} [options] Override http request option.
@@ -9104,6 +10009,23 @@ export class DefaultApi extends BaseAPI {
   ) {
     return DefaultApiFp(this.configuration)
       .receiverControllerPage(pageSearchReceiverDto, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary 根据ID获取收件人
+   * @param {DeleteReceiverDto} deleteReceiverDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public receiverControllerSearch(
+    deleteReceiverDto: DeleteReceiverDto,
+    options?: RawAxiosRequestConfig,
+  ) {
+    return DefaultApiFp(this.configuration)
+      .receiverControllerSearch(deleteReceiverDto, options)
       .then((request) => request(this.axios, this.basePath));
   }
 

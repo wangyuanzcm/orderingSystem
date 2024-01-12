@@ -21,7 +21,7 @@
           <a-divider />
           <a-space
             size="middle"
-            style=" display: flex; justify-content: space-between;width: 60%; margin: 0 auto"
+            style="display: flex; justify-content: space-between; width: 60%; margin: 0 auto"
           >
             <a-statistic
               :value="total"
@@ -36,7 +36,7 @@
               <a-space size="middle">
                 <Reset danger @click="handleReset">重置</Reset>
                 <Submit @submit="handleJoinCart">加入购物车</Submit>
-                <Submit @submit="handleJoinOrder">直接下单</Submit>
+                <Submit @submit="handleJoinOrder">生成订单</Submit>
               </a-space>
             </FormButtonGroup>
           </a-space>
@@ -67,13 +67,14 @@
   import { action } from '@formily/reactive';
   import { debounce } from 'lodash-es';
   import { Card } from 'ant-design-vue';
-
   import {
     GoodsDetailSchema,
     GoodsBuyDefaultSchema,
     GoodsBuyDefineSchema,
     CouponOptions,
   } from './config';
+  import { countSingeMoney } from '@/utils/transform';
+
   import { ImageUpload as Upload } from '@/components/business/image-upload';
   import { services } from '@/utils/request';
   const route = useRoute();
@@ -86,7 +87,7 @@
     effects() {
       // 根据商品类型实时设置价格
       const handlePriceChange = (field) => {
-        goodsBuyForm.setFieldState('price', (state) => {
+        goodsBuyForm.setFieldState('goods_price', (state) => {
           //对于初始联动，如果字段找不到，setFieldState会将更新推入更新队列，直到字段出现再执行操作
           state.value = field.value;
         });
@@ -95,41 +96,13 @@
       const handlecount = () => {
         const values = goodsBuyForm.getFormState().values;
         console.log(values, 'values===');
-        const { price, count, coupon } = values;
-        if (price && count) {
-          console.log(price * count, 'count----');
-          let _total = price * count;
-          if (coupon && coupon.length > 0) {
-            // 优惠券按照类型排序
-            const _coupon = coupon.sort((a, b) => {
-              if (a.startsWith('*') && !b.startsWith('*')) {
-                return -1; // a 较小，排在前面
-              } else if (!a.startsWith('*') && b.startsWith('*')) {
-                return 1; // b 较小，排在前面
-              } else {
-                return 0; // 保持原有顺序
-              }
-            });
-            // 计算所有优惠券情况下的总价
-            while (_coupon.length > 0) {
-              const c = _coupon.pop();
-              if (c.startsWith('*')) {
-                _total = _total * Number(c);
-              }
-              if (c.startsWith('-')) {
-                _total = _total - Number(c);
-              }
-            }
-
-            total.value = _total;
-          }
-        }
+        total.value = countSingeMoney(values);
       };
-      onFieldValueChange('type', (field) => {
+      onFieldValueChange('goods_type', (field) => {
         handlePriceChange(field);
         handlecount();
       });
-      onFieldValueChange('count', () => {
+      onFieldValueChange('goods_count', () => {
         handlecount();
       });
       onFieldValueChange('coupon', () => {
@@ -214,7 +187,7 @@
       label: option.nick_name,
       value: option.id,
     }));
-    goodsBuyForm.setFieldState('receiverInfo', (state) => {
+    goodsBuyForm.setFieldState('receiver_id', (state) => {
       console.log(state, 'state==');
       //对于初始联动，如果字段找不到，setFieldState会将更新推入更新队列，直到字段出现再执行操作
       state.dataSource = options;
@@ -224,9 +197,65 @@
     total.value = 0;
   };
   //加入购物车
-  const handleJoinCart = () => {};
+  const handleJoinCart = async (values) => {
+    const { id, title, type_price: typePrice = [] } = goodsInfo.value;
+    const {
+      goods_type: goodsType,
+      goods_price: goodsPrice,
+      goods_count: goodsCount,
+      coupon,
+      receiver_id: receiverId,
+      ...others
+    } = values;
+    const type = (typePrice || []).filter((i) => i.price === goodsType)[0].type;
+
+    const params = {
+      goods_type: type,
+      goods_price: goodsPrice,
+      goods_count: goodsCount,
+      receiver_id: receiverId,
+      coupon: coupon.join(','),
+      status: 10,
+      goods_id: id,
+      goods_name: title,
+      ext: { ...others },
+    };
+    const result = await services.orderControllerAdd(params);
+    console.log(result, 'result');
+    // router.push({
+    //   path: '/cart',
+    // });
+  };
   //直接下单
-  const handleJoinOrder = () => {};
+  const handleJoinOrder = async (values) => {
+    const { id, title, type_price: typePrice = [] } = goodsInfo.value;
+    const {
+      goods_type: goodsType,
+      goods_price: goodsPrice,
+      goods_count: goodsCount,
+      coupon,
+      receiver_id: receiverId,
+      ...others
+    } = values;
+    const type = (typePrice || []).filter((i) => i.price === goodsType)[0].type;
+
+    const params = {
+      goods_type: type,
+      goods_price: goodsPrice,
+      goods_count: goodsCount,
+      receiver_id: receiverId,
+      coupon: coupon.join(','),
+      status: 20,
+      goods_id: id,
+      goods_name: title,
+      ext: { ...others },
+    };
+    const result = await services.orderControllerAdd(params);
+    console.log(result, 'result');
+    // router.push({
+    //   path: '/cart',
+    // });
+  };
 
   // 获取商品详细信息
   const getGoodsInfo = async (id) => {

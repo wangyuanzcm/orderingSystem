@@ -345,7 +345,7 @@ export const GoodsDetailSchema = {
 export const GoodsBuyDefaultSchema = {
   type: 'object',
   properties: {
-    type: {
+    goods_type: {
       title: '商品类型',
       'x-decorator': 'FormItem',
       'x-component': 'Select',
@@ -356,12 +356,13 @@ export const GoodsBuyDefaultSchema = {
         },
       },
       'x-decorator-props': {},
-      name: 'type',
+      name: 'goods_type',
       'x-designable-id': 'zxqpxduv59l',
       'x-index': 0,
       'x-reactions': ['{{useAsyncDataSource(loadData)}}'],
+      required: true,
     },
-    price: {
+    goods_price: {
       type: 'string',
       title: '商品价格(单位:元）',
       'x-decorator': 'FormItem',
@@ -373,10 +374,10 @@ export const GoodsBuyDefaultSchema = {
       'x-decorator-props': {},
       'x-designable-id': '8varz6rxr2q',
       'x-index': 1,
-      name: 'price',
+      name: 'goods_price',
       'x-pattern': 'readPretty',
     },
-    count: {
+    goods_count: {
       type: 'number',
       title: '购买数量',
       'x-decorator': 'FormItem',
@@ -384,11 +385,12 @@ export const GoodsBuyDefaultSchema = {
       'x-validator': 'integer',
       'x-component-props': {},
       'x-decorator-props': {},
-      name: 'count',
+      name: 'goods_count',
       'x-designable-id': 'w4yqp7gc0ks',
       'x-index': 2,
+      required: true,
     },
-    receiverInfo: {
+    receiver_id: {
       title: '收件人信息',
       'x-decorator': 'FormItem',
       'x-component': 'Select',
@@ -401,11 +403,11 @@ export const GoodsBuyDefaultSchema = {
           width: '100%',
         },
       },
-      // 'x-reactions': ['{{getReceiverInfo(handleReceiverInfoSearch)}}'],
       'x-decorator-props': {},
       'x-designable-id': '0j5xazu4egd',
       'x-index': 3,
-      name: 'receiverInfo',
+      name: 'receiver_id',
+      required: true,
     },
     coupon: {
       title: '优惠券',
@@ -424,6 +426,7 @@ export const GoodsBuyDefaultSchema = {
       'x-designable-id': 'uas13op066m',
       'x-index': 4,
       name: 'coupon',
+      required: true,
     },
   },
   'x-designable-id': '6q156kbks3m',

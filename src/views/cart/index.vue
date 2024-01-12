@@ -1,117 +1,134 @@
 <template>
   <div>
-    <FormModal ref="formModalRef" :dynamicTable="dynamicTableInstance"></FormModal>
     <!-- <context-holder /> -->
-    <Card title="购物车">
-      <DynamicTable
-        size="small"
-        row-key="id"
-        bordered
-        :data-request="loadTableData"
-        :columns="columns"
-      >
-        <template #toolbar>
-          <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openFormModal({})">
+    <Card title="购物车" :bordered="false">
+      <template #extra>
+        <a-space size="middle">
+          <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="handleJumpGoods()">
             继续购买
           </a-button>
-          <a-button type="success" :disabled="!$auth('sys.menu.add')" @click="openFormModal({})">
-            下单
+          <a-button type="success" :disabled="!$auth('sys.menu.add')" @click="handleOrder()">
+            一键下单
           </a-button>
+        </a-space>
+      </template>
+      <a-card
+        v-for="receiverId in Object.keys(receiverInfo)"
+        :key="receiverId"
+        :hoverable="true"
+        type="inner"
+        :title="receiverInfo[receiverId].nick_name"
+        style="margin-top: 30px; background-color: #fff"
+      >
+        <template #extra>
+          <a-space size="middle">
+            <a-statistic
+              :value="countMoney(orderInfo[receiverId])"
+              :precision="2"
+              suffix="元"
+              prefix="小计："
+              :value-style="{ fontSize: '14px' }"
+              style="margin-right: auto"
+            >
+            </a-statistic>
+          </a-space>
         </template>
-      </DynamicTable>
+        <template #actions>
+          <div style="display: flex; flex-direction: row; justify-content: end">
+            <a-space size="middle">
+              <a-button
+                type="success"
+                style="margin-right: 20px"
+                :disabled="!$auth('sys.menu.add')"
+                @click="handleOrder()"
+              >
+                下单
+              </a-button>
+            </a-space></div
+          >
+        </template>
+        <a-list item-layout="horizontal" :data-source="orderInfo[receiverId]">
+          <template #renderItem="{ item }">
+            <a-list-item>
+              <template #actions>
+                <a-space size="middle">
+                  <a-button
+                    type="danger"
+                    :disabled="!$auth('sys.menu.add')"
+                    @click="handleDeleteOrder(item)"
+                  >
+                    删除
+                  </a-button>
+                  <a-button :disabled="!$auth('sys.menu.add')" @click="handleOrderEdit(item)">
+                    编辑
+                  </a-button>
+                </a-space>
+              </template>
+              <a-list-item-meta :description="item.goods_type">
+                <template #title>
+                  <a href="https://www.antdv.com/">{{ item.goods_name }}</a>
+                </template>
+              </a-list-item-meta>
+              <div>
+                <a-space size="middle">
+                  <a-typography-text> 商品价格：{{ item.goods_price }}元</a-typography-text>
+                  <a-typography-text> 商品数量：{{ item.goods_count }}元</a-typography-text>
+                </a-space>
+              </div>
+            </a-list-item>
+          </template>
+        </a-list>
+      </a-card>
     </Card>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, type Ref } from 'vue';
-
-  import { message, Card } from 'ant-design-vue';
-  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
-  import FormModal from './form-modal.vue';
-  import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
+  import { onMounted, ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { groupBy, keyBy } from 'lodash-es';
+  import { Card } from 'ant-design-vue';
+  import type { PageSearchOrderInfo } from '@/service';
   import { services } from '@/utils/request';
-  import { collapseAreaCode } from './columns';
+  import { countMoney } from '@/utils/transform';
+  const router = useRouter();
+  const orderInfo = ref({});
+  const receiverInfo = ref({});
 
-  type FormModalProps = typeof FormModal;
-
-  const [DynamicTable, dynamicTableInstance] = useTable();
-
-  const formModalRef: Ref<FormModalProps | null> = ref(null); // 定义子组件引用
-  const openFormModal = (record: Partial<TableListItem>) => {
-    if (formModalRef.value) {
-      formModalRef.value?.openModal(record);
-    }
-  };
-  const delRowConfirm = async (record: TableListItem) => {
-    // await deleteMenu({ menuId: record.id });
-    const result = await services.receiverControllerDelete({ ids: [record.id] });
-    dynamicTableInstance.reload();
-  };
-  /**
-   * 加载列表数据
-   * @param params
-   */
-  const loadTableData = async (params): Promise<API.TableListResult> => {
-    const { area_code = [], ...others } = params;
-    const result = await services.receiverControllerPage({
-      area_code: collapseAreaCode(area_code),
-      ...others,
+  const handleJumpGoods = () => {
+    router.push({
+      path: '/goods',
     });
-    console.log(result, 'result');
-    // @ts-ignore
-    const { list, pagination } = result.data;
-
-    return { list, pagination };
   };
+  const handleOrderEdit = (orderInfo: PageSearchOrderInfo) => {
+    const { id, goods_id: goodsId } = orderInfo;
+    router.push({
+      path: '/buygoods',
+      query: { orderId: id, id: goodsId },
+    });
+  };
+  const handleOrder = () => {};
 
-  const columns: TableColumnItem[] = [
-    ...baseColumns,
-    {
-      title: '操作',
-      width: 350,
-      dataIndex: 'ACTION',
-      hideInSearch: true,
-      align: 'center',
-      fixed: 'right',
-      actions: ({ record }) => [
-        {
-          label: '编辑',
-          auth: {
-            perm: 'sys.menu.update',
-            effect: 'disable',
-          },
-          onClick: () => {
-            if (formModalRef.value) {
-              formModalRef.value?.openModal(record);
-            }
-          },
-        },
-        {
-          label: '查看详情',
-          auth: {
-            perm: 'sys.menu.update',
-            effect: 'disable',
-          },
-          onClick: () => {
-            if (formModalRef.value) {
-              formModalRef.value?.openModal(record);
-            }
-          },
-        },
-        {
-          label: '删除',
-          type: 'default',
-          danger: true,
-          auth: 'sys.menu.delete',
-          popConfirm: {
-            title: '你确定要删除吗？',
-            onConfirm: () => delRowConfirm(record),
-          },
-        },
-      ],
-    },
-  ];
+  const handleDeleteOrder = async (orderInfo: PageSearchOrderInfo) => {
+    await services.orderControllerDelete({ ids: [orderInfo.id] });
+    // 刷新页面
+    getorderControllerCart();
+  };
+  // 获取购物车详细信息
+  const getorderControllerCart = async () => {
+    const result = await services.orderControllerCart();
+    const data = result.data as unknown as PageSearchOrderInfo[];
+    // ts-ignore
+    const reveiveIds = (data || []).map((i) => i.receiver_id);
+    const { data: receiverInfoData } = await services.receiverControllerSearch({ ids: reveiveIds });
+    orderInfo.value = groupBy(data, 'receiver_id');
+    receiverInfo.value = keyBy(receiverInfoData as unknown as Array<Record<string, any>>, 'id');
+    console.log(receiverInfo, orderInfo, '===');
+  };
+  // 获取页面参数
+  onMounted(() => {
+    getorderControllerCart();
+  });
 </script>
 
 <style lang="less" scoped></style>
