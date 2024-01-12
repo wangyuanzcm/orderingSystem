@@ -25,7 +25,6 @@ export const countSingeMoney = (goodsInfo) => {
       // 计算所有优惠券情况下的总价
       while (_coupon.length > 0) {
         const c = _coupon.pop();
-        console.log(c, Number(c.slice(1)), 'ccccc');
         if (c.startsWith('*')) {
           _total = _total * Number(c.slice(1));
         }
@@ -36,6 +35,7 @@ export const countSingeMoney = (goodsInfo) => {
 
       return _total;
     }
+    return _total;
   }
   return 0;
 };

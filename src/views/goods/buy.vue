@@ -35,8 +35,8 @@
             <FormButtonGroup align-form-item style="display: flex; width: 100%">
               <a-space size="middle">
                 <Reset danger @click="handleReset">重置</Reset>
-                <Submit @submit="handleJoinCart">加入购物车</Submit>
-                <Submit @submit="handleJoinOrder">生成订单</Submit>
+                <Submit @submit="(values) => handleOrder(values, 10)">加入购物车</Submit>
+                <Submit @submit="(values) => handleOrder(values, 20)">生成订单</Submit>
               </a-space>
             </FormButtonGroup>
           </a-space>
@@ -66,7 +66,7 @@
   // @ts-ignore
   import { action } from '@formily/reactive';
   import { debounce } from 'lodash-es';
-  import { Card } from 'ant-design-vue';
+  import { Card, message } from 'ant-design-vue';
   import {
     GoodsDetailSchema,
     GoodsBuyDefaultSchema,
@@ -89,13 +89,13 @@
       const handlePriceChange = (field) => {
         goodsBuyForm.setFieldState('goods_price', (state) => {
           //对于初始联动，如果字段找不到，setFieldState会将更新推入更新队列，直到字段出现再执行操作
-          state.value = field.value;
+          const { dataSource, value } = field;
+          state.value = dataSource.filter((i) => i.value === value)[0].price;
         });
       };
       // 根据选项实时计算总价
       const handlecount = () => {
         const values = goodsBuyForm.getFormState().values;
-        console.log(values, 'values===');
         total.value = countSingeMoney(values);
       };
       onFieldValueChange('goods_type', (field) => {
@@ -144,7 +144,8 @@
     const typeOptions = (typePrice || []).map((i) => {
       return {
         label: i.type,
-        value: i.price,
+        value: i.type,
+        price: i.price,
       };
     });
     return typeOptions;
@@ -188,7 +189,6 @@
       value: option.id,
     }));
     goodsBuyForm.setFieldState('receiver_id', (state) => {
-      console.log(state, 'state==');
       //对于初始联动，如果字段找不到，setFieldState会将更新推入更新队列，直到字段出现再执行操作
       state.dataSource = options;
     });
@@ -196,62 +196,43 @@
   const handleReset = () => {
     total.value = 0;
   };
-  //加入购物车
-  const handleJoinCart = async (values) => {
-    const { id, title, type_price: typePrice = [] } = goodsInfo.value;
+  //处理购物车事件
+  const handleOrder = async (values, status: number) => {
+    console.log(values, 'valuse====');
+    const { id, title } = goodsInfo.value;
     const {
       goods_type: goodsType,
       goods_price: goodsPrice,
       goods_count: goodsCount,
-      coupon,
+      coupon = [],
       receiver_id: receiverId,
       ...others
     } = values;
-    const type = (typePrice || []).filter((i) => i.price === goodsType)[0].type;
 
     const params = {
-      goods_type: type,
-      goods_price: goodsPrice,
-      goods_count: goodsCount,
-      receiver_id: receiverId,
-      coupon: coupon.join(','),
-      status: 10,
-      goods_id: id,
-      goods_name: title,
-      ext: { ...others },
-    };
-    const result = await services.orderControllerAdd(params);
-    console.log(result, 'result');
-    // router.push({
-    //   path: '/cart',
-    // });
-  };
-  //直接下单
-  const handleJoinOrder = async (values) => {
-    const { id, title, type_price: typePrice = [] } = goodsInfo.value;
-    const {
       goods_type: goodsType,
       goods_price: goodsPrice,
       goods_count: goodsCount,
-      coupon,
-      receiver_id: receiverId,
-      ...others
-    } = values;
-    const type = (typePrice || []).filter((i) => i.price === goodsType)[0].type;
-
-    const params = {
-      goods_type: type,
-      goods_price: goodsPrice,
-      goods_count: goodsCount,
-      receiver_id: receiverId,
+      receiver_id: receiverId.value ? receiverId.value : receiverId,
       coupon: coupon.join(','),
-      status: 20,
+      status,
       goods_id: id,
       goods_name: title,
       ext: { ...others },
     };
-    const result = await services.orderControllerAdd(params);
-    console.log(result, 'result');
+    if (query.value.orderId) {
+      const result = await services.orderControllerUpdate({
+        ...params,
+        id: Number(query.value.orderId),
+      });
+      console.log(result, 'result');
+      message.success('订单更新成功');
+    } else {
+      const result = await services.orderControllerAdd(params);
+      console.log(result, 'result');
+      message.success('订单新增成功');
+    }
+
     // router.push({
     //   path: '/cart',
     // });
@@ -263,10 +244,40 @@
     goodsInfo.value = { ...result.data.ext, id };
     goodsInfoForm.setValues(result.data.ext);
   };
+  //获取订单数据，用于表单回填
+  const getOrderInfo = async (id, receiverNickName) => {
+    const result = await services.orderControllerInfo(id);
+    console.log(result, 'result===');
+    const {
+      ext = {},
+      goods_type: goodsType,
+      goods_price: goodsPrice,
+      receiver_id: receiverId,
+      goods_count: goodsCount,
+      coupon,
+    } = result.data || {};
+    const values = {
+      ...ext,
+      goods_type: goodsType,
+      goods_price: goodsPrice,
+      goods_count: goodsCount,
+      receiver_id: {
+        label: receiverNickName,
+        value: receiverId,
+      },
+      coupon: coupon.split(','),
+    };
+    goodsBuyForm.setValues({ ...values });
+    total.value = countSingeMoney({ goodsPrice, goodsCount, coupon: coupon.split(',') });
+  };
   // 获取页面参数
   onMounted(() => {
     query.value = route.query;
     console.log(query.value, 'query.value');
-    getGoodsInfo(query.value.id);
+    const { id, orderId, receiverNickName } = query.value;
+    getGoodsInfo(id);
+    if (orderId) {
+      getOrderInfo(orderId, receiverNickName);
+    }
   });
 </script>

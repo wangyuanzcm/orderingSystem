@@ -7,7 +7,11 @@
           <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="handleJumpGoods()">
             继续购买
           </a-button>
-          <a-button type="success" :disabled="!$auth('sys.menu.add')" @click="handleOrder()">
+          <a-button
+            type="success"
+            :disabled="!$auth('sys.menu.add')"
+            @click="handleOrder(orderIds)"
+          >
             一键下单
           </a-button>
         </a-space>
@@ -40,7 +44,7 @@
                 type="success"
                 style="margin-right: 20px"
                 :disabled="!$auth('sys.menu.add')"
-                @click="handleOrder()"
+                @click="handleOrder(orderInfo[receiverId].map((i) => i.id))"
               >
                 下单
               </a-button>
@@ -59,7 +63,10 @@
                   >
                     删除
                   </a-button>
-                  <a-button :disabled="!$auth('sys.menu.add')" @click="handleOrderEdit(item)">
+                  <a-button
+                    :disabled="!$auth('sys.menu.add')"
+                    @click="handleOrderEdit(item, receiverInfo[receiverId].nick_name)"
+                  >
                     编辑
                   </a-button>
                 </a-space>
@@ -72,7 +79,7 @@
               <div>
                 <a-space size="middle">
                   <a-typography-text> 商品价格：{{ item.goods_price }}元</a-typography-text>
-                  <a-typography-text> 商品数量：{{ item.goods_count }}元</a-typography-text>
+                  <a-typography-text> 商品数量：{{ item.goods_count }}</a-typography-text>
                 </a-space>
               </div>
             </a-list-item>
@@ -87,27 +94,35 @@
   import { onMounted, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { groupBy, keyBy } from 'lodash-es';
-  import { Card } from 'ant-design-vue';
+  import { Card, message } from 'ant-design-vue';
   import type { PageSearchOrderInfo } from '@/service';
   import { services } from '@/utils/request';
   import { countMoney } from '@/utils/transform';
   const router = useRouter();
   const orderInfo = ref({});
   const receiverInfo = ref({});
-
+  const orderIds = ref<number[]>([]);
   const handleJumpGoods = () => {
     router.push({
       path: '/goods',
     });
   };
-  const handleOrderEdit = (orderInfo: PageSearchOrderInfo) => {
+  const handleOrderEdit = (orderInfo: PageSearchOrderInfo, nickName = '') => {
     const { id, goods_id: goodsId } = orderInfo;
     router.push({
       path: '/buygoods',
-      query: { orderId: id, id: goodsId },
+      query: { orderId: id, id: goodsId, receiverNickName: nickName },
     });
   };
-  const handleOrder = () => {};
+  //更新订单状态
+  const handleOrder = async (ids: number[]) => {
+    await services.orderControllerUpdateStatus({
+      status: 20,
+      ids,
+    });
+    getorderControllerCart();
+    message.success('下单成功');
+  };
 
   const handleDeleteOrder = async (orderInfo: PageSearchOrderInfo) => {
     await services.orderControllerDelete({ ids: [orderInfo.id] });
@@ -120,10 +135,11 @@
     const data = result.data as unknown as PageSearchOrderInfo[];
     // ts-ignore
     const reveiveIds = (data || []).map((i) => i.receiver_id);
+    orderIds.value = (data || []).map((i) => i.id);
     const { data: receiverInfoData } = await services.receiverControllerSearch({ ids: reveiveIds });
     orderInfo.value = groupBy(data, 'receiver_id');
     receiverInfo.value = keyBy(receiverInfoData as unknown as Array<Record<string, any>>, 'id');
-    console.log(receiverInfo, orderInfo, '===');
+    console.log(orderIds.value, '===');
   };
   // 获取页面参数
   onMounted(() => {

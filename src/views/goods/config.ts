@@ -426,7 +426,6 @@ export const GoodsBuyDefaultSchema = {
       'x-designable-id': 'uas13op066m',
       'x-index': 4,
       name: 'coupon',
-      required: true,
     },
   },
   'x-designable-id': '6q156kbks3m',
