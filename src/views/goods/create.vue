@@ -69,7 +69,6 @@
         ext: value,
       });
     }
-
     form.reset();
     router.back();
   };

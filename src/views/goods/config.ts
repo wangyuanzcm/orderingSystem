@@ -394,10 +394,14 @@ export const GoodsBuyDefaultSchema = {
       'x-component': 'Select',
       'x-validator': [],
       'x-component-props': {
+        showSearch: true,
+        filterOption: false,
+        onSearch: '{{handleReceiverInfoSearch}}',
         style: {
-          width: '300px',
+          width: '100%',
         },
       },
+      // 'x-reactions': ['{{getReceiverInfo(handleReceiverInfoSearch)}}'],
       'x-decorator-props': {},
       'x-designable-id': '0j5xazu4egd',
       'x-index': 3,
@@ -415,23 +419,8 @@ export const GoodsBuyDefaultSchema = {
         },
       },
       'x-decorator-props': {},
-      enum: [
-        {
-          children: [],
-          label: '50元券',
-          value: '50',
-        },
-        {
-          children: [],
-          label: '30元券',
-          value: '30',
-        },
-        {
-          children: [],
-          label: '97折券',
-          value: '0.97',
-        },
-      ],
+      'x-reactions': ['{{getCouponOptions()}}'],
+
       'x-designable-id': 'uas13op066m',
       'x-index': 4,
       name: 'coupon',
@@ -446,3 +435,21 @@ export const GoodsBuyDefineSchema = {
   'x-designable-id': '6q156kbks3m',
   properties: {},
 };
+
+export const CouponOptions = [
+  {
+    children: [],
+    label: '50元券',
+    value: '-50',
+  },
+  {
+    children: [],
+    label: '30元券',
+    value: '-30',
+  },
+  {
+    children: [],
+    label: '97折券',
+    value: '*0.97',
+  },
+];
