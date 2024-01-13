@@ -6,6 +6,7 @@
         size="small"
         row-key="id"
         bordered
+        :row-selection="rowSelection"
         :data-request="loadTableData"
         :columns="columns"
       >
@@ -25,6 +26,7 @@
   import { find } from 'lodash-es';
   import { message, Card } from 'ant-design-vue';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
+  import type { TableProps } from 'ant-design-vue';
   import { useTable } from '@/components/core/dynamic-table';
   import { services } from '@/utils/request';
 
@@ -39,6 +41,16 @@
   };
   // 处理订单导出事件
   const handleExport = () => {};
+
+  const rowSelection: TableProps['rowSelection'] = {
+    onChange: (selectedRowKeys: string[], selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    // getCheckboxProps: (record) => ({
+    //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
+    //   name: record.name,
+    // }),
+  };
   /**
    * 加载列表数据
    * @param params

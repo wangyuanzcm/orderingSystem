@@ -4,7 +4,13 @@
     <div style="display: flex; width: 100%">
       <Card title="商品详情" style="width: 30%; margin-top: 20px">
         <Form :form="goodsInfoForm" v-bind="formLayout">
-          <SchemaField :schema="GoodsDetailSchema" />
+          <SchemaField
+            :schema="GoodsEditSchema"
+            :scope="{
+              viewPattern: 'readPretty',
+              Visible: 'none',
+            }"
+          />
         </Form>
       </Card>
       <div style="width: 60%">
@@ -16,6 +22,7 @@
               getCouponOptions,
               loadData,
               handleReceiverInfoSearch,
+              viewPattern,
             }"
           />
           <a-divider />
@@ -70,7 +77,7 @@
   import { debounce } from 'lodash-es';
   import { Card, message } from 'ant-design-vue';
   import {
-    GoodsDetailSchema,
+    GoodsEditSchema,
     GoodsBuyDefaultSchema,
     GoodsBuyDefineSchema,
     CouponOptions,
@@ -85,7 +92,7 @@
   const goodsInfo = ref<any>(null);
   const total = ref(0);
   const status = ref(10);
-
+  const viewPattern = ref('editable'); // editable/disabled
   const goodsInfoForm = createForm();
   const goodsBuyForm = createForm({
     effects() {
@@ -283,6 +290,8 @@
     const { id, orderId, receiverNickName } = query.value;
     getGoodsInfo(id);
     if (orderId) {
+      viewPattern.value = 'disabled';
+
       getOrderInfo(orderId, receiverNickName);
     }
   });

@@ -2,7 +2,13 @@
   <Card :title="`商品详情`" style="margin-top: 20px">
     <template #extra> <Button @click="router.back()">返回上一页</Button> </template>
     <Form :form="form" v-bind="formLayout">
-      <SchemaField :schema="GoodsDetailSchema" />
+      <SchemaField
+        :schema="GoodsEditSchema"
+        :scope="{
+          viewPattern: 'readPretty',
+          Visible: 'none',
+        }"
+      />
     </Form>
   </Card>
 </template>
@@ -21,7 +27,7 @@
     ArrayItems,
   } from '@formily/antdv';
   import { Card } from 'ant-design-vue';
-  import { GoodsDetailSchema } from './config';
+  import { GoodsEditSchema } from './config';
   import { services } from '@/utils/request';
   import { ImageUpload as Upload } from '@/components/business/image-upload';
   const route = useRoute();

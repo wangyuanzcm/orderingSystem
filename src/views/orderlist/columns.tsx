@@ -1,7 +1,10 @@
+import { debounce } from 'lodash-es';
 import { Space, Typography } from 'ant-design-vue';
 
 import type { TableColumn } from '@/components/core/dynamic-table';
 import type { PageSearchOrderInfo, UpdateReceiverDto } from '@/service';
+import { services } from '@/utils/request';
+
 export type TableListItem = PageSearchOrderInfo & { receiverInfo: UpdateReceiverDto };
 export type TableColumnItem = TableColumn<TableListItem>;
 
@@ -51,12 +54,41 @@ export const baseColumns: TableColumnItem[] = [
     formItemProps: {
       defaultValue: '',
       required: false,
+      component: 'Select',
+      componentProps: ({ formInstance, schema }) => ({
+        showSearch: true,
+        filterOption: false,
+        onSearch: debounce(async (keyword) => {
+          schema.loading = true;
+
+          const params = {
+            limit: 10,
+            page: 1,
+            nick_name: keyword,
+          };
+          const { data } = await services
+            .receiverControllerPage(params)
+            .finally(() => (schema.loading = false));
+          // @ts-ignore
+          const { list = [] } = data;
+          const options = (list || []).map((option) => ({
+            label: option.nick_name,
+            value: option.id,
+          }));
+          const newSchema = {
+            field: schema.field,
+            componentProps: {
+              options,
+            },
+          };
+          formInstance?.updateSchema([newSchema]);
+        }, 500),
+      }),
     },
     customRender: ({ record }) => {
       const { receiverInfo, receiver_id: receiverId } = record;
 
       if (receiverInfo) {
-        console.log(receiverInfo, 'receiverInfo');
         return (
           <Space direction="vertical ">
             <Paragraph copyable>{receiverInfo.nick_name}</Paragraph>
@@ -64,7 +96,7 @@ export const baseColumns: TableColumnItem[] = [
           </Space>
         );
       }
-      return `${receiverId}`;
+      return <Paragraph copyable>收件人id：{receiverId}</Paragraph>;
     },
   },
   {
@@ -75,6 +107,15 @@ export const baseColumns: TableColumnItem[] = [
     formItemProps: {
       defaultValue: '',
       required: false,
+      component: 'Select',
+      componentProps: () => ({
+        options: Object.keys(statusType).map((i) => {
+          return {
+            label: statusType[i],
+            value: i,
+          };
+        }),
+      }),
     },
     customRender: ({ record }) => {
       const { status } = record;
