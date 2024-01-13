@@ -35,7 +35,9 @@
             <FormButtonGroup align-form-item style="display: flex; width: 100%">
               <a-space size="middle">
                 <Reset danger @click="handleReset">重置</Reset>
-                <Submit @submit="(values) => handleOrder(values, status)">更新订单</Submit>
+                <Submit @submit="(values) => handleOrder(values, status)"
+                  >{{ query.orderId ? '更新' : '创建' }}订单</Submit
+                >
                 <Submit @submit="(values) => handleOrder(values, status + 10)">状态流转</Submit>
               </a-space>
             </FormButtonGroup>
@@ -82,7 +84,8 @@
   const query = ref({}) as Record<string, any>;
   const goodsInfo = ref<any>(null);
   const total = ref(0);
-  const status = ref(0);
+  const status = ref(10);
+
   const goodsInfoForm = createForm();
   const goodsBuyForm = createForm({
     effects() {

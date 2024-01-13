@@ -1,9 +1,11 @@
+import { Space, Typography } from 'ant-design-vue';
+
 import type { TableColumn } from '@/components/core/dynamic-table';
 import type { PageSearchOrderInfo, UpdateReceiverDto } from '@/service';
-
 export type TableListItem = PageSearchOrderInfo & { receiverInfo: UpdateReceiverDto };
 export type TableColumnItem = TableColumn<TableListItem>;
 
+const { Paragraph } = Typography;
 enum STATUS_MAP {
   PENDINGPAYMENT = 10,
   PENDINGREVIEW = 20,
@@ -51,12 +53,18 @@ export const baseColumns: TableColumnItem[] = [
       required: false,
     },
     customRender: ({ record }) => {
-      const { receiverInfo } = record;
+      const { receiverInfo, receiver_id: receiverId } = record;
+
       if (receiverInfo) {
         console.log(receiverInfo, 'receiverInfo');
-        return `${receiverInfo.nick_name ? receiverInfo.nick_name : ''}`;
+        return (
+          <Space direction="vertical ">
+            <Paragraph copyable>{receiverInfo.nick_name}</Paragraph>
+            <Paragraph copyable>收件人id：{receiverId}</Paragraph>
+          </Space>
+        );
       }
-      return '';
+      return `${receiverId}`;
     },
   },
   {

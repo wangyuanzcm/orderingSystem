@@ -112,9 +112,12 @@
             effect: 'disable',
           },
           onClick: () => {
-            // if (formModalRef.value) {
-            //   formModalRef.value?.openModal(record);
-            // }
+            const { id, goods_id: goodsId, receiverInfo } = record;
+            console.log(record, 'id, goods_id');
+            router.push({
+              path: '/buygoods',
+              query: { orderId: id, id: goodsId, receiverNickName: receiverInfo.nick_name },
+            });
           },
         },
         {
