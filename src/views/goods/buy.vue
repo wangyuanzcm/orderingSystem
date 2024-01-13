@@ -16,7 +16,7 @@
       <Card title="商品详情" style="width: 30%; margin-top: 20px">
         <Form :form="goodsInfoForm" v-bind="formLayout">
           <SchemaField
-            :schema="GoodsEditSchema"
+            :schema="mergeSchema(GoodsEditDefaultSchema, GoodsEditDefineSchema)"
             :scope="{
               viewPattern: 'readPretty',
               Visible: 'none',
@@ -27,7 +27,7 @@
       <div style="width: 60%">
         <Form :form="goodsBuyForm" v-bind="formLayout">
           <SchemaField
-            :schema="GoodsBuySchema"
+            :schema="mergeSchema(GoodsBuyDefaultSchema, GoodsBuyDefineSchema)"
             :scope="{
               useAsyncDataSource,
               getCouponOptions,
@@ -98,12 +98,13 @@
   import { debounce } from 'lodash-es';
   import { Card, message } from 'ant-design-vue';
   import {
-    GoodsEditSchema,
+    GoodsEditDefaultSchema,
+    GoodsEditDefineSchema,
     GoodsBuyDefaultSchema,
     GoodsBuyDefineSchema,
     CouponOptions,
   } from './config';
-  import { countSingeMoney } from '@/utils/transform';
+  import { countSingeMoney, mergeSchema } from '@/utils/transform';
 
   import { ImageUpload as Upload } from '@/components/business/image-upload';
   import { services } from '@/utils/request';
@@ -144,10 +145,6 @@
     },
   });
 
-  const GoodsBuySchema = {
-    ...GoodsBuyDefaultSchema,
-    properties: { ...GoodsBuyDefineSchema.properties, ...GoodsBuyDefaultSchema.properties },
-  };
   const formLayout = {
     labelCol: 6,
     wrapperCol: 12,

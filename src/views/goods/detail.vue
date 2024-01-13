@@ -3,7 +3,7 @@
     <template #extra> <Button @click="router.back()">返回上一页</Button> </template>
     <Form :form="form" v-bind="formLayout">
       <SchemaField
-        :schema="GoodsEditSchema"
+        :schema="mergeSchema(GoodsEditDefaultSchema, GoodsEditDefineSchema)"
         :scope="{
           viewPattern: 'readPretty',
           Visible: 'none',
@@ -27,9 +27,11 @@
     ArrayItems,
   } from '@formily/antdv';
   import { Card } from 'ant-design-vue';
-  import { GoodsEditSchema } from './config';
+  import { GoodsEditDefaultSchema, GoodsEditDefineSchema } from './config';
   import { services } from '@/utils/request';
   import { ImageUpload as Upload } from '@/components/business/image-upload';
+  import { mergeSchema } from '@/utils/transform';
+
   const route = useRoute();
   const router = useRouter();
   const query = ref({}) as Record<string, any>;

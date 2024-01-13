@@ -1,5 +1,5 @@
 // 商品编辑schema
-export const GoodsEditSchema = {
+export const GoodsEditDefaultSchema = {
   type: 'object',
   properties: {
     title: {
@@ -14,91 +14,6 @@ export const GoodsEditSchema = {
       'x-designable-id': 'thl1aattyh2',
       'x-index': 0,
       name: 'title',
-      'x-pattern': '{{viewPattern}}',
-    },
-    code_hs: {
-      type: 'string',
-      title: '商品编号',
-      'x-decorator': 'FormItem',
-      'x-component': 'Input',
-      'x-validator': [],
-      'x-component-props': {},
-      'x-decorator-props': {},
-      required: true,
-      'x-designable-id': '8r86z5hra3o',
-      'x-index': 1,
-      name: 'code_hs',
-      'x-pattern': '{{viewPattern}}',
-    },
-    image_list: {
-      type: 'Array<object>',
-      title: '商品图片',
-      'x-decorator': 'FormItem',
-      'x-component': 'Upload',
-      'x-component-props': {
-        textContent: '上传图片',
-        listType: 'picture-card',
-        accept: 'png',
-      },
-      'x-validator': [],
-      'x-decorator-props': {},
-      required: true,
-      'x-designable-id': '0qlktipeqtg',
-      'x-index': 2,
-      name: 'image_list',
-      'x-pattern': '{{viewPattern}}',
-    },
-    description: {
-      type: 'string',
-      title: '商品说明',
-      'x-decorator': 'FormItem',
-      'x-component': 'Input.TextArea',
-      'x-validator': [],
-      'x-component-props': {},
-      'x-decorator-props': {},
-      required: true,
-      'x-designable-id': 'vyu1lu31nbk',
-      'x-index': 3,
-      name: 'description',
-      'x-pattern': '{{viewPattern}}',
-    },
-    universal: {
-      type: 'string | number',
-      title: '是否为定制商品',
-      'x-decorator': 'FormItem',
-      'x-component': 'Radio.Group',
-      enum: [
-        {
-          children: [],
-          label: '是',
-          value: 1,
-        },
-        {
-          children: [],
-          label: '否',
-          value: 2,
-        },
-      ],
-      'x-validator': [],
-      'x-component-props': {},
-      'x-decorator-props': {},
-      required: true,
-      'x-designable-id': '4v93n2m4hd2',
-      'x-index': 5,
-      name: 'universal',
-      'x-pattern': '{{viewPattern}}',
-    },
-    remark: {
-      type: 'string',
-      title: '备注',
-      'x-decorator': 'FormItem',
-      'x-component': 'Input.TextArea',
-      'x-validator': [],
-      'x-component-props': {},
-      'x-decorator-props': {},
-      'x-designable-id': 'ykpi7u2xtwl',
-      'x-index': 6,
-      name: 'remark',
       'x-pattern': '{{viewPattern}}',
     },
     type_price: {
@@ -157,7 +72,7 @@ export const GoodsEditSchema = {
                 'x-pattern': '{{viewPattern}}',
               },
             },
-            'x-index': 0,
+            'x-index': 1,
           },
         },
       },
@@ -177,6 +92,93 @@ export const GoodsEditSchema = {
     },
   },
   'x-designable-id': '6q156kbks3m',
+};
+
+// 商品编辑schema
+export const GoodsEditDefineSchema = {
+  code_hs: {
+    type: 'string',
+    title: '商品编号',
+    'x-decorator': 'FormItem',
+    'x-component': 'Input',
+    'x-validator': [],
+    'x-component-props': {},
+    'x-decorator-props': {},
+    'x-designable-id': '8r86z5hra3o',
+    'x-index': 2,
+    name: 'code_hs',
+    'x-pattern': '{{viewPattern}}',
+  },
+  image_list: {
+    type: 'Array<object>',
+    title: '商品图片',
+    'x-decorator': 'FormItem',
+    'x-component': 'Upload',
+    'x-component-props': {
+      textContent: '上传图片',
+      listType: 'picture-card',
+      accept: 'png',
+    },
+    'x-validator': [],
+    'x-decorator-props': {},
+    required: true,
+    'x-designable-id': '0qlktipeqtg',
+    'x-index': 3,
+    name: 'image_list',
+    'x-pattern': '{{viewPattern}}',
+  },
+  description: {
+    type: 'string',
+    title: '商品说明',
+    'x-decorator': 'FormItem',
+    'x-component': 'Input.TextArea',
+    'x-validator': [],
+    'x-component-props': {},
+    'x-decorator-props': {},
+    'x-designable-id': 'vyu1lu31nbk',
+    'x-index': 4,
+    name: 'description',
+    'x-pattern': '{{viewPattern}}',
+  },
+  universal: {
+    type: 'string | number',
+    title: '是否为定制商品',
+    'x-decorator': 'FormItem',
+    'x-component': 'Radio.Group',
+    enum: [
+      {
+        children: [],
+        label: '是',
+        value: 1,
+      },
+      {
+        children: [],
+        label: '否',
+        value: 2,
+      },
+    ],
+    'x-validator': [],
+    'x-component-props': {},
+    'x-decorator-props': {},
+    required: true,
+    'x-designable-id': '4v93n2m4hd2',
+    'x-index': 5,
+    name: 'universal',
+    'x-pattern': '{{viewPattern}}',
+  },
+  remark: {
+    type: 'string',
+    title: '备注',
+    'x-decorator': 'FormItem',
+    'x-component': 'Input.TextArea',
+    'x-validator': [],
+    'x-component-props': {},
+    'x-decorator-props': {},
+    'x-designable-id': 'ykpi7u2xtwl',
+    'x-index': 6,
+    name: 'remark',
+    'x-pattern': '{{viewPattern}}',
+  },
 };
 
 // 商品购买固定schema
@@ -274,11 +276,7 @@ export const GoodsBuyDefaultSchema = {
 };
 
 // 商品购买自定义schema
-export const GoodsBuyDefineSchema = {
-  type: 'object',
-  'x-designable-id': '6q156kbks3m',
-  properties: {},
-};
+export const GoodsBuyDefineSchema = {};
 
 export const CouponOptions = [
   {

@@ -40,9 +40,9 @@
         <Avatar :src="userInfo.headImg" :alt="userInfo.name">{{ userInfo.name }}</Avatar>
         <template #overlay>
           <Menu>
-            <Menu.Item @click="$router.push({ name: 'account-about' })">
+            <!-- <Menu.Item @click="$router.push({ name: 'account-about' })">
               {{ $t('routes.account.about') }}
-            </Menu.Item>
+            </Menu.Item> -->
             <Menu.Item @click="$router.push({ name: 'account-settings' })">
               {{ $t('routes.account.settings') }}
             </Menu.Item>

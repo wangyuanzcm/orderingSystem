@@ -38,3 +38,12 @@ export const countSingeMoney = (goodsInfo) => {
   }
   return 0;
 };
+
+export const mergeSchema = (defaultSchema, defineSchema) => {
+  return {
+    ...defaultSchema,
+    properties: { ...defineSchema, ...defaultSchema.properties },
+  };
+};
+
+// :{properties:Record<string,any>}={}

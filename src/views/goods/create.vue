@@ -2,7 +2,7 @@
   <Card :title="`商品详情`" style="margin-top: 20px">
     <Form :form="form" v-bind="formLayout">
       <SchemaField
-        :schema="GoodsEditSchema"
+        :schema="mergeSchema(GoodsEditDefaultSchema, GoodsEditDefineSchema)"
         :scope="{
           viewPattern: 'editable',
           Visible: 'visible',
@@ -36,9 +36,11 @@
     ArrayItems,
   } from '@formily/antdv';
   import { Card } from 'ant-design-vue';
-  import { GoodsEditSchema } from './config';
+  import { GoodsEditDefaultSchema, GoodsEditDefineSchema } from './config';
   import { services } from '@/utils/request';
   import { ImageUpload as Upload } from '@/components/business/image-upload';
+  import { mergeSchema } from '@/utils/transform';
+
   const route = useRoute();
   const router = useRouter();
   const query = ref({}) as Record<string, any>;
