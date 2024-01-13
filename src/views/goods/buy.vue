@@ -1,6 +1,17 @@
 <template>
   <Card title="商品购买" style="margin-top: 20px" :loading="!goodsInfo">
-    <template #extra> <Button @click="router.back()">返回上一页</Button> </template>
+    <template #extra>
+      <a-space>
+        <Button
+          @click="
+            router.push({
+              path: '/cart',
+            })
+          "
+          >跳转购物车</Button
+        ><Button @click="router.back()">返回上一页</Button>
+      </a-space>
+    </template>
     <div style="display: flex; width: 100%">
       <Card title="商品详情" style="width: 30%; margin-top: 20px">
         <Form :form="goodsInfoForm" v-bind="formLayout">
@@ -41,11 +52,21 @@
             </a-statistic>
             <FormButtonGroup align-form-item style="display: flex; width: 100%">
               <a-space size="middle">
-                <Reset danger @click="handleReset">重置</Reset>
-                <Submit @submit="(values) => handleOrder(values, status)"
-                  >{{ query.orderId ? '更新' : '创建' }}订单</Submit
+                <Reset danger :disabled="viewPattern !== 'editable'" @click="handleReset"
+                  >重置</Reset
                 >
-                <Submit @submit="(values) => handleOrder(values, status + 10)">状态流转</Submit>
+                <Submit
+                  :disabled="viewPattern !== 'editable'"
+                  @submit="(values) => handleOrder(values, status)"
+                  >{{ query.orderId ? '更新' : '创建' }}订单（当前状态：{{
+                    statusType[status]
+                  }}）</Submit
+                >
+                <Submit
+                  :disabled="viewPattern !== 'editable'"
+                  @submit="(values) => handleOrder(values, status + 10)"
+                  >点击进入下个状态</Submit
+                >
               </a-space>
             </FormButtonGroup>
           </a-space>
@@ -86,6 +107,7 @@
 
   import { ImageUpload as Upload } from '@/components/business/image-upload';
   import { services } from '@/utils/request';
+  import { STATUS_MAP, statusType } from '@/views/orderlist/columns';
   const route = useRoute();
   const router = useRouter();
   const query = ref({}) as Record<string, any>;
@@ -209,7 +231,10 @@
   };
   //处理购物车事件
   const handleOrder = async (values, status) => {
-    console.log(values, 'valuse====');
+    if (status > STATUS_MAP.SHIPPED) {
+      message.warn('已经到最后一个阶段');
+      return;
+    }
     const { id, title } = goodsInfo.value;
     const {
       goods_type: goodsType,
@@ -287,10 +312,10 @@
   onMounted(() => {
     query.value = route.query;
     console.log(query.value, 'query.value');
-    const { id, orderId, receiverNickName } = query.value;
+    const { id, orderId, receiverNickName, pattern = 'editable' } = query.value;
     getGoodsInfo(id);
     if (orderId) {
-      viewPattern.value = 'disabled';
+      viewPattern.value = pattern;
 
       getOrderInfo(orderId, receiverNickName);
     }

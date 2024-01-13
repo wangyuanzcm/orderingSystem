@@ -1,7 +1,13 @@
 <template>
   <Card :title="`商品详情`" style="margin-top: 20px">
     <Form :form="form" v-bind="formLayout">
-      <SchemaField :schema="GoodsEditSchema" />
+      <SchemaField
+        :schema="GoodsEditSchema"
+        :scope="{
+          viewPattern: 'editable',
+          Visible: 'visible',
+        }"
+      />
       <FormButtonGroup align-form-item align="center">
         <a-space size="small">
           <Reset>重置</Reset>

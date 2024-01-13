@@ -9,7 +9,7 @@ export type TableListItem = PageSearchOrderInfo & { receiverInfo: UpdateReceiver
 export type TableColumnItem = TableColumn<TableListItem>;
 
 const { Paragraph } = Typography;
-enum STATUS_MAP {
+export enum STATUS_MAP {
   PENDINGPAYMENT = 10,
   PENDINGREVIEW = 20,
   WAITFORORDER = 30,

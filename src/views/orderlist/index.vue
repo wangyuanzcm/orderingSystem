@@ -21,35 +21,46 @@
 </template>
 
 <script lang="ts" setup>
+  import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
-
   import { find } from 'lodash-es';
   import { message, Card } from 'ant-design-vue';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import type { TableProps } from 'ant-design-vue';
   import { useTable } from '@/components/core/dynamic-table';
   import { services } from '@/utils/request';
+  import { exportDocx } from '@/utils/doc';
+  import { useUserStore } from '@/store/modules/user';
 
   const router = useRouter();
+  const userStore = useUserStore();
+
   const [DynamicTable, dynamicTableInstance] = useTable();
+  const exportList = ref<Array<any>>([]);
+  const userInfo = computed(() => userStore.userInfo);
 
   const delRowConfirm = async (record: TableListItem) => {
-    // await deleteMenu({ menuId: record.id });
     await services.orderControllerDelete({ ids: [record.id] });
     message.success('删除成功');
     dynamicTableInstance.reload();
   };
   // 处理订单导出事件
-  const handleExport = () => {};
+  const handleExport = () => {
+    if (exportList.value.length === 0) {
+      message.error('请选择需要导出的订单');
+      return;
+    }
+    const data = {
+      form: exportList.value,
+    };
+    exportDocx('/template.docx', data, `订单-${userInfo.value.name}-${Date.now()}.docx`);
+  };
 
   const rowSelection: TableProps['rowSelection'] = {
     onChange: (selectedRowKeys: string[], selectedRows) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      exportList.value = selectedRows;
     },
-    // getCheckboxProps: (record) => ({
-    //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    //   name: record.name,
-    // }),
   };
   /**
    * 加载列表数据
@@ -128,7 +139,12 @@
             console.log(record, 'id, goods_id');
             router.push({
               path: '/buygoods',
-              query: { orderId: id, id: goodsId, receiverNickName: receiverInfo.nick_name },
+              query: {
+                orderId: id,
+                id: goodsId,
+                receiverNickName: receiverInfo.nick_name,
+                pattern: 'disabled',
+              },
             });
           },
         },

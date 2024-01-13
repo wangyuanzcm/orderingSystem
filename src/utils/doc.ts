@@ -63,6 +63,7 @@ export const exportDocx = (tempDocxPath, data, fileName) => {
     const zip = new PizZip(content);
     // 创建并加载docxtemplater实例对象
     const doc = new docxtemplater().loadZip(zip).attachModule(imageModule).compile();
+
     doc
       .resolveData({ ...data.form })
       .then(() => {

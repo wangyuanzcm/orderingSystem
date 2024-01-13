@@ -1,7 +1,6 @@
 export const countMoney = (orderInfoList = []): number => {
   return orderInfoList.reduce((pre, cur: Record<string, any>) => {
     const { coupon, ...others } = cur;
-    console.log(cur, 'pre=====');
     console.log(countSingeMoney({ ...others, coupon: String(coupon).split(',') }));
     return pre + countSingeMoney({ ...others, coupon: String(coupon).split(',') });
   }, 0);
@@ -24,7 +23,7 @@ export const countSingeMoney = (goodsInfo) => {
       });
       // 计算所有优惠券情况下的总价
       while (_coupon.length > 0) {
-        const c = _coupon.pop();
+        const c = _coupon.shift();
         if (c.startsWith('*')) {
           _total = _total * Number(c.slice(1));
         }
