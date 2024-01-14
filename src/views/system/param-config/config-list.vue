@@ -1,5 +1,21 @@
 <template>
   <div>
+    <Alert message="提示信息" type="info" show-icon style="margin-bottom: 12px">
+      <template #description>
+        <Space>
+          <div>
+            <a class="text-blue-500" target="_blank" href="https://designable-antd.formilyjs.org/">
+              formily配置链接
+            </a>
+          </div>
+          <div>
+            <a class="text-blue-500" target="_blank" href="https://www.fulimama.com/json/">
+              json转字符串地址
+            </a>
+          </div>
+        </Space>
+      </template>
+    </Alert>
     <DynamicTable
       row-key="id"
       header-title="参数列表"
@@ -23,6 +39,8 @@
 </template>
 
 <script lang="ts" setup>
+  import { Alert, Space } from 'ant-design-vue';
+
   import { baseColumns } from './columns';
   import { getSchemas } from './formSchemas';
   import type { TableListItem, TableColumnItem } from './columns';

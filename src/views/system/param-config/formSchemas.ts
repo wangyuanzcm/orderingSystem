@@ -16,7 +16,7 @@ export const getSchemas = (configId = -1): FormSchema<API.CreateParamConfigParam
   },
   {
     field: 'value',
-    component: 'Input',
+    component: 'InputTextArea',
     label: '参数值',
     rules: [{ required: true, type: 'string' }],
   },
