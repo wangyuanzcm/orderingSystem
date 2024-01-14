@@ -29,12 +29,10 @@
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { useTable } from '@/components/core/dynamic-table';
   import { services } from '@/utils/request';
-  import { getConfig } from '@/core/permission';
-  import { decodeColumns } from '@/utils/transform';
 
   const router = useRouter();
+
   const [DynamicTable, dynamicTableInstance] = useTable();
-  const goodsEditDefineColumn = decodeColumns(getConfig('GOODS_EDIT_DEFINE_COLUMN'));
 
   const handleJumpCreatePage = () => {
     router.push({
@@ -65,7 +63,6 @@
 
   const columns: TableColumnItem[] = [
     ...baseColumns,
-    ...goodsEditDefineColumn,
     {
       title: '操作',
       width: 350,

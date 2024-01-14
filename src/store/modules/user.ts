@@ -3,7 +3,6 @@ import { useWsStore } from './ws';
 import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
 import { login } from '@/api/login';
-// import { login } from '@/api/system/param-config/model';
 import { getParamConfigList } from '@/api/system/param-config';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';

@@ -18,6 +18,7 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
     NProgress.start(); // start progress bar
     const userStore = useUserStore();
     const token = Storage.get(ACCESS_TOKEN_KEY, null);
+
     if (token) {
       if (to.name === LOGIN_NAME) {
         next({ path: defaultRoutePath });
