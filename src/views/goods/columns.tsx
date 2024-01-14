@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Image, ImagePreviewGroup } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import type { UpdateGoodsDto } from '@/service';
@@ -15,57 +16,6 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '商品名称',
     dataIndex: 'title',
-    align: 'center',
-    sorter: true,
-    resizable: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
-    },
-  },
-  {
-    title: '商品编号',
-    dataIndex: 'code_hs',
-    align: 'center',
-    sorter: true,
-    resizable: true,
-    hideInSearch: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
-    },
-  },
-  {
-    title: '商品图片',
-    dataIndex: 'image_list',
-    hideInSearch: true,
-    align: 'center',
-    resizable: true,
-    customRender: ({ record }) => {
-      const { image_list: imageList = [] } = record as any;
-      return (
-        <ImagePreviewGroup>
-          {imageList.map((item) => (
-            <Image width={100} src={item.url} />
-          ))}
-        </ImagePreviewGroup>
-      );
-    },
-  },
-  {
-    title: '商品说明',
-    dataIndex: 'description',
-    align: 'center',
-    sorter: true,
-    resizable: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
-    },
-  },
-  {
-    title: '详细信息',
-    dataIndex: 'remark',
     align: 'center',
     sorter: true,
     resizable: true,
@@ -93,17 +43,21 @@ export const baseColumns: TableColumnItem[] = [
     },
   },
   {
-    title: '是否为定制商品',
-    dataIndex: 'universal',
+    title: '商品图片',
+    dataIndex: 'image_list',
+    hideInSearch: true,
     align: 'center',
     resizable: true,
-    formItemProps: {
-      defaultValue: '',
-      required: false,
-    },
     customRender: ({ record }) => {
-      const { universal } = record as any;
-      return universal ? '是' : '否';
+      const { image_list: imageList = [] } = record as any;
+
+      return (
+        <ImagePreviewGroup>
+          {imageList.map(({ url }) => (
+            <Image width={100} src={url} />
+          ))}
+        </ImagePreviewGroup>
+      );
     },
   },
 ];
