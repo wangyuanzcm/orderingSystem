@@ -99,9 +99,9 @@
   import { Card, message } from 'ant-design-vue';
   import {
     GoodsEditDefaultSchema,
-    GoodsEditDefineSchema,
+    // GoodsEditDefineSchema,
     GoodsBuyDefaultSchema,
-    GoodsBuyDefineSchema,
+    // GoodsBuyDefineSchema,
     CouponOptions,
   } from './config';
   import { countSingeMoney, mergeSchema } from '@/utils/transform';
@@ -109,6 +109,10 @@
   import { ImageUpload as Upload } from '@/components/business/image-upload';
   import { services } from '@/utils/request';
   import { STATUS_MAP, statusType } from '@/views/orderlist/columns';
+  import { getConfig } from '@/core/permission';
+  const GoodsEditDefineSchema = JSON.parse(getConfig('GOODS_EDIT_DEFINE_SCHEMA'));
+  const GoodsBuyDefineSchema = JSON.parse(getConfig('GOODS_BUY_DEFINE_SCHEMA'));
+
   const route = useRoute();
   const router = useRouter();
   const query = ref({}) as Record<string, any>;

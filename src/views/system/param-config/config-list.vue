@@ -13,6 +13,11 @@
               json转字符串地址
             </a>
           </div>
+          <div>
+            <a class="text-blue-500" target="_blank" href="https://www.wp2.cn/js2json/">
+              js转json地址
+            </a>
+          </div>
         </Space>
       </template>
     </Alert>

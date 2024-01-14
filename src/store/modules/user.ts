@@ -3,6 +3,8 @@ import { useWsStore } from './ws';
 import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
 import { login } from '@/api/login';
+// import { login } from '@/api/system/param-config/model';
+import { getParamConfigList } from '@/api/system/param-config';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
 import { logout, getInfo, permmenu } from '@/api/account';
@@ -16,6 +18,7 @@ interface UserState {
   // like [ 'sys:user:add', 'sys:user:update' ]
   perms: string[];
   menus: RouteRecordRaw[];
+  config: Record<string, string>;
   userInfo: Partial<API.AdminUserInfo>;
 }
 
@@ -27,6 +30,7 @@ export const useUserStore = defineStore({
     avatar: '',
     perms: [],
     menus: [],
+    config: {},
     userInfo: {},
   }),
   getters: {
@@ -41,6 +45,9 @@ export const useUserStore = defineStore({
     },
     getPerms(): string[] {
       return this.perms;
+    },
+    getConfig(): Record<string, string> {
+      return this.config;
     },
   },
   actions: {
@@ -57,6 +64,22 @@ export const useUserStore = defineStore({
       this.token = token ?? '';
       const ex = 7 * 24 * 60 * 60 * 1000;
       Storage.set(ACCESS_TOKEN_KEY, this.token, ex);
+    },
+    /** 获取网站配置信息 */
+    async getConfigList() {
+      try {
+        const data = await getParamConfigList({
+          page: 1,
+          limit: 50,
+        });
+        const config = (data.list || []).reduce((pre, cur) => {
+          const { key, value } = cur;
+          return { ...pre, [key]: value };
+        }, {});
+        this.config = config;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     },
     /** 登录 */
     async login(params: API.LoginParams) {

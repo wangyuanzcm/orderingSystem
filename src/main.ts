@@ -3,6 +3,7 @@ import App from './App.vue';
 import { setupRouter } from './router';
 import { setupStore } from '@/store';
 import { setupI18n } from '@/locales';
+import { useUserStore } from '@/store/modules/user';
 import {
   setupAntd,
   setupAssets,
@@ -27,6 +28,10 @@ function setupPlugins() {
 }
 
 async function setupApp() {
+  const userStore = useUserStore();
+  // 获取配置列表
+  await userStore.getConfigList();
+
   // 挂载vuex状态管理
   setupStore(app);
   // Multilingual configuration

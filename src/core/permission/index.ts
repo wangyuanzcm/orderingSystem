@@ -59,6 +59,16 @@ export const verifyAuth = (perm: PermissionType) => {
   return permissionList.some((n) => n === permCode);
 };
 
+/**
+ * 根据key值获取配置内容
+ * @param key
+ * @returns
+ */
+export const getConfig = (key): string => {
+  const configList = useUserStore().config;
+
+  return configList[key];
+};
 export default {
   install(app: App) {
     app.config.globalProperties.$auth = verifyAuth;

@@ -36,10 +36,12 @@
     ArrayItems,
   } from '@formily/antdv';
   import { Card } from 'ant-design-vue';
-  import { GoodsEditDefaultSchema, GoodsEditDefineSchema } from './config';
+  import { GoodsEditDefaultSchema } from './config';
   import { services } from '@/utils/request';
   import { ImageUpload as Upload } from '@/components/business/image-upload';
   import { mergeSchema } from '@/utils/transform';
+  import { getConfig } from '@/core/permission';
+  const GoodsEditDefineSchema = JSON.parse(getConfig('GOODS_EDIT_DEFINE_SCHEMA'));
 
   const route = useRoute();
   const router = useRouter();

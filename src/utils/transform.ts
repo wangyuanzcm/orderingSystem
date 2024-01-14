@@ -1,3 +1,5 @@
+// import Babel from '@babel/standalone';
+
 export const countMoney = (orderInfoList = []): number => {
   return orderInfoList.reduce((pre, cur: Record<string, any>) => {
     const { coupon, ...others } = cur;
@@ -46,4 +48,23 @@ export const mergeSchema = (defaultSchema, defineSchema) => {
   };
 };
 
-// :{properties:Record<string,any>}={}
+export const decodeColumns = (columnString: string) => {
+  const tableColumns = JSON.parse(columnString);
+  return tableColumns.map((i) => {
+    const { customRender, ...others } = i;
+    if (customRender) {
+      console.log(customRender, '-------');
+      // console.log(Babel.transform);
+      // const transformedCode = Babel.transform(customRender, {
+      //   presets: ['@babel/preset-react'],
+      // }).code;
+      // console.log(transformedCode, '-------');
+
+      // return {
+      //   ...others,
+      //   customRender: new Function('record', customRender),
+      // };
+    }
+    return others;
+  });
+};
