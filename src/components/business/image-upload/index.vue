@@ -6,6 +6,7 @@
     list-type="picture-card"
     class="upload"
     action="noaction"
+    multiple
     @preview="handlePreview"
   >
     <div>

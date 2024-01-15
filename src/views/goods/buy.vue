@@ -112,7 +112,7 @@
   import { getConfig } from '@/core/permission';
   const GoodsEditDefineSchema = JSON.parse(getConfig('GOODS_EDIT_DEFINE_SCHEMA'));
   const GoodsBuyDefineSchema = JSON.parse(getConfig('GOODS_BUY_DEFINE_SCHEMA'));
-
+  console.log(GoodsBuyDefineSchema, 'GoodsBuyDefineSchema---');
   const route = useRoute();
   const router = useRouter();
   const query = ref({}) as Record<string, any>;

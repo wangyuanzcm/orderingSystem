@@ -29,7 +29,7 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'goods_name',
     align: 'center',
     sorter: true,
-    resizable: true,
+    width: 100,
     formItemProps: {
       defaultValue: '',
       required: false,
@@ -40,7 +40,7 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'goods_type',
     align: 'center',
     sorter: true,
-    resizable: true,
+    width: 100,
     formItemProps: {
       defaultValue: '',
       required: false,
@@ -50,7 +50,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '收件人id',
     dataIndex: 'receiver_id',
     align: 'center',
-    resizable: true,
+    width: 100,
     formItemProps: {
       defaultValue: '',
       required: false,
@@ -103,7 +103,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '订单状态',
     dataIndex: 'status',
     align: 'center',
-    resizable: true,
+    width: 100,
     formItemProps: {
       defaultValue: '',
       required: false,

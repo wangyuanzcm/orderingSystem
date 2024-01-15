@@ -9,6 +9,7 @@
         :row-selection="rowSelection"
         :data-request="loadTableData"
         :columns="columns"
+        :scroll="{ x: 1300, y: 1000 }"
       >
         <template #toolbar>
           <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="handleExport">
@@ -29,27 +30,21 @@
   import type { TableProps } from 'ant-design-vue';
   import { useTable } from '@/components/core/dynamic-table';
   import { services } from '@/utils/request';
+  import { getConfig } from '@/core/permission';
+  import { decodeColumns, handleDefineValues } from '@/utils/transform';
   import { exportDocx } from '@/utils/doc';
   import { useUserStore } from '@/store/modules/user';
 
-  const router = useRouter();
   const userStore = useUserStore();
-
-  const [DynamicTable, dynamicTableInstance] = useTable();
   const exportList = ref<Array<any>>([]);
   const userInfo = computed(() => userStore.userInfo);
-
-  const delRowConfirm = async (record: TableListItem) => {
-    await services.orderControllerDelete({ ids: [record.id] });
-    message.success('删除成功');
-    dynamicTableInstance.reload();
-  };
   // 处理订单导出事件
   const handleExport = () => {
     if (exportList.value.length === 0) {
       message.error('请选择需要导出的订单');
       return;
     }
+    console.log(exportList.value, 'exportList.value');
     const data = {
       form: exportList.value,
     };
@@ -59,9 +54,20 @@
   const rowSelection: TableProps['rowSelection'] = {
     onChange: (selectedRowKeys: string[], selectedRows) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      exportList.value = selectedRows;
+      exportList.value = handleDefineValues(selectedRows, orderDefineColumn);
     },
   };
+  const router = useRouter();
+  const orderDefineColumn = decodeColumns(getConfig('ORDER_DEFINE_COLUMN'));
+
+  const [DynamicTable, dynamicTableInstance] = useTable();
+
+  const delRowConfirm = async (record: TableListItem) => {
+    await services.orderControllerDelete({ ids: [record.id] });
+    message.success('删除成功');
+    dynamicTableInstance.reload();
+  };
+
   /**
    * 加载列表数据
    * @param params
@@ -95,8 +101,10 @@
       const receiverInfo = find(receiverInfoData as unknown as Array<Record<string, any>>, {
         id: i.receiver_id,
       });
+      const { ext, ...others } = i;
       return {
-        ...i,
+        ...others,
+        ...ext,
         receiverInfo,
       };
     });
@@ -105,6 +113,8 @@
 
   const columns: TableColumnItem[] = [
     ...baseColumns,
+    ...orderDefineColumn,
+
     {
       title: '操作',
       width: 350,

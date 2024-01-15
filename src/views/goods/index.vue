@@ -8,12 +8,8 @@
         bordered
         :data-request="loadTableData"
         :columns="columns"
-        :row-selection="rowSelection"
       >
         <template #toolbar>
-          <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="handleExport">
-            导出订单
-          </a-button>
           <a-button
             type="primary"
             :disabled="!$auth('sys.menu.add')"
@@ -37,31 +33,6 @@
   import { services } from '@/utils/request';
   import { getConfig } from '@/core/permission';
   import { decodeColumns, handleDefineValues } from '@/utils/transform';
-  import { exportDocx } from '@/utils/doc';
-  import { useUserStore } from '@/store/modules/user';
-
-  const userStore = useUserStore();
-  const exportList = ref<Array<any>>([]);
-  const userInfo = computed(() => userStore.userInfo);
-  // 处理订单导出事件
-  const handleExport = () => {
-    if (exportList.value.length === 0) {
-      message.error('请选择需要导出的订单');
-      return;
-    }
-    console.log(exportList.value, 'exportList.value');
-    const data = {
-      form: exportList.value,
-    };
-    exportDocx('/template.docx', data, `订单-${userInfo.value.name}-${Date.now()}.docx`);
-  };
-
-  const rowSelection: TableProps['rowSelection'] = {
-    onChange: (selectedRowKeys: string[], selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      exportList.value = handleDefineValues(selectedRows, goodsEditDefineColumn);
-    },
-  };
 
   const router = useRouter();
 
