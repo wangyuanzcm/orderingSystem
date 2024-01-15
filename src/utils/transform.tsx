@@ -49,9 +49,13 @@ export const mergeSchema = (defaultSchema, defineSchema) => {
 };
 
 const getCustomRender = (renderParams) => {
+  console.log(renderParams, 'render params----');
   const { renderType, renderKey, renderOptions = [] } = renderParams;
   if (renderType === 'ImageList') {
     return ({ record }) => {
+      console.log(record, 'record-----');
+      if (!record[renderKey]) return '';
+
       const imageList = record[renderKey];
       return (
         <ImagePreviewGroup>
@@ -64,6 +68,8 @@ const getCustomRender = (renderParams) => {
   }
   if (renderType === 'Select') {
     return ({ record }) => {
+      if (!record[renderKey]) return '';
+
       const _renderValue = record[renderKey];
       if (!Array.isArray(renderOptions)) {
         message.error('select的选项必须是数组类型');
@@ -102,6 +108,7 @@ export const decodeColumns = (columnString: string) => {
   const tableColumns = JSON.parse(columnString);
   return tableColumns.map((i) => {
     const { customRender, formItemProps, ...others } = i;
+
     return {
       ...others,
       ...(customRender ? { customRender: getCustomRender(customRender) } : {}),

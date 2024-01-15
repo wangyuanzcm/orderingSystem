@@ -12,6 +12,7 @@ import type { TreeSelectProps } from 'ant-design-vue';
 import type { App } from 'vue';
 import type { PermissionType } from './modules/types';
 import { useUserStore } from '@/store/modules/user';
+import { Storage } from '@/utils/Storage';
 
 type DataNode = NonNullable<TreeSelectProps['treeData']>[number];
 
@@ -65,8 +66,11 @@ export const verifyAuth = (perm: PermissionType) => {
  * @returns
  */
 export const getConfig = (key): string => {
+  const config = Storage.get(key);
+  if (config) {
+    return config;
+  }
   const configList = useUserStore().config;
-
   return configList[key];
 };
 export default {

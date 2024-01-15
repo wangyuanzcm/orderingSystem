@@ -76,6 +76,11 @@ export const useUserStore = defineStore({
           return { ...pre, [key]: value };
         }, {});
         this.config = config;
+        (data.list || []).map((i) => {
+          const { key, value } = i;
+          const ex = 7 * 24 * 60 * 60 * 1000;
+          Storage.set(key, value, ex);
+        });
       } catch (error) {
         return Promise.reject(error);
       }
@@ -94,6 +99,7 @@ export const useUserStore = defineStore({
     async afterLogin() {
       try {
         const wsStore = useWsStore();
+        // 获取配置列表
         const [userInfo, { perms, menus }] = await Promise.all([getInfo(), permmenu()]);
         this.perms = perms;
         this.name = userInfo.name;
@@ -103,6 +109,8 @@ export const useUserStore = defineStore({
         const generatorResult = await generatorDynamicRouter(menus);
         this.menus = generatorResult.menus.filter((item) => !item.meta?.hideInMenu);
         !wsStore.client && wsStore.initSocket();
+
+        await this.getConfigList();
 
         return { menus, perms, userInfo };
       } catch (error) {

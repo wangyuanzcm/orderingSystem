@@ -92,7 +92,10 @@
     });
     // @ts-ignore
     const { list, pagination } = result.data;
-    const resultList = list.map((i) => ({ ...i.ext, id: i.id }));
+    const resultList = list.map((i) => {
+      const { id, ext = {} } = i;
+      return { ...ext, id };
+    });
     return { list: resultList, pagination };
   };
 
