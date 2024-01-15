@@ -17,6 +17,7 @@ export const exportDocx = (tempDocxPath, data, fileName) => {
     if (error) {
       throw error;
     }
+    console.log(content, 'content');
     const centered = false;
     const getImage = (tagValue) => {
       return new Promise(function (resolve, reject) {
@@ -65,7 +66,7 @@ export const exportDocx = (tempDocxPath, data, fileName) => {
     const doc = new docxtemplater().loadZip(zip).attachModule(imageModule).compile();
 
     doc
-      .resolveData({ ...data.form })
+      .resolveData({ ...data })
       .then(() => {
         doc.render();
         const out = doc.getZip().generate({

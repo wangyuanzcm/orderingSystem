@@ -22,7 +22,7 @@
   import { ref, watch, onMounted } from 'vue';
   import * as qiniu from 'qiniu-js/esm';
   import { PlusOutlined } from '@ant-design/icons-vue';
-  import { Upload, message } from 'ant-design-vue';
+  // import { Upload, message } from 'ant-design-vue';
   import type { PropType } from 'vue';
 
   import type { UploadProps } from 'ant-design-vue';
@@ -66,12 +66,13 @@
   // 定义表单改变的方法
   const emit = defineEmits(['update:value', 'change']);
   // 设置只上传png图片
-  const beforeUpload: UploadProps['beforeUpload'] = (file) => {
-    const isPNG = file.type === 'image/png';
-    if (!isPNG) {
-      message.error(`${file.name} is not a png file`);
-    }
-    return isPNG || Upload.LIST_IGNORE;
+  const beforeUpload: UploadProps['beforeUpload'] = () => {
+    return true;
+    // const isPNG = file.type === 'image/png';
+    // if (!isPNG) {
+    //   message.error(`${file.name} is not a png file`);
+    // }
+    // return isPNG || Upload.LIST_IGNORE;
   };
   // 处理图片预览事件
   const handlePreview = async (file) => {
@@ -96,7 +97,6 @@
     const observable = qiniu.upload(file as File, `${(file as File).name}`, token.value);
     observable.subscribe({
       next: (res) => {
-        console.log(res, 'res====');
         // https://github.com/ElemeFE/element/issues/9759
         onProgress?.({ percent: res.total.percent });
       },
@@ -107,7 +107,11 @@
       complete: (res) => {
         onSuccess?.(res);
         console.log(fileList.value, '----====');
-        const fileValue = fileList.value?.map(({ uid, name, status, response }) => {
+        const fileValue = fileList.value?.map((item) => {
+          const { uid, url, name, status, response } = item;
+          if (url) {
+            return item;
+          }
           const { key } = response as { hash: string; key: string };
           return {
             uid,

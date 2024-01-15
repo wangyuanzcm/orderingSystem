@@ -42,40 +42,4 @@ export const baseColumns: TableColumnItem[] = [
       );
     },
   },
-  // {
-  //   title: '是否为定制商品',
-  //   dataIndex: 'universal',
-  //   align: 'center',
-  //   resizable: true,
-  //   formItemProps: {
-  //     required: false,
-  //     component: 'Select',
-  //     componentProps: () => ({
-  //       options: [
-  //         {
-  //           label: '是',
-  //           value: 1,
-  //         },
-  //         {
-  //           label: '否',
-  //           value: 2,
-  //         },
-  //       ],
-  //     }),
-  //   },
-  // "customRender": {
-  //   "renderType":"Select",
-  //   "renderKey":"universal",
-  //       "renderOptions":[
-  //         {
-  //           "label":"是",
-  //           "value":1
-  //         },
-  //         {
-  //           "label":"否",
-  //           "value":2
-  //         }
-  //       ]
-  //     }
-  // },
 ];

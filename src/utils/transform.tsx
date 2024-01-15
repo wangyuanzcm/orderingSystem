@@ -1,31 +1,5 @@
-// import { transform } from '@babel/core';
-import { isVNode as _isVNode, createVNode as _createVNode } from 'vue';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { has } from 'lodash-es';
 import { Image, ImagePreviewGroup, message } from 'ant-design-vue';
-function _isSlot(s) {
-  return (
-    typeof s === 'function' ||
-    (Object.prototype.toString.call(s) === '[object Object]' && !_isVNode(s))
-  );
-}
-// // 运行时配置
-// const babelConfig = {
-//   presets: [
-//     [
-//       '@babel/preset-env',
-//       {
-//         modules: false, // 使用 ESModule
-//         useBuiltIns: 'usage',
-//         corejs: { version: '3.22.5', proposals: true },
-//         targets: {
-//           chrome: 49,
-//         },
-//       },
-//     ],
-//     '@babel/preset-react',
-//   ],
-//   plugins: ['@babel/plugin-transform-arrow-functions'],
-// };
 
 export const countMoney = (orderInfoList = []): number => {
   return orderInfoList.reduce((pre, cur: Record<string, any>) => {
@@ -100,7 +74,6 @@ const getCustomRender = (renderParams) => {
         }
         return _renderValue === i.value;
       });
-      console.log(renderOptions, valueArray, _renderValue, 'valueArray');
       return (
         <a-space align="center">
           {valueArray.map((i) => (
@@ -134,7 +107,45 @@ export const decodeColumns = (columnString: string) => {
       ...(customRender ? { customRender: getCustomRender(customRender) } : {}),
       ...(formItemProps ? { formItemProps: getFormItemProps(formItemProps) } : {}),
     };
+  });
+};
 
-    return others;
+export const handleDefineValues = (selectRows, columns) => {
+  //  定义列表中value的处理方法
+  const defineFn = columns.reduce((pre, cur) => {
+    const { formItemProps, dataIndex } = cur;
+    if (formItemProps && formItemProps.component === 'Select') {
+      return {
+        ...pre,
+        [dataIndex]: (v) => {
+          const renderOptions = formItemProps.componentProps().options;
+          if (Array.isArray(v)) {
+            const selectedOptions = renderOptions.filter((i) => v.some((ele) => ele === i.value));
+            return selectedOptions.map((i) => i.label);
+          }
+          const selectedOptions = renderOptions.filter((i) => i.value === v);
+          return selectedOptions.map((i) => i.label)[0];
+        },
+      };
+    }
+
+    return pre;
+  }, {});
+  // return selectRows;
+  return selectRows.map((item) => {
+    return Object.keys(item).reduce((pre, cur) => {
+      const val = item[cur];
+
+      if (has(defineFn, cur)) {
+        return {
+          ...pre,
+          [cur]: defineFn[cur](val),
+        };
+      }
+      return {
+        ...pre,
+        [cur]: val,
+      };
+    }, {}) as any;
   });
 };
