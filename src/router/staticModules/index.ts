@@ -1,5 +1,5 @@
 // import dashboard from './dashboard';
-// import demos from './demos';
+import business from './business';
 import account from './account';
 
-export default [...account];
+export default [...account, ...business];
