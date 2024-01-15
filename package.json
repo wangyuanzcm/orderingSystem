@@ -33,6 +33,9 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "~7.0.1",
+    "@babel/core": "^7.23.7",
+    "@babel/plugin-transform-arrow-functions": "^7.23.3",
+    "@babel/preset-react": "^7.23.3",
     "@formily/antdv": "2.0.1-beta.3",
     "@formily/core": "^2.3.1",
     "@formily/reactive": "^2.3.1",

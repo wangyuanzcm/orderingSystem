@@ -42,22 +42,40 @@ export const baseColumns: TableColumnItem[] = [
       );
     },
   },
-  {
-    title: '商品图片',
-    dataIndex: 'image_list',
-    hideInSearch: true,
-    align: 'center',
-    resizable: true,
-    customRender: ({ record }) => {
-      const { image_list: imageList = [] } = record as any;
-
-      return (
-        <ImagePreviewGroup>
-          {imageList.map(({ url }) => (
-            <Image width={100} src={url} />
-          ))}
-        </ImagePreviewGroup>
-      );
-    },
-  },
+  // {
+  //   title: '是否为定制商品',
+  //   dataIndex: 'universal',
+  //   align: 'center',
+  //   resizable: true,
+  //   formItemProps: {
+  //     required: false,
+  //     component: 'Select',
+  //     componentProps: () => ({
+  //       options: [
+  //         {
+  //           label: '是',
+  //           value: 1,
+  //         },
+  //         {
+  //           label: '否',
+  //           value: 2,
+  //         },
+  //       ],
+  //     }),
+  //   },
+  // "customRender": {
+  //   "renderType":"Select",
+  //   "renderKey":"universal",
+  //       "renderOptions":[
+  //         {
+  //           "label":"是",
+  //           "value":1
+  //         },
+  //         {
+  //           "label":"否",
+  //           "value":2
+  //         }
+  //       ]
+  //     }
+  // },
 ];

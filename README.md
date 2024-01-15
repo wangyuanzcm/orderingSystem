@@ -227,3 +227,53 @@ https://antdv-x3.formilyjs.org/guide/space.html#markup-schema-%E6%A1%88%E4%BE%8B
 5. 权限点配置（待定）
 
 formily 仅支持antd版本 <4.22.8
+
+https://purefunction.xyz/runtime-js-bundling 如何在运行时编译 JavaScript 代码
+
+table列设置必须是下面的格式，目前测试了select和imageList
+
+````
+"customRender": {
+     "renderType":"Select",
+     "renderKey":"universal",
+     "renderOptions":[
+       {
+         "label":"是",
+         "value":1
+       },
+       {
+         "label":"否",
+         "value":2
+       }
+     ]
+   }
+   ```
+
+````
+
+     "customRender": {
+      "renderType":"ImageList",
+      "renderKey":"image_list"
+    }
+
+```
+
+```
+
+    "formItemProps": {
+      "formType":"Select",
+      "formOptions": [
+        {
+          "label":"是",
+          "value":1
+        },
+        {
+          "label":"否",
+          "value":2
+        }
+      ]
+    },
+
+```
+
+```
