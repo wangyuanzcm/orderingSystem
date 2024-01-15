@@ -1,5 +1,6 @@
 import { has } from 'lodash-es';
-import { Image, ImagePreviewGroup, message } from 'ant-design-vue';
+import { Image, ImagePreviewGroup, message, Space, Typography } from 'ant-design-vue';
+const { Paragraph } = Typography;
 
 export const countMoney = (orderInfoList = []): number => {
   return orderInfoList.reduce((pre, cur: Record<string, any>) => {
@@ -49,18 +50,16 @@ export const mergeSchema = (defaultSchema, defineSchema) => {
 };
 
 const getCustomRender = (renderParams) => {
-  console.log(renderParams, 'render params----');
   const { renderType, renderKey, renderOptions = [] } = renderParams;
   if (renderType === 'ImageList') {
     return ({ record }) => {
-      console.log(record, 'record-----');
       if (!record[renderKey]) return '';
 
       const imageList = record[renderKey];
       return (
         <ImagePreviewGroup>
           {imageList.map(({ url }) => (
-            <Image width={100} src={url} />
+            <Image width={80} src={url} />
           ))}
         </ImagePreviewGroup>
       );
@@ -86,6 +85,21 @@ const getCustomRender = (renderParams) => {
             <a-typography-text>{i.label}</a-typography-text>
           ))}
         </a-space>
+      );
+    };
+  }
+
+  if (renderType === 'Copyable') {
+    console.log(renderKey, 'renderKey=====');
+    return ({ record }) => {
+      if (!record[renderKey]) return '';
+      const list = Array.isArray(record[renderKey]) ? record[renderKey] : [record[renderKey]];
+      return (
+        <Space direction="vertical ">
+          {list.map((i) => (
+            <Paragraph copyable>{i}</Paragraph>
+          ))}
+        </Space>
       );
     };
   }
@@ -155,4 +169,20 @@ export const handleDefineValues = (selectRows, columns) => {
       };
     }, {}) as any;
   });
+};
+
+export const columnsSort = (column) => {
+  column.sort((a, b) => {
+    if (has(a, 'xIndex') && !has(b, 'xIndex')) {
+      return -1;
+    }
+    if (!has(a, 'xIndex') && has(b, 'xIndex')) {
+      return -1;
+    }
+    if (has(a, 'xIndex') && has(b, 'xIndex')) {
+      return a.xIndex - b.xIndex;
+    }
+    return 0;
+  });
+  return column;
 };

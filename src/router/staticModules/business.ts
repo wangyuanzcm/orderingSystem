@@ -2,8 +2,6 @@ import type { RouteRecordRaw } from 'vue-router';
 // import RouterView from '@/layout/routerView/index.vue';
 // import { t } from '@/hooks/useI18n';
 
-const moduleName = 'demos';
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: 'statistics',
@@ -13,7 +11,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'icon-zhuomian',
       keepAlive: true,
     },
-    component: () => import(/* webpackChunkName: "lol-table" */ '@/views/statistics/index.vue'),
+    component: () => import('@/views/statistics/index.vue'),
   },
   {
     path: 'cart',
@@ -23,7 +21,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'icon-zhuomian',
       keepAlive: true,
     },
-    component: () => import(/* webpackChunkName: "lol-table" */ '@/views/cart/index.vue'),
+    component: () => import('@/views/cart/index.vue'),
   },
   {
     path: 'receiverinfo',
@@ -33,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'icon-zhuomian',
       keepAlive: true,
     },
-    component: () => import(/* webpackChunkName: "lol-table" */ '@/views/receiverinfo/index.vue'),
+    component: () => import('@/views/receiverinfo/index.vue'),
   },
   {
     path: 'orderlist',
@@ -43,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'icon-zhuomian',
       keepAlive: true,
     },
-    component: () => import(/* webpackChunkName: "lol-table" */ '@/views/orderlist/index.vue'),
+    component: () => import('@/views/orderlist/index.vue'),
   },
   {
     path: 'goods',
@@ -53,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'icon-zhuomian',
       keepAlive: true,
     },
-    component: () => import(/* webpackChunkName: "lol-table" */ '@/views/goods/index.vue'),
+    component: () => import('@/views/goods/index.vue'),
   },
   {
     path: 'creategoods',
@@ -63,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'icon-zhuomian',
       hideInMenu: true,
       keepAlive: true,
-      activeMenu: `${moduleName}-table-lol`,
+      activeMenu: `goods`,
     },
     component: () => import(/* webpackChunkName: "lol-info-table" */ '@/views/goods/create.vue'),
   },
@@ -75,7 +73,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'icon-zhuomian',
       hideInMenu: true,
       keepAlive: true,
-      activeMenu: `${moduleName}-table-lol`,
+      activeMenu: `goods`,
     },
     component: () => import(/* webpackChunkName: "lol-info-table" */ '@/views/goods/detail.vue'),
   },
@@ -87,7 +85,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'icon-zhuomian',
       hideInMenu: true,
       keepAlive: true,
-      activeMenu: `${moduleName}-table-lol`,
+      activeMenu: `goods`,
     },
     component: () => import(/* webpackChunkName: "lol-info-table" */ '@/views/goods/buy.vue'),
   },

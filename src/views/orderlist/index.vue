@@ -31,7 +31,7 @@
   import { useTable } from '@/components/core/dynamic-table';
   import { services } from '@/utils/request';
   import { getConfig } from '@/core/permission';
-  import { decodeColumns, handleDefineValues } from '@/utils/transform';
+  import { decodeColumns, handleDefineValues, columnsSort } from '@/utils/transform';
   import { exportDocx } from '@/utils/doc';
   import { useUserStore } from '@/store/modules/user';
 
@@ -111,7 +111,7 @@
     return { list: listData, pagination };
   };
 
-  const columns: TableColumnItem[] = [
+  const columns: TableColumnItem[] = columnsSort([
     ...baseColumns,
     ...orderDefineColumn,
 
@@ -170,7 +170,7 @@
         },
       ],
     },
-  ];
+  ]);
 </script>
 
 <style lang="less" scoped></style>
