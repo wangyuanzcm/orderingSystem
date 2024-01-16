@@ -125,4 +125,5 @@ export const request = async <T = any>(
     return Promise.reject(error);
   }
 };
+// 自定义接口使用的方法
 export const services = new DefaultApi(undefined, '/api', service);

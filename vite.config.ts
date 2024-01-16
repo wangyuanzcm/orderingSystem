@@ -10,7 +10,11 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
+import optimizer from 'vite-plugin-optimizer';
 import pkg from './package.json';
+
+import { devPlugin, getReplacer } from './plugins/devPlugin';
+import { buildPlugin } from './plugins/buildPlugin';
 import type { UserConfig, ConfigEnv } from 'vite';
 
 const CWD = process.cwd();
@@ -44,6 +48,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       ],
     },
     plugins: [
+      optimizer(getReplacer()),
+      devPlugin(),
       vue(),
       Unocss(),
       vueJsx({
@@ -155,6 +161,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     build: {
+      rollupOptions: {
+        plugins: [buildPlugin()],
+      },
       target: 'es2017',
       minify: 'esbuild',
       cssTarget: 'chrome79',
