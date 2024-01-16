@@ -24,7 +24,6 @@
 <script lang="ts" setup>
   import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
-  import { find } from 'lodash-es';
   import { message, Card } from 'ant-design-vue';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import type { TableProps } from 'ant-design-vue';
@@ -95,17 +94,14 @@
     console.log(result, 'result');
     // @ts-ignore
     const { list, pagination } = result.data;
-    const reveiveIds = list.map((i) => i.receiver_id);
-    const { data: receiverInfoData } = await services.receiverControllerSearch({ ids: reveiveIds });
-    const listData = list.map((i) => {
-      const receiverInfo = find(receiverInfoData as unknown as Array<Record<string, any>>, {
-        id: i.receiver_id,
-      });
-      const { ext, ...others } = i;
+    const listData = list.map((item) => {
+      const { ext, ...others } = item;
+      const { receiverInfo, goodsInfo, ...otherItem } = ext;
       return {
-        ...others,
-        ...ext,
         receiverInfo,
+        goodsInfo,
+        ...otherItem,
+        ...others,
       };
     });
     return { list: listData, pagination };

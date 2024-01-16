@@ -119,6 +119,7 @@
   const goodsInfo = ref<any>(null);
   const total = ref(0);
   const status = ref(10);
+  const receiverInfo = ref({});
   const viewPattern = ref('editable'); // editable/disabled
   const goodsInfoForm = createForm();
   const goodsBuyForm = createForm({
@@ -145,6 +146,12 @@
       });
       onFieldValueChange('coupon', () => {
         handlecount();
+      });
+      onFieldValueChange('receiver_id', (field) => {
+        const { dataSource, value } = field;
+        const v = dataSource.findIndex((i) => i.value === value);
+        receiverInfo.value = dataSource[v].extra;
+        console.log(dataSource[v].extra, 'dataSource[v].extra--------');
       });
     },
   });
@@ -221,6 +228,7 @@
     const options = (list || []).map((option) => ({
       label: option.nick_name,
       value: option.id,
+      extra: option,
     }));
     goodsBuyForm.setFieldState('receiver_id', (state) => {
       //对于初始联动，如果字段找不到，setFieldState会将更新推入更新队列，直到字段出现再执行操作
@@ -232,6 +240,7 @@
   };
   //处理购物车事件
   const handleOrder = async (values, status) => {
+    console.log(values, 'values-----');
     if (status > STATUS_MAP.SHIPPED) {
       message.warn('已经到最后一个阶段');
       return;
@@ -255,7 +264,7 @@
       status,
       goods_id: id,
       goods_name: title,
-      ext: { ...others },
+      ext: { ...others, goodsInfo: goodsInfo.value, receiverInfo: receiverInfo.value },
     };
     if (query.value.orderId) {
       const result = await services.orderControllerUpdate({

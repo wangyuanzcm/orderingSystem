@@ -90,7 +90,6 @@ const getCustomRender = (renderParams) => {
   }
 
   if (renderType === 'Copyable') {
-    console.log(renderKey, 'renderKey=====');
     return ({ record }) => {
       if (!record[renderKey]) return '';
       const list = Array.isArray(record[renderKey]) ? record[renderKey] : [record[renderKey]];
