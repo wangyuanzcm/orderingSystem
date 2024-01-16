@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { protocol } from 'electron';
-
+import axios from 'axios';
 //为自定义的app协议提供特权
 const schemeConfig = {
   standard: true,
@@ -13,6 +13,7 @@ const schemeConfig = {
 };
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: schemeConfig }]);
 
+const proxyHost = 'http://127.0.0.1:7001';
 export class CustomScheme {
   //根据文件扩展名获取mime-type
   private static getMimeType(extension: string) {
@@ -34,7 +35,34 @@ export class CustomScheme {
   static registerScheme() {
     protocol.registerStreamProtocol('app', (request, callback) => {
       let pathName = new URL(request.url).pathname;
+
       let extension = path.extname(pathName).toLowerCase();
+
+      // 如果有接口请求，则使用代理转接
+      if (pathName.startsWith('/api')) {
+        console.log(`${proxyHost}${pathName}`, '`${proxyHost}${pathName}`');
+        axios.get(`${proxyHost}${pathName}`).then((response) => {
+          const { data, headers } = response;
+
+          // 构造 Electron 的响应对象
+          const responseHeaders = {
+            'content-type': headers['content-type'],
+            // 其他需要的响应头
+          };
+
+          const buffer = Buffer.from(data, 'utf-8');
+          const mime = headers['content-type'];
+
+          callback({
+            statusCode: 200,
+            headers: responseHeaders,
+            data: buffer,
+            mimeType: mime,
+          });
+        });
+        return;
+      }
+
       if (extension == '') {
         pathName = 'index.html';
         extension = '.html';

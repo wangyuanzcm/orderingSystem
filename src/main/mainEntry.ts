@@ -1,8 +1,12 @@
 // src\main\mainEntry.ts
 import { app, BrowserWindow } from 'electron';
-
+import { CommonWindowEvent } from './CommonWindowEvent';
+// import { Updater } from './Updater';
 import { CustomScheme } from './CustomScheme';
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
+app.on('browser-window-created', (e, win) => {
+  CommonWindowEvent.regWinEvent(win);
+});
 let mainWindow: BrowserWindow;
 
 app.whenReady().then(() => {
@@ -24,5 +28,7 @@ app.whenReady().then(() => {
   } else {
     CustomScheme.registerScheme();
     mainWindow.loadURL(`app://index.html`);
+    // Updater.check();
   }
+  CommonWindowEvent.listen();
 });

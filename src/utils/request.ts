@@ -21,7 +21,7 @@ export interface RequestOptions {
 }
 
 const UNKNOWN_ERROR = '未知错误，请重试';
-console.log(import.meta.env.VITE_BASE_API, 'import.meta.env.VITE_BASE_API');
+
 /** 真实请求的路径前缀 */
 const baseApiUrl = import.meta.env.VITE_BASE_API;
 /** mock请求路径前缀 */
@@ -114,10 +114,8 @@ export const request = async <T = any>(
     }
     const fullUrl = `${(isMock ? baseMockUrl : baseApiUrl) + config.url}`;
     config.url = uniqueSlash(fullUrl);
-    console.log(config, 'config');
-    const res = await service.request(config);
 
-    console.log(res, 'res');
+    const res = await service.request(config);
     successMsg && $message.success(successMsg);
     errorMsg && $message.error(errorMsg);
     return isGetDataDirectly ? res.data : res;
@@ -125,5 +123,6 @@ export const request = async <T = any>(
     return Promise.reject(error);
   }
 };
+
 // 自定义接口使用的方法
 export const services = new DefaultApi(undefined, '/api', service);

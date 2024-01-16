@@ -1,6 +1,7 @@
 node_modules
 .DS_Store
 dist
+release
 .npmrc
 .cache
 
@@ -32,3 +33,5 @@ yarn-error.log*
 types/auto-imports.d.ts
 types/components.d.ts
 **/**/.openapi-generator/FILES
+
+
